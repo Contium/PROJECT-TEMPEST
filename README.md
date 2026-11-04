@@ -32,8 +32,8 @@ Build your characters, world and loot in one window, then push exactly what the 
 | **Characters:** a sheet built from your preset, with a GM view / Player view switch and **⇪ Push** | **The Forge:** design the sheet, then choose what players see of each field |
 | <img src="docs/screenshots/push-to.png" alt="The Push to menu listing named player screens" width="440"> | <img src="docs/screenshots/player-screen.png" alt="The player screen asking Who's watching?" width="440"> |
 | **Push to:** every screen, or only the ones you pick | **Player screens** ask for a name when they open |
-| <img src="docs/screenshots/theme-land-of-sand.png" alt="The Forge in the Land of Sand theme: gold and steel on a starfield" width="440"> | |
-| **Themes:** the same page in Land of Sand | |
+| <img src="docs/screenshots/theme-land-of-sand.png" alt="The Forge in the Land of Sand theme: gold and steel on a starfield" width="440"> | <img src="docs/screenshots/theme-moontown.png" alt="The Forge in the Moontown theme: rust-red capitals and diamond-cornered frames on parchment" width="440"> |
+| **Themes:** the same page in Land of Sand | **…and in Moontown** |
 
 ## Contents
 
