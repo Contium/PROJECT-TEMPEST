@@ -10,6 +10,18 @@
   box-sizing: border-box;
 }
 
+/* While the engine flips data-theme, nothing transitions: otherwise every
+   frame, button and link would crossfade from the outgoing theme's colours,
+   and wherever frames are throttled (a hidden window, a headless capture)
+   that crossfade sits at its start or midpoint. The theme's own entry
+   animation (data-theme-entering) is the swap's visual transition. */
+:root[data-theme-swapping],
+:root[data-theme-swapping] *,
+:root[data-theme-swapping] *::before,
+:root[data-theme-swapping] *::after {
+  transition: none !important;
+}
+
 html,
 body {
   margin: 0;
