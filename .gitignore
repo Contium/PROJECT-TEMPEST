@@ -1,2 +1,6 @@
 # Installers kept on this PC for convenience: too large for GitHub (100 MB file limit)
 assets/GitHubDesktopSetup-x64.exe
+
+# Standalone binaries (npm run build) and the runtimes and tools downloaded to make them
+dist/
+.build-cache/

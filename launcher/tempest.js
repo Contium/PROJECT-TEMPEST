@@ -105,20 +105,51 @@ function ensureTray() {
   }).unref();
 }
 
-// Prefer a chromeless app window (Edge ships with Windows); fall back to the default browser.
+/** The first of these programs found on PATH (Linux, macOS). */
+function onPath(names) {
+  const dirs = (process.env.PATH || '').split(path.delimiter).filter(Boolean);
+  for (const name of names) {
+    for (const dir of dirs) {
+      const file = path.join(dir, name);
+      try {
+        fs.accessSync(file, fs.constants.X_OK);
+        return file;
+      } catch {
+        /* not here */
+      }
+    }
+  }
+  return null;
+}
+
+// Prefer a chromeless app window (Edge ships with Windows; Chrome, Chromium or Edge
+// elsewhere); fall back to the default browser.
 function openWindow(hashPath = '/') {
   const url = hashPath === '/' ? P.APP_URL : `${P.APP_URL}#${hashPath}`;
-  const candidates = [
-    path.join(process.env['ProgramFiles(x86)'] || '', 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
-    path.join(process.env.ProgramFiles || '', 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
-    path.join(process.env.ProgramFiles || '', 'Google', 'Chrome', 'Application', 'chrome.exe'),
-    path.join(process.env.LOCALAPPDATA || '', 'Google', 'Chrome', 'Application', 'chrome.exe'),
-  ];
-  const browser = candidates.find((p) => p && fs.existsSync(p));
-  const [cmd, cmdArgs] = browser
-    ? [browser, [`--app=${url}`, '--window-size=1440,900']]
-    : ['cmd.exe', ['/c', 'start', '""', url]];
-  spawn(cmd, cmdArgs, { detached: true, stdio: 'ignore', windowsHide: true }).unref();
+  let browser;
+  let fallback;
+  if (process.platform === 'win32') {
+    browser = [
+      path.join(process.env['ProgramFiles(x86)'] || '', 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
+      path.join(process.env.ProgramFiles || '', 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
+      path.join(process.env.ProgramFiles || '', 'Google', 'Chrome', 'Application', 'chrome.exe'),
+      path.join(process.env.LOCALAPPDATA || '', 'Google', 'Chrome', 'Application', 'chrome.exe'),
+    ].find((p) => p && fs.existsSync(p));
+    fallback = ['cmd.exe', ['/c', 'start', '""', url]];
+  } else if (process.platform === 'darwin') {
+    browser = ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge'].find((p) => fs.existsSync(p));
+    fallback = ['open', [url]];
+  } else {
+    browser = onPath(['google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser', 'microsoft-edge', 'microsoft-edge-stable', 'brave-browser']);
+    fallback = ['xdg-open', [url]];
+  }
+  const [cmd, cmdArgs] = browser ? [browser, [`--app=${url}`, '--window-size=1440,900']] : fallback;
+  spawn(cmd, cmdArgs, { detached: true, stdio: 'ignore', windowsHide: true })
+    .on('error', (err) => {
+      log(`could not open a window (${err.message}); open ${url} in a browser`);
+      console.log(`TEMPEST is running: open ${url} in a browser.`);
+    })
+    .unref();
   log(`window opened via ${path.basename(cmd)} at ${hashPath}`);
 }
 

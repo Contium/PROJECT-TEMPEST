@@ -23,8 +23,9 @@ const projects = createProjectLibrary(path.join(P.DATA_DIR, 'v1'));
 const display = createDisplay(path.join(P.DATA_DIR, 'v1', 'display.json'), projects);
 // The player screen on the local network, when the GM shares it (server/lan.js).
 const lan = createLan({ file: path.join(P.DATA_DIR, 'v1', 'lan.json'), port: P.LAN_PORT, host: process.env.TEMPEST_LAN_HOST || '0.0.0.0', serveStatic: (req, res, p) => serveStatic(req, res, p), listThemes: () => listThemes(), display, library: projects });
-// Folders in the project that are never served (old versions, reference PDFs).
-const PRIVATE_DIRS = ['Archived', 'official_references', 'test', 'server', 'launcher'];
+// Folders in the project that are never served (old versions, reference PDFs, built
+// binaries), and the standalone binary itself when TEMPEST runs from one.
+const PRIVATE_DIRS = ['Archived', 'official_references', 'test', 'server', 'launcher', 'dist', 'tempest.exe', 'tempest'];
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',

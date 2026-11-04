@@ -18,6 +18,7 @@
     "setup:autostart": "node launcher/install.js --autostart",
     "uninstall-shortcuts": "node launcher/install.js --uninstall",
     "icon": "node scripts/make-icon.js",
+    "build": "node scripts/build-binaries.js",
     "test": "node --test \"test/**/*.test.*\""
   },
   "engines": {

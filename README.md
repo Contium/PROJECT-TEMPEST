@@ -49,6 +49,31 @@ Build your characters, world and loot in one window, then push exactly what the 
 
 ## Quick start
 
+### Standalone download (no Node.js needed)
+
+Download the archive for your system from the [Releases](https://github.com/Contium/PROJECT-TEMPEST/releases) page and unpack it anywhere:
+
+| System | Archive | Start it with |
+|---|---|---|
+| Windows 10 / 11 (x64) | `tempest-<version>-win-x64.zip` | Double-click `tempest.exe`. Run `tempest.exe setup` once to add Start Menu shortcuts. |
+| Linux (x64) | `tempest-<version>-linux-x64.tar.gz` | `./tempest` |
+
+The binary starts the server in the background and opens the GM window, exactly like the Start Menu shortcut below. Keep it in its folder: the app's files sit next to it. The same commands work from a terminal:
+
+| Command | What it does |
+|---|---|
+| `tempest` | Starts the server (and, on Windows, the tray icon) if needed, and opens the GM window |
+| `tempest --background` | The same, without opening a window |
+| `tempest --stop` / `tempest --quit` | Stops the server / stops it and removes the tray icon |
+| `tempest serve` | Runs the server in this terminal (Ctrl+C stops it) |
+| `tempest setup` | Windows: adds the Start Menu shortcuts (`--autostart` also starts TEMPEST at sign-in) |
+| `tempest --version` | Prints the TEMPEST and Node.js versions |
+
+> [!NOTE]
+> On Linux the GM window opens in Chrome, Chromium, Edge or Brave as an app window if one is installed, otherwise in your default browser. There is no tray icon on Linux, and the binaries are unsigned, so Windows SmartScreen may ask before the first run (**More info → Run anyway**).
+
+### From source
+
 **Requirements:** [Node.js](https://nodejs.org/) 20 or newer. Windows 10 or 11 for the launcher, tray icon and shortcuts. Nothing needs admin rights, and everything is per-user.
 
 1. Get the code:
@@ -76,7 +101,7 @@ npm start
 Then open <http://127.0.0.1:4077>.
 
 > [!NOTE]
-> The server is plain Node, so `npm start` should also work on macOS and Linux, but only Windows is tested. The launcher, tray icon and shortcuts are Windows-only.
+> The server is plain Node, so `npm start` and `npm run launch` also work on macOS and Linux, but only Windows is tested. The tray icon and shortcuts are Windows-only.
 
 ### The tray icon
 
@@ -104,6 +129,7 @@ Right-click the TEMPEST icon in the notification area (next to the clock) for:
 | `npm run icon` | Regenerates `assets/tempest.ico` and `assets/tempest-256.png` |
 | `npm start` | Runs the server in this terminal (development) |
 | `npm test` | Runs the test suites |
+| `npm run build` | Builds the standalone Windows and Linux binaries into `dist/` (see [Building the binaries](#building-the-binaries)) |
 
 The shortcuts store the folder's path and the path to `node.exe`, so run `npm run setup` again if either one moves.
 
@@ -112,12 +138,12 @@ The shortcuts store the folder's path and the path to `node.exe`, so run `npm ru
 | Environment variable | Default | What it sets |
 |---|---|---|
 | `TEMPEST_PORT` | `4077` | The GM server's port |
-| `TEMPEST_DATA_DIR` | `%LOCALAPPDATA%\TEMPEST` | Where data is kept. Point it at another folder for a test copy that doesn't touch your projects. |
+| `TEMPEST_DATA_DIR` | `%LOCALAPPDATA%\TEMPEST` (Linux: `~/.local/share/TEMPEST`) | Where data is kept. Point it at another folder for a test copy that doesn't touch your projects. |
 | `TEMPEST_LAN_PORT` | GM port + 1 (`4078`) | The network player screen's port |
 | `TEMPEST_LAN_HOST` | `0.0.0.0` | Where the network player screen listens. `127.0.0.1` keeps it off the network while testing. |
 | `TEMPEST_NO_TRAY` | unset | Any value skips the tray icon when launching |
 
-**Where things are kept:**
+**Where things are kept** (on Linux, read `~/.local/share/TEMPEST`, or `$XDG_DATA_HOME/TEMPEST`, for `%LOCALAPPDATA%\TEMPEST`):
 
 | What | Where |
 |---|---|
@@ -483,8 +509,8 @@ app/                The GM window and player screen (one page; #/player is the p
   projects/         Project picker, settings, network sharing card
   vendor/           Third-party files kept in the repository, with sources and licences
 server/             The local server (no dependencies): static files, the API, the network player screen
-launcher/           Windows launcher, tray icon, shortcut installer
-scripts/            Icon generator, Night City district tracer, screamsheet table importer
+launcher/           Launcher, Windows tray icon and shortcut installer, the standalone binary's entry point
+scripts/            Binary builder, icon generator, Night City district tracer, screamsheet table importer
 src/theme-engine/   ThemeEngine: load, hot-swap, persist, lexicon
 themes/             The theme library (_base holds the token contract and shared components)
 styleguide/         Living style guide
@@ -521,6 +547,19 @@ npm test
 | Network player screen | `server/lan.js`, `app/projects/network.js` | `test/lan.test.js` |
 | Screamsheets | `app/screamsheets/`, `server/packs.js` | `test/screamsheets.test.js` |
 | Sections and routing | `app/sections.js`, `app/main.js` | `test/sections.test.mjs` |
+
+### Building the binaries
+
+```bash
+npm run build
+```
+
+This makes `dist/tempest-<version>-win-x64.zip` and `dist/tempest-<version>-linux-x64.tar.gz` (add `--targets=linux-arm64`, or any comma-separated list of `win-x64`, `linux-x64` and `linux-arm64`, after `npm run build --` for others). Each holds a `tempest` binary and the app's files beside it.
+
+- **How it works:** the binary is the official Node.js runtime, the same version as the Node that runs the build, downloaded from nodejs.org and checked against its published SHA-256 list. `launcher/binary.js` is injected into it as a Node [single executable application](https://nodejs.org/api/single-executable-applications.html). It loads the server and launcher from the folder next to the binary, so they run exactly as they do from a checkout.
+- **What ships:** `app/`, `server/`, `src/`, `themes/`, `launcher/`, the map images and icons, the screamsheet importer, `LICENSE` and this README. The Atlas, the rulebook PDFs, tests, docs and `Archived/` stay out.
+- **Build tools:** the one tool, [postject](https://github.com/nodejs/postject) (from the Node.js project), is installed into `.build-cache/` on the first build. On Windows, `scripts/set-exe-icon.ps1` gives `tempest.exe` the TEMPEST icon using Windows' own resource API, and the exe is marked as a windowed app so starting it never flashes a console.
+- Both platforms build from either Windows or Linux. Only a Windows build sets the exe's icon.
 
 **Contributing:** issues and pull requests are welcome. Please run `npm test` before opening a pull request, keep the server free of npm dependencies, and include tests for new rules.
 
