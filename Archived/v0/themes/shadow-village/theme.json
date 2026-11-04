@@ -1,0 +1,33 @@
+{
+  "id": "shadow-village",
+  "extends": "moontown",
+  "name": "Moontown · Shadow Village",
+  "version": "0.1.0",
+  "description": "The obsidian side of the storybook: night-dark pages, parchment ink, mauve frames and violet arcane glows. Same shapes and type as Moontown.",
+  "inspiration": [
+    "MOONTOWN: Shadow Village / The Obsidian Shaman key art (Zeren Dovey)"
+  ],
+  "stylesheet": "theme.css",
+  "palette": {
+    "main": [
+      { "name": "Obsidian", "hex": "#1C1920", "role": "Ground" },
+      { "name": "Mauve", "hex": "#B087A6", "role": "Headings, frames, primary actions" },
+      { "name": "Arcane Violet", "hex": "#9F86FF", "role": "Interactive: focus, selection, links" },
+      { "name": "Old Parchment", "hex": "#E4D9C6", "role": "Reading text" }
+    ],
+    "secondary": [
+      { "name": "Ash", "hex": "#A39A8E", "role": "Tier 1 · Common" },
+      { "name": "Lichen", "hex": "#8FB07A", "role": "Tier 2 · Uncommon · success" },
+      { "name": "Slate Blue", "hex": "#7FA3D1", "role": "Tier 3 · Rare · info" },
+      { "name": "Nightshade", "hex": "#B98BD8", "role": "Tier 4 · Epic" },
+      { "name": "Ember", "hex": "#D0675A", "role": "Danger" },
+      { "name": "Moon Gold", "hex": "#D9B45A", "role": "Tier 5 · Legendary · coin" }
+    ]
+  },
+  "lexicon": {
+    "app.tagline": "Chronicles of the Shadow",
+    "threat": "Dread",
+    "status.ok": "Watchful",
+    "status.boot": "Lighting the lantern…"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "TEMPEST Player Screen",
+  "short_name": "TEMPEST",
+  "description": "What the GM pushes to the players.",
+  "start_url": "/#/player",
+  "scope": "/",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#0d0f14",
+  "theme_color": "#0d0f14",
+  "icons": [{ "src": "/assets/tempest-256.png", "sizes": "256x256", "type": "image/png", "purpose": "any" }]
+}

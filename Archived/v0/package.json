@@ -1,0 +1,23 @@
+﻿{
+  "name": "tempest",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TEMPEST — local world manager for TTRPG universes, with hot-swappable themes.",
+  "scripts": {
+    "start": "node server/index.js",
+    "launch": "node launcher/tempest.js",
+    "stop": "node launcher/tempest.js --stop",
+    "quit": "node launcher/tempest.js --quit",
+    "restart": "node launcher/tempest.js --restart",
+    "setup": "node launcher/install.js",
+    "setup:autostart": "node launcher/install.js --autostart",
+    "uninstall-shortcuts": "node launcher/install.js --uninstall",
+    "icon": "node scripts/make-icon.js",
+    "seed": "node world/seed/cyberpunk-red.js",
+    "import:screamsheet": "python scripts/import_screamsheet.py",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

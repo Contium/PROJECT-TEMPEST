@@ -1,0 +1,21 @@
+{
+  "name": "tempest",
+  "version": "1.0.0-alpha",
+  "private": true,
+  "description": "TEMPEST — a local game-master tool for TTRPGs: characters, world, combat and items, pushed to a player screen, with hot-swappable themes.",
+  "scripts": {
+    "start": "node server/index.js",
+    "launch": "node launcher/tempest.js",
+    "stop": "node launcher/tempest.js --stop",
+    "quit": "node launcher/tempest.js --quit",
+    "restart": "node launcher/tempest.js --restart",
+    "setup": "node launcher/install.js",
+    "setup:autostart": "node launcher/install.js --autostart",
+    "uninstall-shortcuts": "node launcher/install.js --uninstall",
+    "icon": "node scripts/make-icon.js",
+    "test": "node --test \"test/**/*.test.*\""
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

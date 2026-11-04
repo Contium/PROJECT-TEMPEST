@@ -1,0 +1,87 @@
+{
+  "id": "moontown",
+  "name": "Moontown",
+  "version": "0.1.0",
+  "description": "Storybook fantasy: parchment, rust-red Roman capitals, dusty blue and sage, double hairline frames with diamond ornaments, and tactile print grain.",
+  "inspiration": [
+    "MOONTOWN Fantasy Game UI & Visual Development (Zeren Dovey): European storybook illustration, geometric compositions, tactile print textures"
+  ],
+  "stylesheet": "theme.css",
+  "fonts": {
+    "stylesheets": [
+      "https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+    ]
+  },
+  "palette": {
+    "main": [
+      { "name": "Parchment", "hex": "#EFE3C8", "role": "Ground" },
+      { "name": "Rust", "hex": "#A8432E", "role": "Headings, frames, primary actions" },
+      { "name": "Dusty Blue", "hex": "#3F6596", "role": "Interactive: focus, selection, links" },
+      { "name": "Oak Ink", "hex": "#3D2C20", "role": "Reading text" }
+    ],
+    "secondary": [
+      { "name": "Fieldstone", "hex": "#85776A", "role": "Tier 1 · Common" },
+      { "name": "Sage", "hex": "#5E7A45", "role": "Tier 2 · Uncommon · success" },
+      { "name": "Cornflower", "hex": "#3F6596", "role": "Tier 3 · Rare · info" },
+      { "name": "Heather", "hex": "#7A4C7E", "role": "Tier 4 · Epic" },
+      { "name": "Terracotta", "hex": "#C96A4E", "role": "Ornament, warm accent" },
+      { "name": "Ochre", "hex": "#A67814", "role": "Tier 5 · Legendary · coin" }
+    ]
+  },
+  "lexicon": {
+    "app.tagline": "Chronicles of the Realm",
+    "universe": "Realm",
+    "universe.plural": "Realms",
+    "timeline": "Chronicle",
+    "era": "Age",
+    "era.plural": "Ages",
+    "system": "Plane",
+    "system.plural": "Planes",
+    "world": "World",
+    "world.plural": "Worlds",
+    "religion": "Faith",
+    "religion.plural": "Faiths",
+    "global_faction": "Order",
+    "global_faction.plural": "Orders & Alliances",
+    "nation": "Kingdom",
+    "nation.plural": "Kingdoms",
+    "regional_faction": "Court",
+    "regional_faction.plural": "Courts & Councils",
+    "region": "Province",
+    "region.plural": "Provinces",
+    "community": "Town",
+    "community.plural": "Towns & Villages",
+    "event": "Tiding",
+    "event.plural": "Tidings",
+    "place": "Landmark",
+    "place.plural": "Landmarks",
+    "group": "Guild",
+    "group.plural": "Guilds & Bands",
+    "team": "Company",
+    "team.plural": "Companies",
+    "relation": "Bond",
+    "relation.plural": "Bonds",
+    "individual": "Character",
+    "individual.plural": "Characters",
+    "combatant": "Foe",
+    "combatant.plural": "Bestiary",
+    "initiative": "Battle Order",
+    "hp": "Hit Points",
+    "armor": "Armour Class",
+    "slots": "Spell Slots",
+    "campaign": "Saga",
+    "campaign.plural": "Sagas",
+    "session": "Chapter",
+    "session.plural": "Chapters",
+    "article": "Notice",
+    "article.plural": "Notices",
+    "item": "Item",
+    "item.plural": "Inventory",
+    "currency": "Gold Crowns",
+    "currency.short": "gc",
+    "threat": "Danger",
+    "influence": "Sway",
+    "status.ok": "All is well",
+    "status.boot": "Opening the book…"
+  }
+}

@@ -1,0 +1,130 @@
+/* ==========================================================================
+   VARIANT: SHADOW VILLAGE  (extends moontown)
+   Loaded after moontown/theme.css. Same storybook shapes and type, night
+   palette: obsidian pages, parchment ink, mauve frames, violet arcane glow.
+   ========================================================================== */
+
+:root[data-theme="moontown"][data-variant="shadow-village"] {
+  color-scheme: dark;
+
+  --sv-obsidian: #1c1920;
+  --sv-page: #25212b;
+  --sv-ink: #e4d9c6;
+  --sv-mauve: #b087a6;
+  --sv-mauve-deep: #8e6f86;
+  --sv-violet: #9f86ff;
+  --mt-hairline: rgba(176, 135, 166, 0.32);
+  --mt-vellum: var(--sv-page);
+  --mt-diamond: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 .9 9.1 5 5 9.1.9 5Z' fill='%2325212b' stroke='%23b087a6' stroke-width='1.1'/%3E%3C/svg%3E");
+  /* Pale grain for a dark page */
+  --mt-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .9 0 0 0 0 .85 0 0 0 0 .8 0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  --tp-bg: var(--sv-obsidian);
+  --tp-bg-image:
+    radial-gradient(90% 70% at 85% -10%, rgba(159, 134, 255, 0.12), transparent 60%),
+    radial-gradient(80% 60% at 0% 110%, rgba(142, 111, 134, 0.16), transparent 60%);
+  --tp-surface: var(--sv-page);
+  --tp-surface-2: #2c2733;
+  --tp-surface-3: #362f3e;
+  --tp-overlay: rgba(10, 8, 14, 0.7);
+
+  --tp-border: rgba(176, 135, 166, 0.3);
+  --tp-border-strong: rgba(176, 135, 166, 0.68);
+
+  --tp-text: var(--sv-ink);
+  --tp-text-muted: #b3a693;
+  --tp-text-dim: #7d7266;
+  --tp-text-heading: #d7b6cf;
+  --tp-text-label: var(--sv-mauve);
+
+  --tp-primary: var(--sv-mauve-deep);
+  --tp-primary-contrast: #f4ecdf;
+  --tp-interactive: var(--sv-violet);
+  --tp-interactive-contrast: #17141c;
+  --tp-accent: #d9b45a;
+  --tp-success: #8fb07a;
+  --tp-warning: #d49a4a;
+  --tp-danger: #d0675a;
+  --tp-info: #7fa3d1;
+
+  --tp-tier-1: #a39a8e;
+  --tp-tier-2: #8fb07a;
+  --tp-tier-3: #7fa3d1;
+  --tp-tier-4: #b98bd8;
+  --tp-tier-5: #d9b45a;
+
+  --tp-focus-ring: 0 0 0 2px var(--sv-obsidian), 0 0 0 3.5px var(--sv-violet);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"]:not([data-effects="off"]) body::after {
+  opacity: 0.18;
+  mix-blend-mode: soft-light;
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"][data-effects="full"] body::after {
+  opacity: 0.3;
+  background-image:
+    radial-gradient(ellipse at center, transparent 50%, rgba(5, 3, 8, 0.6) 100%),
+    var(--mt-grain);
+}
+
+/* Full: arcane glow instead of print misregistration */
+:root[data-theme="moontown"][data-variant="shadow-village"][data-effects="full"] :is(.tp-display, .tp-h1, .tp-h2, .tp-panel__title) {
+  text-shadow: 0 0 14px rgba(159, 134, 255, 0.45);
+}
+
+/* Pushes unfurl from a dark, mauve-capped roller through violet motes */
+:root[data-theme="moontown"][data-variant="shadow-village"] {
+  --mt-roller: linear-gradient(180deg, #120f16 0%, #3a3242 30%, #5a4e64 50%, #2f2836 72%, #0e0c11 100%);
+  --mt-roller-cap: #8e6f86;
+  --mt-mote: 170, 145, 255;
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] .tp-btn--primary,
+:root[data-theme="moontown"][data-variant="shadow-village"] .tp-btn--primary:hover {
+  --_surface: var(--sv-mauve-deep);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] .tp-btn--primary::before {
+  box-shadow: inset 0 0 0 2px var(--_surface), inset 0 0 0 3px rgba(244, 236, 223, 0.45);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] .tp-btn--interactive:hover {
+  --_surface: var(--sv-violet);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] .tp-tab[aria-selected="true"] {
+  color: var(--tp-text-heading);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] .tp-tab[aria-selected="true"]::after {
+  background: var(--sv-mauve);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] :is(.tp-input, .tp-select, .tp-textarea) {
+  background: var(--tp-surface-2);
+  border-color: rgba(176, 135, 166, 0.4);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] :is(.tp-input, .tp-select, .tp-textarea):focus {
+  border-color: var(--sv-violet);
+  box-shadow: var(--tp-focus-ring);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] .tp-meter {
+  background: color-mix(in srgb, var(--_fill) 18%, var(--tp-surface-3));
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] .tp-table tbody tr:hover {
+  background: rgba(176, 135, 166, 0.1);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] .tp-table tbody tr[aria-selected="true"] {
+  background: rgba(159, 134, 255, 0.12);
+}
+
+:root[data-theme="moontown"][data-variant="shadow-village"] .tp-alert {
+  background: color-mix(in srgb, var(--_tone) 10%, var(--sv-page));
+}

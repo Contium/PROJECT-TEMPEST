@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TEMPEST</title>
+  <link rel="icon" href="/assets/tempest.ico">
+  <link rel="stylesheet" href="/themes/_base/tokens.css">
+  <link rel="stylesheet" href="/themes/_base/components.css">
+  <link rel="stylesheet" href="/app/app.css">
+  <script>
+    // Boot guard (plain old JavaScript, so it runs in any browser): if the app's scripts
+    // fail, say so on screen instead of leaving it blank, e.g. a player's older phone.
+    (function () {
+      var errors = [];
+      function show(title) {
+        if (!document.body || document.getElementById('boot-error')) return;
+        var box = document.createElement('div');
+        box.id = 'boot-error';
+        box.setAttribute('role', 'alert');
+        // Long-hand left/right/bottom: old browsers (e.g. Chrome 68) don't know "inset".
+        box.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:100000;padding:12px 16px;background:#2a0f12;color:#ffd9d6;font:14px/1.4 system-ui,sans-serif;border-top:2px solid #f75049;white-space:pre-wrap;word-break:break-word';
+        box.textContent = title + (errors.length ? '\n\n' + errors.slice(0, 4).join('\n') : '') + '\n\n' + navigator.userAgent;
+        document.body.appendChild(box);
+      }
+      window.addEventListener('error', function (e) {
+        errors.push((e.message || 'Error') + (e.filename ? ' (' + e.filename.replace(location.origin, '') + ':' + e.lineno + ')' : ''));
+      }, true);
+      window.addEventListener('unhandledrejection', function (e) {
+        errors.push('Unhandled: ' + (e.reason && e.reason.message ? e.reason.message : String(e.reason)));
+      });
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          if (window.tempest) return; // main.js finished starting
+          // TEMPEST needs a browser from about 2023 on (Chrome/Edge 111+, Safari 16.4+, Firefox 113+).
+          var chrome = /Chrome\/(\d+)/.exec(navigator.userAgent);
+          var old = !('noModule' in document.createElement('script')) || typeof structuredClone === 'undefined' ||
+            !(window.CSS && CSS.supports && CSS.supports('color', 'color-mix(in srgb, red, blue)'));
+          show(old
+            ? 'This browser is too old for TEMPEST' + (chrome ? ' (Chrome ' + chrome[1] + ')' : '') + '. Update it (for Chrome on Android: Play Store, search "Chrome", Update), or install another up-to-date browser such as Firefox, then open the link again.'
+            : 'TEMPEST didn\'t start in this browser.');
+        }, 8000);
+      });
+    })();
+  </script>
+  <script type="module" src="/app/main.js"></script>
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="app-top" id="top">
+      <a class="app-brand" href="#/characters" title="TEMPEST">
+        <span class="tp-display tp-glitch app-wordmark" data-text="TEMPEST">TEMPEST</span>
+        <span class="tp-deco">Game Master</span>
+      </a>
+
+      <a class="tp-frame app-project" id="project-btn" href="#/projects" title="Switch or create projects">
+        <span class="tp-label">Project</span>
+        <span class="app-project__name" id="project-name">Choose a project</span>
+        <span class="app-project__caret" aria-hidden="true">▾</span>
+      </a>
+      <a class="tp-frame tp-btn tp-btn--sm app-settings" id="settings-btn" href="#/settings" title="Project settings: money, map system" hidden>⚙ Settings</a>
+
+      <nav class="app-sections" id="sections" aria-label="Sections"></nav>
+
+      <div class="app-top__controls">
+        <label class="tp-field">
+          <span class="tp-label">Theme</span>
+          <select class="tp-select" id="theme-select" aria-label="Theme"></select>
+        </label>
+        <label class="tp-field">
+          <span class="tp-label">Effects</span>
+          <select class="tp-select" id="effects-select" aria-label="Effects intensity">
+            <option value="off">Off</option>
+            <option value="subtle">Subtle</option>
+            <option value="full">Full</option>
+          </select>
+        </label>
+        <div class="app-screen">
+          <span class="tp-label">Player screen <span class="app-screen__status" id="screen-status">Standing by</span></span>
+          <span class="app-screen__buttons">
+            <button class="tp-frame tp-btn tp-btn--interactive tp-btn--sm" id="screen-open" type="button" title="Open the player screen in its own window">Open</button>
+            <button class="tp-frame tp-btn tp-btn--sm" id="screen-message" type="button" title="Push an announcement or alert to the player screen">Message</button>
+            <button class="tp-frame tp-btn tp-btn--ghost tp-btn--sm" id="screen-clear" type="button" title="Clear the player screen back to standing by" disabled>Clear</button>
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-main" id="main"></main>
+  </div>
+</body>
+</html>

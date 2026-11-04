@@ -1,0 +1,56 @@
+{
+  "id": "neo-kitsch",
+  "extends": "cyberpunk-red",
+  "name": "Cyberpunk RED · Neo-Kitsch",
+  "version": "0.1.0",
+  "description": "The corporate-luxury era: holographic magenta and gold, glossy rounded surfaces, sheen instead of scanlines. Cyan still means 'you can act on this'.",
+  "inspiration": [
+    "Cyberpunk 2077 UI Art Bible, Style 04: Neo Kitsch (V. Vilimovsky, CD PROJEKT RED)"
+  ],
+  "stylesheet": "theme.css",
+  "palette": {
+    "main": [
+      { "name": "Holo Magenta", "hex": "#FF3EA5", "role": "Structure, headings, primary actions" },
+      { "name": "Cyan", "hex": "#5EF6FF", "role": "Interactive: focus, selection, actionable" },
+      { "name": "Gold", "hex": "#F1B537", "role": "Luxury accent, heading gradient, currency" },
+      { "name": "Velvet", "hex": "#120818", "role": "Backdrop" }
+    ],
+    "secondary": [
+      { "name": "Pearl", "hex": "#E8DDEA", "role": "Tier 1 · Common" },
+      { "name": "Mint Jungle", "hex": "#1DED83", "role": "Tier 2 · Uncommon · success" },
+      { "name": "Pale Steel", "hex": "#4A8FF0", "role": "Tier 3 · Rare · info" },
+      { "name": "Violet", "hex": "#B65CFF", "role": "Tier 4 · Epic" },
+      { "name": "Orange", "hex": "#FB932E", "role": "Warning" },
+      { "name": "Gold", "hex": "#F1B537", "role": "Tier 5 · Legendary" }
+    ]
+  },
+  "lexicon": {
+    "app.tagline": "Executive Concierge Interface",
+    "global_faction": "Conglomerate",
+    "global_faction.plural": "Conglomerates",
+    "regional_faction": "Board",
+    "regional_faction.plural": "Boards",
+    "community": "Sector",
+    "community.plural": "Sectors",
+    "group": "Firm",
+    "group.plural": "Firms",
+    "team": "Retinue",
+    "team.plural": "Retinues",
+    "relation": "Arrangement",
+    "relation.plural": "Arrangements",
+    "individual": "Associate",
+    "individual.plural": "Associates",
+    "event": "Bulletin",
+    "event.plural": "Executive Bulletins",
+    "session": "Engagement",
+    "session.plural": "Engagements",
+    "article": "Press Release",
+    "article.plural": "Press Releases",
+    "item": "Asset",
+    "item.plural": "Assets",
+    "threat": "Exposure",
+    "influence": "Market Share",
+    "status.ok": "Premium",
+    "status.boot": "Welcome back…"
+  }
+}

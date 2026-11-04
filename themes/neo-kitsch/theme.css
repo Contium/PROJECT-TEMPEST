@@ -1,0 +1,233 @@
+/* ==========================================================================
+   VARIANT: NEO-KITSCH  (extends cyberpunk-red)
+   Loaded after cyberpunk-red/theme.css. Corporate-luxury: holo magenta +
+   gold, glossy rounded surfaces, sheen instead of CRT. Cyan stays the
+   interactive colour across the whole Cyberpunk family.
+   ========================================================================== */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] {
+  --nk-magenta: #ff3ea5;
+  --nk-magenta-hot: #ff6ec0;
+  --nk-gold: #f1b537;
+  --nk-velvet-0: #120818;
+  --nk-velvet-1: #1a0e22;
+  --nk-velvet-2: #24122e;
+  --nk-velvet-3: #301838;
+
+  --tp-bg: var(--nk-velvet-0);
+  --tp-bg-image:
+    radial-gradient(70% 60% at 10% -10%, rgba(255, 62, 165, 0.22), transparent 60%),
+    radial-gradient(60% 50% at 100% 0%, rgba(241, 181, 55, 0.12), transparent 60%),
+    radial-gradient(80% 60% at 90% 110%, rgba(94, 246, 255, 0.12), transparent 60%);
+  --tp-surface: var(--nk-velvet-1);
+  --tp-surface-2: var(--nk-velvet-2);
+  --tp-surface-3: var(--nk-velvet-3);
+  --tp-overlay: rgba(18, 8, 24, 0.72);
+
+  --tp-border: rgba(255, 62, 165, 0.3);
+  --tp-border-strong: rgba(255, 62, 165, 0.65);
+
+  --tp-text: #f6c7e0;
+  --tp-text-muted: #b07a98;
+  --tp-text-dim: #6e4a5e;
+  --tp-text-heading: var(--nk-magenta);
+  --tp-text-label: var(--nk-magenta-hot);
+
+  --tp-primary: var(--nk-magenta);
+  --tp-primary-contrast: #ffffff;
+  --tp-accent: var(--nk-gold);
+  --tp-danger: #ff4d6a;
+  --tp-tier-1: #e8ddea;
+
+  --tp-radius: 14px;
+  --tp-chamfer: 0px;
+  --tp-chamfer-sm: 0px;
+  --tp-tracking-label: 0.1em;
+
+  --tp-glow: 0 0 16px rgba(255, 62, 165, 0.5);
+  --tp-focus-ring: 0 0 0 2px var(--tp-interactive), 0 0 16px rgba(94, 246, 255, 0.35);
+  --tp-meter-seg: 999px; /* solid, glossy bars */
+  --tp-meter-gap: 0px;
+
+  --tp-duration: 200ms;
+  --tp-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] body {
+  background-size: auto;
+}
+
+/* --- Headings: magenta→gold foil ---------------------------------------- */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] :is(.tp-display, .tp-h1, .tp-h2, .tp-panel__title) {
+  background: linear-gradient(95deg, var(--nk-magenta) 10%, var(--nk-magenta-hot) 45%, var(--nk-gold) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 0 10px rgba(255, 62, 165, 0.35));
+}
+
+/* --- CRT off, holo sheen on ---------------------------------------------- */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] body::after {
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(10, 2, 14, 0.45) 100%);
+  mix-blend-mode: normal;
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] body::before {
+  content: none;
+}
+
+/* Panels: glossy top highlight + slow sheen sweep */
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-panel::before {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 60px),
+    linear-gradient(135deg, rgba(255, 62, 165, 0.08), transparent 45%, rgba(241, 181, 55, 0.05)),
+    var(--_surface);
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"]:not([data-effects="off"]) .tp-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  transform: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.07) 48%, rgba(94, 246, 255, 0.05) 52%, transparent 65%);
+  background-size: 250% 100%;
+  animation: nk-sheen 14s ease-in-out infinite;
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"][data-effects="full"] .tp-panel::after {
+  animation-duration: 6s;
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"][data-effects="off"] .tp-panel::after {
+  content: none;
+}
+
+@keyframes nk-sheen {
+  0%, 60% { background-position: 150% 0; }
+  100% { background-position: -50% 0; }
+}
+
+/* Full: the backdrop slowly shifts hue like a holo foil */
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"][data-effects="full"] body {
+  animation: nk-foil 20s ease-in-out infinite alternate;
+}
+
+@keyframes nk-foil {
+  to { background-position: 30% 10%, 70% 0, 80% 100%; }
+}
+
+/* --- Panel head: soft pill dot, no bar ----------------------------------- */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-panel__head {
+  background: none;
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-panel__head::before {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--nk-magenta), var(--nk-gold));
+}
+
+/* --- Buttons: pills -------------------------------------------------------- */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-btn {
+  border-radius: 999px;
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-btn::before {
+  border-radius: 999px;
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-btn--primary {
+  --_edge: transparent;
+  --_surface: linear-gradient(100deg, var(--nk-magenta), #ff5f8f 55%, var(--nk-gold));
+}
+
+/* --- Inputs: rounded, filled ------------------------------------------- */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] :is(.tp-input, .tp-select, .tp-textarea) {
+  border: 1px solid var(--tp-border);
+  border-radius: 10px;
+  background: var(--tp-surface-2);
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] :is(.tp-input, .tp-select, .tp-textarea):focus {
+  border-color: var(--tp-interactive);
+  background: var(--tp-surface-2);
+  box-shadow: var(--tp-focus-ring);
+}
+
+/* --- Tabs: pill selection instead of brackets ------------------------- */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-tabs {
+  border-bottom: 0;
+  gap: var(--tp-space-1);
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-tab {
+  border-radius: 999px;
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-tab[aria-selected="true"] {
+  background: rgba(94, 246, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(94, 246, 255, 0.6);
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-tab[aria-selected="true"]::before,
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-tab[aria-selected="true"]::after {
+  content: none;
+}
+
+/* --- Badges: pills ------------------------------------------------------- */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-badge {
+  clip-path: none;
+  border-radius: 999px;
+  padding-inline: var(--tp-space-3);
+}
+
+/* --- Meters: rounded glossy bars ---------------------------------------- */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-meter {
+  height: 0.5rem;
+  border-radius: 999px;
+  -webkit-mask: none;
+  mask: none;
+  overflow: hidden;
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-meter::before {
+  border-radius: 999px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--_fill) 70%, #fff), var(--_fill));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--_fill) 60%, transparent);
+}
+
+/* --- Tables & alerts: soften ------------------------------------------- */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(255, 62, 165, 0.12), transparent 80%);
+}
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"] .tp-alert {
+  border-left-width: 3px;
+  border-image: none;
+  border-radius: 0 12px 12px 0;
+}
+
+/* --- Theme entry: smooth fade-in instead of the boot flicker ----------- */
+
+:root[data-theme="cyberpunk-red"][data-variant="neo-kitsch"][data-theme-entering]:not([data-effects="off"]) body {
+  animation: nk-enter 600ms var(--tp-ease) both;
+}
+
+@keyframes nk-enter {
+  from { opacity: 0; filter: saturate(2) brightness(1.4); }
+  to { opacity: 1; filter: none; }
+}

@@ -1,0 +1,463 @@
+/* ==========================================================================
+   THEME: LAND OF SAND  (retro sci-fi RTS)
+   An early-2000s strategy-game command deck: gunmetal panels in bevelled
+   steel-blue frames, a starfield with a desert planet glowing in the corner,
+   engraved orange-gold titles, cyan readouts for anything you can act on,
+   segmented bars, and unit-selection brackets on the panels.
+   ========================================================================== */
+
+:root[data-theme="land-of-sand"] {
+  /* Raw palette */
+  --ls-space: #070b12;
+  --ls-gunmetal: #0e1b28;
+  --ls-gunmetal-2: #132536;
+  --ls-gunmetal-3: #1a3248;
+  --ls-steel: #6f94ad;
+  --ls-steel-hi: #b9d3e4;
+  --ls-steel-lo: #2a4459;
+  --ls-silver: #dbe6ee;
+  --ls-sand: #e8902f;
+  --ls-sand-hi: #ffd27a;
+  --ls-sand-lo: #a8481a;
+  --ls-cyan: #46c8ff;
+  --ls-blue: #4aa3ff;
+  --ls-red: #e0412f;
+  --ls-green: #5fd35a;
+  --ls-gold: #f2b443;
+  /* Brushed-steel bevel: light from above, dark below, a glint mid-way */
+  --ls-bevel: linear-gradient(180deg, var(--ls-steel-hi) 0%, var(--ls-steel) 18%, var(--ls-steel-lo) 55%, #4f7690 82%, #1b2f3f 100%);
+  /* Engraved title fill */
+  --ls-gilt: linear-gradient(180deg, var(--ls-sand-hi) 0%, #f3a447 45%, var(--ls-sand) 60%, var(--ls-sand-lo) 100%);
+  /* Header bar, like the load-game table head */
+  --ls-head: linear-gradient(180deg, #24465f 0%, #17324a 45%, #0f2335 100%);
+
+  /* Surfaces: deep space, a starfield, a blue nebula and the planet's glow */
+  --tp-bg: var(--ls-space);
+  --tp-bg-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 0 0.9px, transparent 1.5px),
+    radial-gradient(circle, rgba(190, 220, 255, 0.5) 0 0.7px, transparent 1.3px),
+    radial-gradient(circle, rgba(255, 214, 160, 0.55) 0 1.1px, transparent 2px),
+    radial-gradient(60% 65% at 104% 108%, rgba(232, 144, 47, 0.26), rgba(168, 72, 26, 0.08) 45%, transparent 72%),
+    radial-gradient(70% 55% at -5% -10%, rgba(40, 110, 170, 0.2), transparent 65%);
+  --tp-surface: var(--ls-gunmetal);
+  --tp-surface-2: var(--ls-gunmetal-2);
+  --tp-surface-3: var(--ls-gunmetal-3);
+  --tp-overlay: rgba(3, 6, 11, 0.8);
+
+  /* Lines */
+  --tp-border: rgba(111, 148, 173, 0.32);
+  --tp-border-strong: rgba(111, 148, 173, 0.75);
+  --tp-border-w: 1px;
+
+  /* Text: pale steel for reading, silver headings, cyan field labels */
+  --tp-text: #c4d6e4;
+  --tp-text-muted: #7f9bb2;
+  --tp-text-dim: #4e657a;
+  --tp-text-heading: var(--ls-silver);
+  --tp-text-label: #5ab4e6;
+
+  /* Roles */
+  --tp-primary: var(--ls-sand);
+  --tp-primary-contrast: #160c03;
+  --tp-interactive: var(--ls-cyan);
+  --tp-interactive-contrast: #04121c;
+  --tp-accent: var(--ls-gold);
+  --tp-success: var(--ls-green);
+  --tp-warning: #f0a02c;
+  --tp-danger: var(--ls-red);
+  --tp-info: var(--ls-blue);
+
+  --tp-tier-1: #a9b8c4;
+  --tp-tier-2: var(--ls-green);
+  --tp-tier-3: var(--ls-blue);
+  --tp-tier-4: #b77bff;
+  --tp-tier-5: var(--ls-gold);
+
+  /* Type: Exo 2 runs the interface, Cinzel engraves titles and commands */
+  --tp-font-body: "Exo 2", "Bahnschrift", "Segoe UI", sans-serif;
+  --tp-font-display: "Exo 2", "Bahnschrift", sans-serif;
+  --tp-font-deco: "Cinzel", "Trajan Pro", Georgia, serif;
+  --tp-font-mono: "Share Tech Mono", "Cascadia Mono", Consolas, monospace;
+
+  --tp-text-sm: 0.9rem;
+  --tp-text-md: 1rem;
+  --tp-weight-body: 400;
+  --tp-weight-label: 700;
+  --tp-weight-display: 700;
+  --tp-display-case: uppercase;
+  --tp-tracking-display: 0.06em;
+  --tp-tracking-label: 0.12em;
+
+  /* Shape: bevelled corners */
+  --tp-radius: 0px;
+  --tp-chamfer: 10px;
+  --tp-chamfer-sm: 5px;
+
+  /* Effects */
+  --tp-glow: 0 0 12px rgba(232, 144, 47, 0.45);
+  --tp-glow-interactive: 0 0 10px rgba(70, 200, 255, 0.55);
+  --tp-focus-ring: 0 0 0 1px var(--ls-cyan), 0 0 10px rgba(70, 200, 255, 0.45);
+  --tp-meter-seg: 4px; /* the brightness/gamma sliders: thin segmented blocks */
+  --tp-meter-gap: 2px;
+
+  --tp-duration: 140ms;
+  --tp-ease: cubic-bezier(0.25, 0.7, 0.25, 1);
+}
+
+:root[data-theme="land-of-sand"] body {
+  /* Co-prime star tiles so the field never reads as a grid */
+  background-size: 137px 149px, 89px 97px, 211px 193px, 100% 100%, 100% 100%;
+  background-position: 11px 23px, 41px 5px, 67px 131px, 0 0, 0 0;
+}
+
+/* --- Effects: faint CRT lines (subtle), plus twinkle + title glow (full) --- */
+
+:root[data-theme="land-of-sand"]:not([data-effects="off"]) body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.45) 100%);
+  mix-blend-mode: multiply;
+}
+
+/* Full: a second, brighter star layer that slowly twinkles */
+:root[data-theme="land-of-sand"][data-effects="full"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 1.1px, transparent 2px),
+    radial-gradient(circle, rgba(160, 215, 255, 0.85) 0 1px, transparent 1.8px);
+  background-size: 307px 263px, 233px 281px;
+  background-position: 53px 97px, 151px 19px;
+  animation: ls-twinkle 5.5s ease-in-out infinite alternate;
+}
+
+@keyframes ls-twinkle {
+  from { opacity: 0.15; }
+  to { opacity: 0.9; }
+}
+
+:root[data-theme="land-of-sand"][data-effects="full"] :is(.tp-display, .tp-h1) {
+  filter: drop-shadow(0 0 10px rgba(232, 144, 47, 0.45));
+}
+
+/* --- Headings: engraved orange-gold capitals ----------------------------- */
+
+:root[data-theme="land-of-sand"] :is(.tp-display, .tp-h1, .tp-h2) {
+  font-family: var(--tp-font-deco);
+  font-weight: 700;
+  text-transform: none; /* Cinzel is all capitals already */
+  letter-spacing: 0.05em;
+  color: var(--ls-sand);
+  background: var(--ls-gilt);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:root[data-theme="land-of-sand"] :is(.tp-display, .tp-h1) {
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.85));
+}
+
+:root[data-theme="land-of-sand"] .tp-deco {
+  color: var(--tp-text-muted);
+  letter-spacing: 0.2em;
+}
+
+/* --- Panels: gunmetal in a steel bevel, selection brackets --------------- */
+
+:root[data-theme="land-of-sand"] .tp-panel {
+  --_edge: var(--ls-bevel);
+}
+
+:root[data-theme="land-of-sand"] .tp-panel::before {
+  inset: 2px;
+  background:
+    linear-gradient(180deg, rgba(70, 200, 255, 0.07), transparent 90px),
+    var(--_surface);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 1px rgba(150, 200, 235, 0.12),
+    inset 0 0 24px rgba(40, 120, 190, 0.1);
+}
+
+/* RTS unit-selection brackets on the two square corners */
+:root[data-theme="land-of-sand"] .tp-panel::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  --_b: rgba(70, 200, 255, 0.75);
+  background:
+    linear-gradient(var(--_b), var(--_b)) left top / 12px 2px no-repeat,
+    linear-gradient(var(--_b), var(--_b)) left top / 2px 12px no-repeat,
+    linear-gradient(var(--_b), var(--_b)) right bottom / 12px 2px no-repeat,
+    linear-gradient(var(--_b), var(--_b)) right bottom / 2px 12px no-repeat;
+  opacity: 0.55;
+  transition: opacity var(--tp-duration) var(--tp-ease);
+}
+
+:root[data-theme="land-of-sand"] .tp-panel:hover::after,
+:root[data-theme="land-of-sand"] .tp-panel:focus-within::after {
+  opacity: 1;
+}
+
+:root[data-theme="land-of-sand"] .tp-panel__head {
+  margin: 2px 2px 0;
+  background: var(--ls-head);
+  border-bottom: 1px solid rgba(150, 200, 235, 0.3);
+  box-shadow: inset 0 1px 0 rgba(185, 211, 228, 0.18), 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+:root[data-theme="land-of-sand"] .tp-panel__title {
+  color: var(--ls-silver);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+:root[data-theme="land-of-sand"] .tp-panel__foot {
+  border-top-color: rgba(150, 200, 235, 0.18);
+}
+
+/* --- Buttons: engraved command plates ------------------------------------ */
+
+:root[data-theme="land-of-sand"] .tp-btn {
+  --_edge: linear-gradient(180deg, #7ea4bd, #2c475c 60%, #4b6f87);
+  --_surface: linear-gradient(180deg, #1c364c, #0f2131);
+  font-family: var(--tp-font-deco);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: none;
+  color: var(--ls-silver);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+:root[data-theme="land-of-sand"] .tp-btn:hover {
+  --_surface: linear-gradient(180deg, #264a66, #142c40);
+  color: #fff;
+  text-shadow: 0 0 8px rgba(70, 200, 255, 0.6);
+}
+
+:root[data-theme="land-of-sand"] .tp-btn--primary,
+:root[data-theme="land-of-sand"] .tp-btn--primary:hover {
+  --_edge: linear-gradient(180deg, var(--ls-sand-hi), var(--ls-sand-lo));
+  --_surface: linear-gradient(180deg, #f6ae55, var(--ls-sand) 50%, #b8561f);
+  color: var(--tp-primary-contrast);
+  text-shadow: 0 1px 0 rgba(255, 220, 160, 0.5);
+}
+
+:root[data-theme="land-of-sand"] .tp-btn--primary:hover {
+  filter: brightness(1.1);
+}
+
+:root[data-theme="land-of-sand"] .tp-btn--interactive {
+  --_edge: linear-gradient(180deg, #9fe3ff, #1d7fae);
+  color: var(--ls-cyan);
+}
+
+:root[data-theme="land-of-sand"] .tp-btn--interactive:hover {
+  --_surface: linear-gradient(180deg, #5fd3ff, #1f8fc4);
+  color: var(--tp-interactive-contrast);
+  text-shadow: none;
+}
+
+/* Back / cancel commands are red text, like the menus' BACK */
+:root[data-theme="land-of-sand"] .tp-btn--danger {
+  --_edge: linear-gradient(180deg, #f07a68, #7d1f15);
+  color: #ff6a55;
+}
+
+:root[data-theme="land-of-sand"] .tp-btn--danger:hover {
+  --_surface: linear-gradient(180deg, #e8523e, #9b2618);
+  color: #fff;
+  text-shadow: none;
+}
+
+:root[data-theme="land-of-sand"] .tp-btn--ghost,
+:root[data-theme="land-of-sand"] .tp-btn--ghost:hover {
+  --_edge: transparent;
+}
+
+:root[data-theme="land-of-sand"] .tp-btn--ghost {
+  --_surface: transparent;
+}
+
+:root[data-theme="land-of-sand"] .tp-btn--ghost:hover {
+  --_surface: rgba(70, 200, 255, 0.08);
+}
+
+:root[data-theme="land-of-sand"] .tp-btn:active {
+  transform: translateY(1px);
+  filter: brightness(0.92);
+}
+
+/* --- Inputs: recessed dropdown wells ------------------------------------- */
+
+:root[data-theme="land-of-sand"] :is(.tp-input, .tp-select, .tp-textarea) {
+  background: linear-gradient(180deg, #050a10, #0b1722);
+  border-color: rgba(111, 148, 173, 0.55);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+:root[data-theme="land-of-sand"] :is(.tp-input, .tp-select, .tp-textarea):focus {
+  border-color: var(--ls-cyan);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 8px rgba(70, 200, 255, 0.35);
+}
+
+/* --- Tabs: steel tab plates, the open one lit ----------------------------- */
+
+:root[data-theme="land-of-sand"] .tp-tabs {
+  border-bottom-color: rgba(111, 148, 173, 0.5);
+}
+
+:root[data-theme="land-of-sand"] .tp-tab {
+  font-family: var(--tp-font-deco);
+  letter-spacing: 0.12em;
+  text-transform: none;
+}
+
+:root[data-theme="land-of-sand"] .tp-tab[aria-selected="true"] {
+  color: #fff;
+  background: linear-gradient(180deg, rgba(70, 200, 255, 0.16), transparent);
+  text-shadow: var(--tp-glow-interactive);
+}
+
+:root[data-theme="land-of-sand"] .tp-tab[aria-selected="true"]::after {
+  background: var(--ls-cyan);
+  box-shadow: var(--tp-glow-interactive);
+}
+
+/* --- Badges: small bevelled tags ----------------------------------------- */
+
+:root[data-theme="land-of-sand"] .tp-badge {
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px);
+  background: color-mix(in srgb, var(--_tone) 10%, #08121b);
+}
+
+/* --- Meters: segmented blue bars in a dark well -------------------------- */
+
+:root[data-theme="land-of-sand"] .tp-meter {
+  height: 0.7rem;
+  background-color: #050a10;
+  box-shadow: inset 0 0 0 1px rgba(111, 148, 173, 0.45);
+}
+
+:root[data-theme="land-of-sand"] .tp-meter::before {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--_fill) 55%, #fff), var(--_fill) 45%, color-mix(in srgb, var(--_fill) 60%, #000));
+}
+
+/* --- Tables: load-game style --------------------------------------------- */
+
+:root[data-theme="land-of-sand"] .tp-table th {
+  background: var(--ls-head);
+  color: var(--ls-silver);
+  border-right: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="land-of-sand"] .tp-table td {
+  border-bottom-color: rgba(111, 148, 173, 0.18);
+}
+
+:root[data-theme="land-of-sand"] .tp-table tbody tr:hover {
+  background: rgba(70, 160, 220, 0.09);
+}
+
+:root[data-theme="land-of-sand"] .tp-table tbody tr[aria-selected="true"] {
+  background: linear-gradient(180deg, rgba(70, 200, 255, 0.2), rgba(70, 200, 255, 0.08));
+}
+
+/* --- Alerts: a lit stripe and a cool wash --------------------------------- */
+
+:root[data-theme="land-of-sand"] .tp-alert {
+  border-left-width: 4px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--_tone) 16%, var(--ls-gunmetal)), var(--ls-gunmetal) 85%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--_tone) 30%, transparent);
+}
+
+/* --- Player screen pushes: an uplink resolves -----------------------------
+   A cyan scan beam sweeps across the viewport; the pushed view resolves
+   behind it through vertical blinds that widen until they close the gaps,
+   over a brief holo-grid. (Effects "off" and reduced motion fall back to
+   the base fade.) */
+
+@property --ls-slat {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+
+:root[data-theme="land-of-sand"]:not([data-effects="off"]) .scr__view.is-entering > * {
+  -webkit-mask: linear-gradient(90deg, #000 var(--ls-slat), transparent var(--ls-slat)) 0 0 / 36px 100% repeat;
+  mask: linear-gradient(90deg, #000 var(--ls-slat), transparent var(--ls-slat)) 0 0 / 36px 100% repeat;
+  animation: ls-uplink 1300ms cubic-bezier(0.3, 0.6, 0.2, 1) both;
+}
+
+@keyframes ls-uplink {
+  0% { --ls-slat: 12%; opacity: 0; clip-path: inset(0 100% 0 0); filter: brightness(1.8) saturate(0.4); }
+  8% { opacity: 1; }
+  50% { --ls-slat: 34%; clip-path: inset(0 0 0 0); filter: brightness(1.35) saturate(0.7); }
+  85% { --ls-slat: 100%; filter: brightness(1.05); }
+  100% { --ls-slat: 100%; opacity: 1; clip-path: inset(0); filter: none; }
+}
+
+/* The scan beam */
+:root[data-theme="land-of-sand"]:not([data-effects="off"]) .scr__view.is-entering::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, #bff0ff 15%, #fff 50%, #bff0ff 85%, transparent);
+  box-shadow: 0 0 18px 4px rgba(70, 200, 255, 0.7), 0 0 60px 12px rgba(70, 200, 255, 0.25);
+  animation: ls-beam 1300ms cubic-bezier(0.3, 0.6, 0.2, 1) both;
+}
+
+@keyframes ls-beam {
+  0% { left: 0; opacity: 0; }
+  6% { opacity: 1; }
+  50% { left: calc(100% - 3px); opacity: 1; }
+  62%, 100% { left: calc(100% - 3px); opacity: 0; }
+}
+
+/* The holo-grid the view resolves over */
+:root[data-theme="land-of-sand"]:not([data-effects="off"]) .scr__view.is-entering::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, rgba(70, 200, 255, 0.16) 0 1px, transparent 1px 36px),
+    repeating-linear-gradient(0deg, rgba(70, 200, 255, 0.08) 0 1px, transparent 1px 4px);
+  mix-blend-mode: screen;
+  animation: ls-grid 1500ms ease-out both;
+}
+
+@keyframes ls-grid {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  60% { opacity: 0.7; }
+  100% { opacity: 0; }
+}
+
+/* --- Theme entry: the display powers on ----------------------------------- */
+
+:root[data-theme="land-of-sand"][data-theme-entering]:not([data-effects="off"]) body {
+  animation: ls-power-on 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes ls-power-on {
+  0% { opacity: 0; clip-path: inset(49.5% 0); filter: brightness(3); }
+  35% { opacity: 1; clip-path: inset(49.5% 0); filter: brightness(2.2); }
+  70% { clip-path: inset(0); filter: brightness(1.3); }
+  100% { clip-path: inset(0); filter: none; }
+}

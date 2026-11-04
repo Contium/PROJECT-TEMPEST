@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TEMPEST Style Guide</title>
+  <link rel="icon" href="/assets/tempest.ico">
+  <link rel="stylesheet" href="/themes/_base/tokens.css">
+  <link rel="stylesheet" href="/themes/_base/components.css">
+  <link rel="stylesheet" href="/styleguide/styleguide.css">
+  <script type="module" src="/styleguide/styleguide.js"></script>
+</head>
+<body>
+  <header class="sg-topbar">
+    <div class="sg-brand">
+      <span class="tp-display tp-glitch sg-wordmark" data-text="TEMPEST">TEMPEST</span>
+      <span class="tp-deco" data-lex="app.tagline">Campaign World Manager</span>
+    </div>
+    <div class="sg-topbar__controls">
+      <label class="tp-field sg-theme-picker">
+        <span class="tp-label">Theme</span>
+        <select class="tp-select" id="theme-select" aria-label="Active theme"></select>
+      </label>
+      <label class="tp-field">
+        <span class="tp-label">Effects</span>
+        <select class="tp-select" id="effects-select" aria-label="Effects intensity">
+          <option value="off">Off</option>
+          <option value="subtle">Subtle</option>
+          <option value="full">Full</option>
+        </select>
+      </label>
+      <span class="tp-badge tp-badge--success" id="status-badge"><span data-lex="status.ok">Ready</span></span>
+    </div>
+  </header>
+
+  <main class="sg-main">
+
+    <!-- ===== Composite: what a world screen looks like in this theme ===== -->
+    <section class="sg-section">
+      <div class="sg-section__head">
+        <h2 class="tp-h2">Composite</h2>
+        <div class="sg-row">
+          <span class="tp-deco" id="dossier-source">SYS.VIEW // REGION_DOSSIER // STATIC</span>
+          <div class="tp-tabs" role="tablist" id="dossier-view" hidden>
+            <button class="tp-tab" role="tab" aria-selected="true" data-view="gm">GM View</button>
+            <button class="tp-tab" role="tab" aria-selected="false" data-view="player">Player View</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-dossier">
+        <article class="tp-frame tp-panel sg-dossier__main">
+          <header class="tp-panel__head">
+            <h3 class="tp-panel__title"><span data-lex="community">Region</span>: <span id="dossier-name">Watson / Kabuki</span></h3>
+            <span class="tp-deco" id="dossier-id">ID 0x3F2A</span>
+          </header>
+          <div class="tp-panel__body">
+            <p class="sg-lede" id="dossier-summary">Night market district under the old monorail. Stalls run hot goods, braindance rigs and black-clinic chrome. Power has been shifting since the last raid.</p>
+            <div class="sg-stats">
+              <div class="tp-stat"><span class="tp-label">Population</span><span class="tp-stat__value" id="stat-population">48.2K</span></div>
+              <div class="tp-stat"><span class="tp-label" data-lex="threat">Threat</span><span class="tp-stat__value" id="stat-threat">4 / 5</span></div>
+              <div class="tp-stat"><span class="tp-label">Avg. Bribe</span><span class="tp-stat__value"><span id="stat-bribe">350</span> <small class="tp-muted" data-lex="currency.short">gp</small></span></div>
+              <div class="tp-stat"><span class="tp-label">Last <span data-lex="session">Session</span></span><span class="tp-stat__value" id="stat-session">#12</span></div>
+            </div>
+
+            <hr class="tp-divider">
+            <span class="tp-label" data-lex="influence">Influence</span>
+            <div class="sg-influence" id="dossier-influence">
+              <span>Tyger Claws</span><div class="tp-meter" style="--value:.62"></div><span class="tp-mono">62%</span>
+              <span>Maelstrom</span><div class="tp-meter tp-meter--warning" style="--value:.21"></div><span class="tp-mono">21%</span>
+              <span>NCPD</span><div class="tp-meter tp-meter--interactive" style="--value:.11"></div><span class="tp-mono">11%</span>
+              <span>Unaligned</span><div class="tp-meter tp-meter--success" style="--value:.06"></div><span class="tp-mono">06%</span>
+            </div>
+          </div>
+          <footer class="tp-panel__foot sg-actions">
+            <button class="tp-frame tp-btn tp-btn--primary">Advance Time</button>
+            <button class="tp-frame tp-btn tp-btn--interactive">Open Map</button>
+            <button class="tp-frame tp-btn tp-btn--ghost">Edit</button>
+          </footer>
+        </article>
+
+        <article class="tp-frame tp-panel">
+          <header class="tp-panel__head">
+            <h3 class="tp-panel__title" data-lex="individual.plural">NPCs</h3>
+            <span class="tp-deco" id="dossier-npc-count">5 TRACKED</span>
+          </header>
+          <div class="tp-panel__body sg-flush">
+            <table class="tp-table">
+              <thead><tr><th>Name</th><th>Role</th><th>Tier</th></tr></thead>
+              <tbody id="dossier-npcs">
+                <tr><td>Wakako Okada</td><td class="tp-muted">Fixer</td><td><span class="tp-badge" data-tier="5">Legendary</span></td></tr>
+                <tr aria-selected="true"><td>Jun "Patch" Mori</td><td class="tp-muted">Ripperdoc</td><td><span class="tp-badge" data-tier="3">Rare</span></td></tr>
+                <tr><td>Silvia Ro</td><td class="tp-muted">Netrunner</td><td><span class="tp-badge" data-tier="4">Epic</span></td></tr>
+                <tr><td>Big Dee</td><td class="tp-muted">Bouncer</td><td><span class="tp-badge" data-tier="2">Uncommon</span></td></tr>
+                <tr><td>Stall Vendor</td><td class="tp-muted">Merchant</td><td><span class="tp-badge" data-tier="1">Common</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="tp-frame tp-panel">
+          <header class="tp-panel__head">
+            <h3 class="tp-panel__title" data-lex="event.plural">Event Log</h3>
+            <span class="tp-deco">LIVE</span>
+          </header>
+          <div class="tp-panel__body">
+            <ul class="tp-log" id="dossier-log">
+              <li><time>22:14</time><span>Maelstrom crew spotted near the monorail pylons. <span class="tp-badge tp-badge--warning">Escalating</span></span></li>
+              <li><time>21:50</time><span>Okada posts a new job: retrieve a stolen shard from a clinic.</span></li>
+              <li><time>20:03</time><span>NCPD patrol frequency reduced — budget cuts.</span></li>
+              <li><time>18:37</time><span>Crew paid 1,200 <span data-lex="currency">Gold</span> for safe passage.</span></li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== Palette ===== -->
+    <section class="sg-section">
+      <div class="sg-section__head">
+        <h2 class="tp-h2">Palette</h2>
+        <span class="tp-deco" id="theme-meta"></span>
+      </div>
+      <p class="tp-muted sg-desc" id="theme-description"></p>
+      <h3 class="tp-label">Main</h3>
+      <div class="sg-swatches" id="palette-main"></div>
+      <h3 class="tp-label">Secondary</h3>
+      <div class="sg-swatches sg-swatches--sm" id="palette-secondary"></div>
+    </section>
+
+    <!-- ===== Type ===== -->
+    <section class="sg-section">
+      <div class="sg-section__head">
+        <h2 class="tp-h2">Typography</h2>
+        <span class="tp-deco">FONT.STACK</span>
+      </div>
+      <div class="tp-frame tp-panel">
+        <div class="tp-panel__body sg-type">
+          <div><span class="tp-label">Display</span><p class="tp-display">Afterlife</p></div>
+          <div><span class="tp-label">H1</span><p class="tp-h1">The Street Finds Its Own Uses</p></div>
+          <div><span class="tp-label">H2</span><p class="tp-h2">Corporate Plaza</p></div>
+          <div><span class="tp-label">H3</span><p class="tp-h3">Job Briefing</p></div>
+          <div><span class="tp-label">Body</span><p>Rain on neon. The crew has 36 hours to get the shard out of Kabuki before the Claws notice it's gone. Every hour of delay raises the threat level.</p></div>
+          <div><span class="tp-label">Label</span><p class="tp-label">Section Label · Metadata</p></div>
+          <div><span class="tp-label">Deco</span><p class="tp-deco">PUBLIC STATIC VOID MAIN(STRING[1989] ARGS)</p></div>
+          <div><span class="tp-label">Mono</span><p class="tp-mono">0x3F2A · 22:14:07 · 1,200 eb</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Controls ===== -->
+    <section class="sg-section">
+      <div class="sg-section__head">
+        <h2 class="tp-h2">Controls</h2>
+        <span class="tp-deco">INPUT.MATRIX</span>
+      </div>
+
+      <div class="sg-grid">
+        <article class="tp-frame tp-panel">
+          <header class="tp-panel__head"><h3 class="tp-panel__title">Buttons</h3></header>
+          <div class="tp-panel__body">
+            <div class="sg-row">
+              <button class="tp-frame tp-btn tp-btn--primary">Primary</button>
+              <button class="tp-frame tp-btn tp-btn--interactive">Interactive</button>
+              <button class="tp-frame tp-btn">Default</button>
+            </div>
+            <div class="sg-row">
+              <button class="tp-frame tp-btn tp-btn--danger">Delete</button>
+              <button class="tp-frame tp-btn tp-btn--ghost">Ghost</button>
+              <button class="tp-frame tp-btn" disabled>Disabled</button>
+              <button class="tp-frame tp-btn tp-btn--interactive tp-btn--sm">Small</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="tp-frame tp-panel">
+          <header class="tp-panel__head"><h3 class="tp-panel__title">Fields</h3></header>
+          <div class="tp-panel__body">
+            <label class="tp-field"><span class="tp-label">Name</span><input class="tp-input" placeholder="Enter a handle…"></label>
+            <label class="tp-field"><span class="tp-label" data-lex="group">Faction</span>
+              <select class="tp-select"><option>Tyger Claws</option><option>Maelstrom</option><option>Arasaka</option></select>
+            </label>
+            <label class="tp-check"><input type="checkbox" checked> <span>Visible to players</span></label>
+          </div>
+        </article>
+
+        <article class="tp-frame tp-panel">
+          <header class="tp-panel__head"><h3 class="tp-panel__title">Tabs</h3></header>
+          <div class="tp-panel__body">
+            <div class="tp-tabs" role="tablist" id="demo-tabs">
+              <button class="tp-tab" role="tab" aria-selected="true">Overview</button>
+              <button class="tp-tab" role="tab" aria-selected="false" data-lex="individual.plural">NPCs</button>
+              <button class="tp-tab" role="tab" aria-selected="false">Locations</button>
+            </div>
+            <p class="tp-muted">Selected state uses the interactive colour.</p>
+          </div>
+        </article>
+
+        <article class="tp-frame tp-panel">
+          <header class="tp-panel__head"><h3 class="tp-panel__title">Badges &amp; Tiers</h3></header>
+          <div class="tp-panel__body">
+            <div class="sg-row">
+              <span class="tp-badge" data-tier="1">Common</span>
+              <span class="tp-badge" data-tier="2">Uncommon</span>
+              <span class="tp-badge" data-tier="3">Rare</span>
+              <span class="tp-badge" data-tier="4">Epic</span>
+              <span class="tp-badge" data-tier="5">Legendary</span>
+            </div>
+            <div class="sg-row">
+              <span class="tp-badge tp-badge--primary">Primary</span>
+              <span class="tp-badge tp-badge--interactive">Linked</span>
+              <span class="tp-badge tp-badge--success">Allied</span>
+              <span class="tp-badge tp-badge--warning">Tense</span>
+              <span class="tp-badge tp-badge--danger">Hostile</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="tp-frame tp-panel">
+          <header class="tp-panel__head"><h3 class="tp-panel__title">Meters</h3></header>
+          <div class="tp-panel__body">
+            <div class="tp-meter" style="--value:.8"></div>
+            <div class="tp-meter tp-meter--interactive" style="--value:.55"></div>
+            <div class="tp-meter tp-meter--success" style="--value:.35"></div>
+            <div class="tp-meter tp-meter--warning" style="--value:.2"></div>
+          </div>
+        </article>
+
+        <article class="tp-frame tp-panel">
+          <header class="tp-panel__head"><h3 class="tp-panel__title">Alerts</h3></header>
+          <div class="tp-panel__body">
+            <div class="tp-alert tp-alert--danger"><div><p class="tp-alert__title">Hostile Takeover</p><p>Maelstrom is contesting Kabuki.</p></div></div>
+            <div class="tp-alert tp-alert--warning"><div><p class="tp-alert__title">Clock Ticking</p><p>Job deadline in 6 in-game hours.</p></div></div>
+            <div class="tp-alert tp-alert--success"><div><p class="tp-alert__title">Saved</p><p>World state written to disk.</p></div></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="sg-row sg-row--end">
+        <button class="tp-frame tp-btn tp-btn--interactive" id="open-dialog">Open Dialog</button>
+      </div>
+    </section>
+
+    <!-- ===== System ===== -->
+    <section class="sg-section">
+      <div class="sg-section__head">
+        <h2 class="tp-h2">System</h2>
+        <span class="tp-deco">HOST.CONFIG</span>
+      </div>
+      <article class="tp-frame tp-panel" id="system-panel">
+        <header class="tp-panel__head"><h3 class="tp-panel__title">Start with Windows</h3><span class="tp-deco" id="autostart-state">—</span></header>
+        <div class="tp-panel__body">
+          <label class="tp-check"><input type="checkbox" id="autostart-enabled"> <span>Launch TEMPEST when I sign in</span></label>
+          <label class="tp-field sg-narrow">
+            <span class="tp-label">On sign-in</span>
+            <select class="tp-select" id="autostart-mode">
+              <option value="background">Start server only (open from Start Menu)</option>
+              <option value="window">Start server and open the window</option>
+            </select>
+          </label>
+          <p class="tp-muted sg-desc" id="autostart-note">Creates a shortcut in your Windows Startup folder. No admin rights needed.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===== Lexicon ===== -->
+    <section class="sg-section">
+      <div class="sg-section__head">
+        <h2 class="tp-h2">Lexicon</h2>
+        <span class="tp-deco">TERMS.SWAP</span>
+      </div>
+      <p class="tp-muted sg-desc">Each theme renames the app's core terms so the tool speaks the game's language. Any element with <code class="tp-mono">data-lex="key"</code> updates on swap.</p>
+      <div class="tp-frame tp-panel">
+        <div class="tp-panel__body sg-flush">
+          <table class="tp-table"><thead><tr><th>Key</th><th>Term</th></tr></thead><tbody id="lexicon-rows"></tbody></table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="tp-dialog" id="demo-dialog">
+    <form method="dialog" class="tp-frame tp-panel">
+      <header class="tp-panel__head"><h3 class="tp-panel__title">Confirm Action</h3><span class="tp-deco">AUTH.REQ</span></header>
+      <div class="tp-panel__body">
+        <p>Advance the world clock by one day? Faction moves and scheduled events will resolve.</p>
+      </div>
+      <footer class="tp-panel__foot sg-actions">
+        <button class="tp-frame tp-btn tp-btn--ghost" value="cancel">Cancel</button>
+        <button class="tp-frame tp-btn tp-btn--primary" value="ok">Advance</button>
+      </footer>
+    </form>
+  </dialog>
+</body>
+</html>

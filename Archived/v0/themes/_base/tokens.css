@@ -1,0 +1,103 @@
+/* ==========================================================================
+   TEMPEST THEME CONTRACT
+   Every theme overrides these tokens under :root[data-theme="<id>"].
+   Components only ever read these names, so a theme never has to touch
+   component CSS to re-skin the app. Values here are neutral fallbacks used
+   before any theme loads.
+
+   Runtime attributes the engine sets on :root that themes may scope to:
+     data-theme="<id>"          active theme (a variant's base family id)
+     data-variant="<id>"        active variant, when the theme extends another
+     data-effects="off|subtle|full"   decorative-effects intensity (user setting)
+     data-theme-entering        present for ~600ms after a swap (entry animation)
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* --- Surfaces ---------------------------------------------------------- */
+  --tp-bg: #111316;              /* app backdrop */
+  --tp-bg-image: none;           /* optional backdrop art / gradients */
+  --tp-surface: #181b20;         /* panels — must be opaque */
+  --tp-surface-2: #1f232a;       /* raised rows, inputs, panel headers */
+  --tp-surface-3: #282d35;       /* hover / selected rows */
+  --tp-overlay: rgba(0, 0, 0, 0.6);
+
+  /* --- Lines ------------------------------------------------------------- */
+  --tp-border: #2f343c;
+  --tp-border-strong: #4a515c;
+  --tp-border-w: 1px;
+
+  /* --- Text -------------------------------------------------------------- */
+  --tp-text: #e6e8eb;            /* body copy */
+  --tp-text-muted: #a2a8b1;      /* secondary copy */
+  --tp-text-dim: #6b727c;        /* metadata, disabled */
+  --tp-text-heading: var(--tp-text);
+  --tp-text-label: var(--tp-text-muted);
+
+  /* --- Roles ------------------------------------------------------------- */
+  --tp-primary: #4f8cff;         /* brand / structural accent */
+  --tp-primary-contrast: #ffffff;
+  --tp-interactive: #4f8cff;     /* focus, selection, links, "you can act here" */
+  --tp-interactive-contrast: #ffffff;
+  --tp-accent: #f5b041;          /* highlight, callouts */
+
+  --tp-success: #3fbf7f;
+  --tp-warning: #f0a030;
+  --tp-danger: #e5484d;
+  --tp-info: #4f8cff;
+
+  /* Rarity / tier ladder (1 = common … 5 = legendary). Used for threat
+     levels, item quality, NPC importance, etc. */
+  --tp-tier-1: #a2a8b1;
+  --tp-tier-2: #3fbf7f;
+  --tp-tier-3: #4f8cff;
+  --tp-tier-4: #a259ff;
+  --tp-tier-5: #f5b041;
+
+  /* --- Type -------------------------------------------------------------- */
+  --tp-font-body: system-ui, "Segoe UI", sans-serif;
+  --tp-font-display: var(--tp-font-body);
+  --tp-font-deco: var(--tp-font-display);   /* ornamental / "fluff" text */
+  --tp-font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --tp-text-xs: 0.75rem;
+  --tp-text-sm: 0.875rem;
+  --tp-text-md: 1rem;
+  --tp-text-lg: 1.25rem;
+  --tp-text-xl: 1.625rem;
+  --tp-text-2xl: 2.25rem;
+  --tp-text-3xl: 3.25rem;
+
+  --tp-weight-body: 400;
+  --tp-weight-label: 600;
+  --tp-weight-display: 700;
+  --tp-display-case: none;       /* text-transform for headings / buttons */
+  --tp-tracking-display: 0;
+  --tp-tracking-label: 0.04em;
+
+  /* --- Shape ------------------------------------------------------------- */
+  --tp-radius: 6px;
+  --tp-chamfer: 0px;             /* cut-corner size; 0 = square corners */
+  --tp-chamfer-sm: 0px;
+
+  /* --- Space ------------------------------------------------------------- */
+  --tp-space-1: 0.25rem;
+  --tp-space-2: 0.5rem;
+  --tp-space-3: 0.75rem;
+  --tp-space-4: 1rem;
+  --tp-space-5: 1.5rem;
+  --tp-space-6: 2rem;
+  --tp-space-7: 3rem;
+
+  /* --- Effects ----------------------------------------------------------- */
+  --tp-glow: none;               /* glow applied to emphasised elements */
+  --tp-glow-interactive: none;
+  --tp-focus-ring: 0 0 0 2px var(--tp-interactive);
+  --tp-meter-seg: 6px;           /* meter segment width */
+  --tp-meter-gap: 0px;           /* gap between meter segments; 0 = solid bar */
+
+  /* --- Motion ------------------------------------------------------------ */
+  --tp-duration: 160ms;
+  --tp-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

@@ -1,0 +1,89 @@
+{
+  "id": "cyberpunk-red",
+  "name": "Cyberpunk RED",
+  "version": "0.1.0",
+  "default": true,
+  "description": "Neo-Militarist HUD language: red on darkest blue, cyan for anything you can act on, rarity-coded secondaries. Substance over style.",
+  "inspiration": [
+    "Cyberpunk 2077 UI Art Bible, Style 03: Neo Militarism (V. Vilimovsky, CD PROJEKT RED)",
+    "Cyberpunk 2077 UI manual: main + secondary palettes, Rajdhani / Orbitron type system"
+  ],
+  "stylesheet": "theme.css",
+  "fonts": {
+    "stylesheets": [
+      "https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap"
+    ]
+  },
+  "palette": {
+    "main": [
+      { "name": "Red", "hex": "#F75049", "role": "Structure, headings, primary actions, the HUD itself" },
+      { "name": "Cyan", "hex": "#5EF6FF", "role": "Interactive: focus, selection, hackable / actionable" },
+      { "name": "White", "hex": "#FFFFFF", "role": "Peak emphasis, sparingly" },
+      { "name": "Darkest Blue", "hex": "#0E0E17", "role": "Backdrop" }
+    ],
+    "secondary": [
+      { "name": "Grey", "hex": "#D6D0D0", "role": "Tier 1 · Common" },
+      { "name": "Mint Jungle", "hex": "#1DED83", "role": "Tier 2 · Uncommon · success / positive" },
+      { "name": "Pale Steel", "hex": "#2570D4", "role": "Tier 3 · Rare · info" },
+      { "name": "Violet", "hex": "#9D2BF5", "role": "Tier 4 · Epic" },
+      { "name": "Orange", "hex": "#FB932E", "role": "Warning" },
+      { "name": "Gold", "hex": "#F1B537", "role": "Tier 5 · Legendary · currency, main-quest" }
+    ]
+  },
+  "lexicon": {
+    "app.tagline": "Night City Operations Terminal",
+    "universe": "Universe",
+    "universe.plural": "Universes",
+    "timeline": "Time-Line",
+    "era": "Era",
+    "era.plural": "Eras",
+    "system": "Star System",
+    "system.plural": "Star Systems",
+    "world": "World",
+    "world.plural": "Worlds",
+    "religion": "Faith",
+    "religion.plural": "Faiths",
+    "global_faction": "Megacorp",
+    "global_faction.plural": "Megacorps & Blocs",
+    "nation": "Nation",
+    "nation.plural": "Nations",
+    "regional_faction": "Authority",
+    "regional_faction.plural": "Authorities",
+    "region": "Region",
+    "region.plural": "Regions",
+    "community": "District",
+    "community.plural": "Districts",
+    "event": "Incident",
+    "event.plural": "Incident Log",
+    "place": "Location",
+    "place.plural": "Locations",
+    "group": "Outfit",
+    "group.plural": "Gangs & Outfits",
+    "team": "Crew",
+    "team.plural": "Crews",
+    "relation": "Connection",
+    "relation.plural": "Connections",
+    "individual": "Contact",
+    "individual.plural": "Contacts",
+    "combatant": "Mook",
+    "combatant.plural": "Mooks",
+    "initiative": "Combat Ops",
+    "hp": "HP",
+    "armor": "Armor (SP)",
+    "slots": "Charges",
+    "campaign": "Campaign",
+    "campaign.plural": "Campaigns",
+    "session": "Gig",
+    "session.plural": "Gigs",
+    "article": "Screamsheet",
+    "article.plural": "Screamsheets",
+    "item": "Gear",
+    "item.plural": "Gear",
+    "currency": "Eurobucks",
+    "currency.short": "eb",
+    "threat": "Heat",
+    "influence": "Turf Control",
+    "status.ok": "Nominal",
+    "status.boot": "Jacking in…"
+  }
+}

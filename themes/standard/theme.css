@@ -1,0 +1,13 @@
+/* ==========================================================================
+   THEME: TEMPEST STANDARD
+   Neutral baseline. Copy this folder to start a new theme: rename the id in
+   theme.json and in the selector below, then override any --tp-* token.
+   ========================================================================== */
+
+:root[data-theme="standard"] {
+  --tp-radius: 8px;
+  --tp-chamfer: 0px;
+  --tp-chamfer-sm: 0px;
+  --tp-text-heading: #f2f4f7;
+  --tp-bg-image: radial-gradient(100% 60% at 50% -10%, rgba(79, 140, 255, 0.08), transparent 70%);
+}

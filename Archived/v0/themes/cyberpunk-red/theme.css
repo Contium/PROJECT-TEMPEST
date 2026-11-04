@@ -1,0 +1,425 @@
+/* ==========================================================================
+   THEME: CYBERPUNK RED  (Neo-Militarism)
+   Palette + type from the Cyberpunk 2077 UI manual. Red is the HUD, cyan is
+   "you can act on this", secondaries are a rarity ladder.
+   ========================================================================== */
+
+:root[data-theme="cyberpunk-red"] {
+  /* Raw palette — referenced by role tokens below */
+  --cp-red: #f75049;
+  --cp-red-hot: #ff6b5f;
+  --cp-red-deep: #8a2a27;
+  --cp-cyan: #5ef6ff;
+  --cp-white: #ffffff;
+  --cp-blue-0: #0e0e17;
+  --cp-blue-1: #12121e;
+  --cp-blue-2: #181624;
+  --cp-blue-3: #22192a;
+  --cp-grey: #d6d0d0;
+  --cp-mint: #1ded83;
+  --cp-steel: #2570d4;
+  --cp-violet: #9d2bf5;
+  --cp-orange: #fb932e;
+  --cp-gold: #f1b537;
+
+  /* Surfaces */
+  --tp-bg: var(--cp-blue-0);
+  --tp-bg-image:
+    radial-gradient(120% 80% at 85% -10%, rgba(37, 112, 212, 0.16), transparent 55%),
+    radial-gradient(90% 70% at 0% 110%, rgba(247, 80, 73, 0.12), transparent 60%),
+    linear-gradient(rgba(247, 80, 73, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(247, 80, 73, 0.035) 1px, transparent 1px);
+  --tp-surface: var(--cp-blue-1);
+  --tp-surface-2: var(--cp-blue-2);
+  --tp-surface-3: var(--cp-blue-3);
+  --tp-overlay: rgba(6, 6, 12, 0.78);
+
+  /* Lines */
+  --tp-border: rgba(247, 80, 73, 0.32);
+  --tp-border-strong: rgba(247, 80, 73, 0.7);
+  --tp-border-w: 1px;
+
+  /* Text — long-form copy is a pale red tint: reads as HUD-red at a glance
+     but stays legible for long notes. Headings/labels are full red. */
+  --tp-text: #f3b3ae;
+  --tp-text-muted: #a8716d;
+  --tp-text-dim: #6e4a48;
+  --tp-text-heading: var(--cp-red);
+  --tp-text-label: var(--cp-red);
+
+  /* Roles */
+  --tp-primary: var(--cp-red);
+  --tp-primary-contrast: var(--cp-blue-0);
+  --tp-interactive: var(--cp-cyan);
+  --tp-interactive-contrast: var(--cp-blue-0);
+  --tp-accent: var(--cp-gold);
+  --tp-success: var(--cp-mint);
+  --tp-warning: var(--cp-orange);
+  --tp-danger: var(--cp-red-hot);
+  --tp-info: var(--cp-steel);
+
+  --tp-tier-1: var(--cp-grey);
+  --tp-tier-2: var(--cp-mint);
+  --tp-tier-3: #4a8ff0; /* steel lifted for legibility on dark */
+  --tp-tier-4: #b65cff; /* violet lifted for legibility on dark */
+  --tp-tier-5: var(--cp-gold);
+
+  /* Type: Rajdhani carries the UI, Orbitron is decoration only */
+  --tp-font-body: "Rajdhani", "Bahnschrift", "Segoe UI", sans-serif;
+  --tp-font-display: "Rajdhani", "Bahnschrift", sans-serif;
+  --tp-font-deco: "Orbitron", "Rajdhani", sans-serif;
+  --tp-font-mono: "Share Tech Mono", "Cascadia Mono", Consolas, monospace;
+
+  --tp-text-sm: 0.9375rem;
+  --tp-text-md: 1.0625rem;
+  --tp-weight-body: 500;
+  --tp-weight-label: 600;
+  --tp-weight-display: 700;
+  --tp-display-case: uppercase;
+  --tp-tracking-display: 0.04em;
+  --tp-tracking-label: 0.14em;
+
+  /* Shape: hard edges, cut corners */
+  --tp-radius: 0px;
+  --tp-chamfer: 14px;
+  --tp-chamfer-sm: 8px;
+
+  /* Effects */
+  --tp-glow: 0 0 12px rgba(247, 80, 73, 0.55);
+  --tp-glow-interactive: 0 0 10px rgba(94, 246, 255, 0.6);
+  --tp-focus-ring: 0 0 0 1px var(--cp-cyan), 0 0 12px rgba(94, 246, 255, 0.45);
+  --tp-meter-seg: 5px;
+  --tp-meter-gap: 2px;
+
+  --tp-duration: 120ms;
+  --tp-ease: cubic-bezier(0.3, 0, 0, 1);
+}
+
+:root[data-theme="cyberpunk-red"] body {
+  background-size: auto, auto, 48px 48px, 48px 48px;
+}
+
+/* --- Effects tiers (engine sets data-effects = off | subtle | full) ------ */
+
+:root[data-theme="cyberpunk-red"] {
+  --cp-scan-alpha: 0.1;
+  --cp-vignette: 0.4;
+  --cp-glitch-period: 12s;
+}
+
+:root[data-theme="cyberpunk-red"][data-effects="full"] {
+  --cp-scan-alpha: 0.22;
+  --cp-vignette: 0.6;
+  --cp-glitch-period: 4s;
+}
+
+/* CRT layer: scanlines + vignette over the whole app */
+:root[data-theme="cyberpunk-red"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, var(--cp-scan-alpha)) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, var(--cp-vignette)) 100%);
+  mix-blend-mode: multiply;
+}
+
+:root[data-theme="cyberpunk-red"][data-effects="off"] body::after {
+  content: none;
+}
+
+/* Full: a refresh band rolls down the screen */
+:root[data-theme="cyberpunk-red"][data-effects="full"] body::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: -20vh;
+  height: 20vh;
+  z-index: 9998;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(247, 80, 73, 0.05) 70%, rgba(255, 255, 255, 0.06) 96%, transparent);
+  animation: cp-roll 7s linear infinite;
+}
+
+@keyframes cp-roll {
+  to { transform: translateY(140vh); }
+}
+
+/* Full: chromatic aberration on HUD headings */
+:root[data-theme="cyberpunk-red"][data-effects="full"] :is(.tp-display, .tp-h1, .tp-h2, .tp-panel__title) {
+  text-shadow:
+    -1px 0 rgba(94, 246, 255, 0.55),
+    1px 0 rgba(255, 40, 40, 0.75),
+    0 0 14px rgba(247, 80, 73, 0.45);
+}
+
+/* --- Headings & labels: HUD glow ---------------------------------------- */
+
+:root[data-theme="cyberpunk-red"] :is(.tp-display, .tp-h1, .tp-h2, .tp-panel__title) {
+  text-shadow: 0 0 14px rgba(247, 80, 73, 0.45);
+}
+
+:root[data-theme="cyberpunk-red"] .tp-display {
+  font-family: var(--tp-font-deco);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+/* --- Panels: tinted gradient, header ornament, corner tick -------------- */
+
+:root[data-theme="cyberpunk-red"] .tp-panel::before {
+  background:
+    linear-gradient(180deg, rgba(247, 80, 73, 0.07), transparent 120px),
+    var(--_surface);
+}
+
+:root[data-theme="cyberpunk-red"] .tp-panel__head {
+  position: relative;
+  padding-left: calc(var(--tp-space-4) + 12px);
+  background: linear-gradient(90deg, rgba(247, 80, 73, 0.14), transparent 70%);
+}
+
+:root[data-theme="cyberpunk-red"] .tp-panel__head::before {
+  content: "";
+  position: absolute;
+  left: var(--tp-space-4);
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  translate: 0 -50%;
+  background: var(--cp-red);
+  box-shadow: var(--tp-glow);
+}
+
+/* Diagonal tick that follows the chamfered top-right corner */
+:root[data-theme="cyberpunk-red"] .tp-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(100% - var(--tp-chamfer));
+  width: calc(var(--tp-chamfer) * 1.4143);
+  height: 2px;
+  background: var(--cp-red);
+  transform-origin: left top;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+
+:root[data-theme="cyberpunk-red"] .tp-btn--primary:hover,
+:root[data-theme="cyberpunk-red"] .tp-btn--interactive:hover {
+  filter: none;
+  text-shadow: 0 0 8px currentColor;
+}
+
+:root[data-theme="cyberpunk-red"] .tp-btn:active {
+  transform: translateY(1px);
+}
+
+/* --- Inputs: underline-led fields ---------------------------------------- */
+
+:root[data-theme="cyberpunk-red"] :is(.tp-input, .tp-select, .tp-textarea) {
+  border-color: transparent;
+  border-bottom-color: var(--tp-border-strong);
+  background: linear-gradient(180deg, transparent, rgba(247, 80, 73, 0.06));
+}
+
+:root[data-theme="cyberpunk-red"] :is(.tp-input, .tp-select, .tp-textarea):focus {
+  border-color: transparent;
+  border-bottom-color: var(--cp-cyan);
+  background: linear-gradient(180deg, transparent, rgba(94, 246, 255, 0.07));
+  box-shadow: 0 6px 12px -8px rgba(94, 246, 255, 0.6);
+}
+
+/* --- Tabs: bracketed selection ------------------------------------------ */
+
+:root[data-theme="cyberpunk-red"] .tp-tab[aria-selected="true"] {
+  text-shadow: var(--tp-glow-interactive);
+  background: linear-gradient(0deg, rgba(94, 246, 255, 0.12), transparent);
+  box-shadow: inset 0 -2px 0 var(--cp-cyan);
+}
+:root[data-theme="cyberpunk-red"] .tp-tab[aria-selected="true"]::before {
+  content: "[";
+  margin-right: 0.35em;
+}
+:root[data-theme="cyberpunk-red"] .tp-tab[aria-selected="true"]::after {
+  content: "]";
+  position: static;
+  display: inline;
+  margin-left: 0.35em;
+  background: none;
+  box-shadow: none;
+}
+
+/* --- Badges: hard edges, left notch ------------------------------------- */
+
+:root[data-theme="cyberpunk-red"] .tp-badge {
+  clip-path: polygon(5px 0, 100% 0, 100% 100%, 0 100%, 0 5px);
+}
+
+/* --- Meters: chunkier segments ------------------------------------------ */
+
+:root[data-theme="cyberpunk-red"] .tp-meter {
+  height: 0.75rem;
+}
+
+/* --- Tables: red rule rows ----------------------------------------------- */
+
+:root[data-theme="cyberpunk-red"] .tp-table tbody tr:hover {
+  background: linear-gradient(90deg, rgba(247, 80, 73, 0.14), transparent 80%);
+}
+:root[data-theme="cyberpunk-red"] .tp-table tbody tr[aria-selected="true"] {
+  background: linear-gradient(90deg, rgba(94, 246, 255, 0.12), transparent 80%);
+}
+
+/* --- Alerts: striped hazard edge ----------------------------------------- */
+
+:root[data-theme="cyberpunk-red"] .tp-alert {
+  border-left-width: 6px;
+  border-image: repeating-linear-gradient(-45deg, var(--_tone) 0 4px, transparent 4px 7px) 6;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--_tone) 14%, transparent), transparent 85%);
+}
+
+/* --- Glitch headline ------------------------------------------------------ */
+
+:root[data-theme="cyberpunk-red"] .tp-glitch::before,
+:root[data-theme="cyberpunk-red"] .tp-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+:root[data-theme="cyberpunk-red"] .tp-glitch::before {
+  color: var(--cp-cyan);
+  text-shadow: none;
+  animation: cp-glitch-a var(--cp-glitch-period) steps(1) infinite;
+}
+
+/* Second (white) slice only at full intensity */
+:root[data-theme="cyberpunk-red"][data-effects="full"] .tp-glitch::after {
+  color: var(--cp-white);
+  text-shadow: none;
+  animation: cp-glitch-b var(--cp-glitch-period) steps(1) infinite;
+}
+
+:root[data-theme="cyberpunk-red"] .tp-glitch:hover::before,
+:root[data-theme="cyberpunk-red"] .tp-glitch:hover::after {
+  animation-duration: 0.9s;
+}
+
+:root[data-theme="cyberpunk-red"][data-effects="off"] .tp-glitch::before,
+:root[data-theme="cyberpunk-red"][data-effects="off"] .tp-glitch::after {
+  content: none;
+}
+
+@keyframes cp-glitch-a {
+  0%, 91%, 100% { opacity: 0; transform: none; clip-path: none; }
+  92% { opacity: 0.85; transform: translate(-3px, 1px); clip-path: inset(10% 0 62% 0); }
+  94% { opacity: 0.85; transform: translate(4px, -1px); clip-path: inset(58% 0 18% 0); }
+  96% { opacity: 0.85; transform: translate(-2px, 0); clip-path: inset(30% 0 45% 0); }
+}
+
+@keyframes cp-glitch-b {
+  0%, 92%, 100% { opacity: 0; transform: none; clip-path: none; }
+  93% { opacity: 0.6; transform: translate(3px, 0); clip-path: inset(70% 0 8% 0); }
+  95% { opacity: 0.6; transform: translate(-4px, 1px); clip-path: inset(5% 0 80% 0); }
+}
+
+/* --- Player screen pushes ------------------------------------------------
+   Anything pushed glitches in: torn slices, red/cyan split, jitter, a static
+   burst. Screamsheets print instead: line-by-line feed under a print head.
+   (Effects "off" and reduced motion fall back to the base fade.) */
+
+:root[data-theme="cyberpunk-red"]:not([data-effects="off"]) .scr__view.is-entering > * {
+  animation: cp-push-glitch 760ms steps(1, end) both;
+}
+
+@keyframes cp-push-glitch {
+  0% { opacity: 0; clip-path: inset(0 0 100% 0); }
+  6% { opacity: 1; clip-path: inset(12% 0 68% 0); transform: translateX(-14px); filter: hue-rotate(150deg) saturate(3); }
+  12% { clip-path: inset(58% 0 18% 0); transform: translateX(11px); filter: none; }
+  18% { clip-path: inset(0 0 52% 0); transform: translateX(-5px) skewX(8deg); }
+  26% { clip-path: inset(34% 0 0 0); transform: translateX(7px); filter: drop-shadow(-4px 0 0 rgba(94, 246, 255, 0.85)) drop-shadow(4px 0 0 rgba(247, 80, 73, 0.85)); }
+  36% { clip-path: inset(0); transform: translateX(-2px); filter: drop-shadow(-3px 0 0 rgba(94, 246, 255, 0.7)) drop-shadow(3px 0 0 rgba(247, 80, 73, 0.7)); }
+  48% { opacity: 0.35; transform: none; }
+  54% { opacity: 1; filter: brightness(1.9) drop-shadow(-1px 0 0 rgba(94, 246, 255, 0.6)); }
+  64%, 100% { opacity: 1; clip-path: inset(0); transform: none; filter: none; }
+}
+
+/* Static burst over the viewport while the signal locks on */
+:root[data-theme="cyberpunk-red"]:not([data-effects="off"]) .scr__view.is-entering::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(94, 246, 255, 0.12) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(90deg, rgba(247, 80, 73, 0.1) 0 1px, transparent 1px 7px);
+  mix-blend-mode: screen;
+  animation: cp-push-static 520ms steps(6) both;
+}
+
+@keyframes cp-push-static {
+  0% { opacity: 1; background-position: 0 0, 0 0; }
+  50% { opacity: 0.8; background-position: 0 -40px, 23px 0; }
+  100% { opacity: 0; background-position: 0 -90px, -17px 0; }
+}
+
+/* Screamsheets: the page feeds out of the printer, line by line */
+:root[data-theme="cyberpunk-red"]:not([data-effects="off"]) .scr__view.is-entering[data-push-kind="article"] > * {
+  position: relative;
+  animation: cp-push-print 1700ms steps(26, end) both;
+}
+
+@keyframes cp-push-print {
+  0% { clip-path: inset(0 0 100% 0); transform: translateY(-6px); }
+  100% { clip-path: inset(0); transform: none; }
+}
+
+/* The print head rides the edge of what's been printed */
+:root[data-theme="cyberpunk-red"]:not([data-effects="off"]) .scr__view.is-entering[data-push-kind="article"] > *::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  height: 5px;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(90deg, #5ef6ff, #f75049 50%, #5ef6ff);
+  box-shadow: 0 0 14px rgba(247, 80, 73, 0.9), 0 0 4px #fff;
+  transform: translateY(-100%); /* sit just above the feed edge, inside what's printed */
+  animation: cp-printhead 1700ms steps(26, end) both;
+}
+
+@keyframes cp-printhead {
+  0% { top: 0; opacity: 1; }
+  99% { top: 100%; opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* No static burst while printing: the print head is the effect */
+:root[data-theme="cyberpunk-red"]:not([data-effects="off"]) .scr__view.is-entering[data-push-kind="article"]::after {
+  content: none;
+}
+
+/* --- Theme-enter "boot" flicker (engine sets data-theme-entering) -------- */
+
+:root[data-theme="cyberpunk-red"][data-theme-entering]:not([data-effects="off"]) body {
+  animation: cp-boot 520ms steps(1) both;
+}
+
+@keyframes cp-boot {
+  0% { opacity: 0; }
+  10% { opacity: 1; filter: hue-rotate(160deg) saturate(2); }
+  18% { opacity: 0.3; filter: none; }
+  26% { opacity: 1; transform: translateX(-4px); }
+  34% { transform: none; filter: brightness(1.6); }
+  45%, 100% { opacity: 1; filter: none; transform: none; }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- Starts the tray icon (tray.ps1) as an independent, hidden process.
+     PowerShell needs a console to run, so it can't be spawned detached from Node;
+     WScript.Shell.Run gives it its own hidden console that outlives the launcher.
+     Usage: wscript.exe //B //Nologo tray.wsf "<root>" "<node.exe>" <port> -->
+<package>
+  <job id="tray">
+    <script language="JScript"><![CDATA[
+      var shell = new ActiveXObject("WScript.Shell");
+      var fso = new ActiveXObject("Scripting.FileSystemObject");
+      var here = fso.GetParentFolderName(WScript.ScriptFullName);
+      var args = WScript.Arguments;
+      var cmd = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -STA -WindowStyle Hidden -File "' + here + '\\tray.ps1"' +
+        ' -Root "' + args(0) + '" -Node "' + args(1) + '" -Port ' + args(2);
+      shell.Run(cmd, 0, false);
+    ]]></script>
+  </job>
+</package>

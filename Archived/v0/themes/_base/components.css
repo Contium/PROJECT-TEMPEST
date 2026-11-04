@@ -1,0 +1,572 @@
+/* ==========================================================================
+   TEMPEST BASE COMPONENTS
+   Theme-agnostic. Reads only --tp-* tokens (see tokens.css). Themes add
+   flavour (scanlines, glitch, ornaments) in their own theme.css.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+html {
+  scrollbar-color: var(--tp-border-strong) var(--tp-bg);
+}
+
+body {
+  background-color: var(--tp-bg);
+  background-image: var(--tp-bg-image);
+  background-attachment: fixed;
+  color: var(--tp-text);
+  font-family: var(--tp-font-body);
+  font-size: var(--tp-text-md);
+  font-weight: var(--tp-weight-body);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--tp-interactive);
+  color: var(--tp-interactive-contrast);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--tp-focus-ring);
+}
+
+a {
+  color: var(--tp-interactive);
+}
+
+/* --- Typography --------------------------------------------------------- */
+
+.tp-display,
+.tp-h1,
+.tp-h2,
+.tp-h3 {
+  margin: 0;
+  font-family: var(--tp-font-display);
+  font-weight: var(--tp-weight-display);
+  text-transform: var(--tp-display-case);
+  letter-spacing: var(--tp-tracking-display);
+  color: var(--tp-text-heading);
+  line-height: 1.05;
+}
+
+.tp-display { font-size: var(--tp-text-3xl); }
+.tp-h1 { font-size: var(--tp-text-2xl); }
+.tp-h2 { font-size: var(--tp-text-xl); }
+.tp-h3 { font-size: var(--tp-text-lg); }
+
+.tp-label {
+  font-family: var(--tp-font-display);
+  font-size: var(--tp-text-xs);
+  font-weight: var(--tp-weight-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tp-tracking-label);
+  color: var(--tp-text-label);
+}
+
+.tp-deco {
+  font-family: var(--tp-font-deco);
+  font-size: var(--tp-text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tp-text-dim);
+}
+
+.tp-mono {
+  font-family: var(--tp-font-mono);
+  font-size: 0.9em;
+}
+
+.tp-muted { color: var(--tp-text-muted); }
+.tp-dim { color: var(--tp-text-dim); }
+
+/* Hook for themes that animate headline text. Requires data-text="…" that
+   mirrors the content. Plain text in themes that don't style it. */
+.tp-glitch { position: relative; }
+
+/* --- Frame: shared border/shape primitive -------------------------------
+   Draws the border as the element's background and the surface as an
+   inset ::before, so both follow the chamfer clip-path. Set --chamfer on an
+   element to override the theme's cut size locally. */
+
+.tp-frame {
+  --_c: var(--chamfer, var(--tp-chamfer));
+  --_surface: var(--tp-surface);
+  --_edge: var(--tp-border);
+  position: relative;
+  isolation: isolate;
+  background: var(--_edge);
+  border-radius: var(--tp-radius);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--_c)) 0,
+    100% var(--_c),
+    100% 100%,
+    var(--_c) 100%,
+    0 calc(100% - var(--_c))
+  );
+}
+
+.tp-frame::before {
+  content: "";
+  position: absolute;
+  inset: var(--tp-border-w);
+  z-index: -1;
+  background: var(--_surface);
+  border-radius: max(0px, calc(var(--tp-radius) - var(--tp-border-w)));
+  clip-path: inherit;
+  transition: background var(--tp-duration) var(--tp-ease), inset var(--tp-duration) var(--tp-ease);
+}
+
+/* clip-path would cut off an outside focus ring, so frames show focus by
+   recolouring and thickening their own edge instead. */
+.tp-frame:focus-visible {
+  --_edge: var(--tp-interactive);
+  box-shadow: none;
+}
+.tp-frame:focus-visible::before { inset: calc(var(--tp-border-w) + 1px); }
+
+/* --- Panel -------------------------------------------------------------- */
+
+.tp-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tp-panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--tp-space-3);
+  padding: var(--tp-space-3) var(--tp-space-4);
+  border-bottom: var(--tp-border-w) solid var(--tp-border);
+}
+
+.tp-panel__title {
+  margin: 0;
+  font-family: var(--tp-font-display);
+  font-size: var(--tp-text-md);
+  font-weight: var(--tp-weight-display);
+  text-transform: var(--tp-display-case);
+  letter-spacing: var(--tp-tracking-display);
+  color: var(--tp-text-heading);
+}
+
+.tp-panel__body {
+  padding: var(--tp-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tp-space-3);
+}
+
+.tp-panel__foot {
+  margin-top: auto;
+  padding: var(--tp-space-2) var(--tp-space-4);
+  border-top: var(--tp-border-w) solid var(--tp-border);
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+
+.tp-btn {
+  --chamfer: var(--tp-chamfer-sm);
+  --_edge: var(--tp-border-strong);
+  --_surface: var(--tp-surface-2);
+  --_ink: var(--tp-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tp-space-2);
+  min-height: 2.25rem;
+  padding: 0 var(--tp-space-4);
+  border: 0;
+  color: var(--_ink);
+  font-family: var(--tp-font-display);
+  font-size: var(--tp-text-sm);
+  font-weight: var(--tp-weight-label);
+  text-transform: var(--tp-display-case);
+  letter-spacing: var(--tp-tracking-label);
+  cursor: pointer;
+  transition: color var(--tp-duration) var(--tp-ease), filter var(--tp-duration) var(--tp-ease);
+}
+
+.tp-btn:hover { --_surface: var(--tp-surface-3); }
+
+.tp-btn--primary {
+  --_edge: var(--tp-primary);
+  --_surface: var(--tp-primary);
+  --_ink: var(--tp-primary-contrast);
+}
+.tp-btn--primary:hover { filter: brightness(1.12); }
+
+.tp-btn--interactive {
+  --_edge: var(--tp-interactive);
+  --_ink: var(--tp-interactive);
+}
+.tp-btn--interactive:hover {
+  --_surface: var(--tp-interactive);
+  --_ink: var(--tp-interactive-contrast);
+}
+
+.tp-btn--danger {
+  --_edge: var(--tp-danger);
+  --_ink: var(--tp-danger);
+}
+.tp-btn--danger:hover {
+  --_surface: var(--tp-danger);
+  --_ink: var(--tp-bg);
+}
+
+.tp-btn--ghost {
+  --_edge: transparent;
+  --_surface: transparent;
+  --_ink: var(--tp-text-muted);
+}
+.tp-btn--ghost:hover {
+  --_surface: var(--tp-surface-2);
+  --_ink: var(--tp-text);
+}
+
+.tp-btn--sm {
+  min-height: 1.75rem;
+  padding: 0 var(--tp-space-3);
+  font-size: var(--tp-text-xs);
+}
+
+.tp-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: none;
+}
+
+/* --- Form controls ------------------------------------------------------ */
+
+.tp-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tp-space-1);
+}
+
+.tp-input,
+.tp-select,
+.tp-textarea {
+  width: 100%;
+  min-height: 2.25rem;
+  padding: var(--tp-space-2) var(--tp-space-3);
+  background: var(--tp-surface-2);
+  border: var(--tp-border-w) solid var(--tp-border);
+  border-radius: var(--tp-radius);
+  color: var(--tp-text);
+  font: inherit;
+  caret-color: var(--tp-interactive);
+  transition: border-color var(--tp-duration) var(--tp-ease);
+}
+
+.tp-textarea { min-height: 6rem; resize: vertical; }
+
+.tp-input::placeholder,
+.tp-textarea::placeholder { color: var(--tp-text-dim); }
+
+.tp-input:hover,
+.tp-select:hover,
+.tp-textarea:hover { border-color: var(--tp-border-strong); }
+
+.tp-input:focus,
+.tp-select:focus,
+.tp-textarea:focus {
+  border-color: var(--tp-interactive);
+  box-shadow: var(--tp-focus-ring);
+  outline: none;
+}
+
+.tp-select option { background: var(--tp-surface); color: var(--tp-text); }
+
+.tp-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tp-space-2);
+  cursor: pointer;
+}
+
+.tp-check input {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  border: var(--tp-border-w) solid var(--tp-border-strong);
+  border-radius: calc(var(--tp-radius) / 2);
+  background: var(--tp-surface-2);
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+.tp-check input::after {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--tp-interactive);
+  transform: scale(0);
+  transition: transform var(--tp-duration) var(--tp-ease);
+}
+
+.tp-check input:checked { border-color: var(--tp-interactive); }
+.tp-check input:checked::after { transform: scale(1); }
+
+/* --- Tabs --------------------------------------------------------------- */
+
+.tp-tabs {
+  display: flex;
+  gap: var(--tp-space-1);
+  border-bottom: var(--tp-border-w) solid var(--tp-border);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.tp-tab {
+  position: relative;
+  padding: var(--tp-space-2) var(--tp-space-3);
+  background: none;
+  border: 0;
+  color: var(--tp-text-muted);
+  font-family: var(--tp-font-display);
+  font-size: var(--tp-text-sm);
+  font-weight: var(--tp-weight-label);
+  text-transform: var(--tp-display-case);
+  letter-spacing: var(--tp-tracking-label);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tp-tab:hover { color: var(--tp-text); }
+
+.tp-tab[aria-selected="true"] { color: var(--tp-interactive); }
+
+.tp-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--tp-border-w) * -1);
+  height: 2px;
+  background: var(--tp-interactive);
+  box-shadow: var(--tp-glow-interactive);
+}
+
+/* --- Badges & tiers ----------------------------------------------------- */
+
+.tp-badge {
+  --_tone: var(--tp-text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tp-space-1);
+  padding: 0.125rem var(--tp-space-2);
+  border: var(--tp-border-w) solid color-mix(in srgb, var(--_tone) 55%, transparent);
+  border-radius: calc(var(--tp-radius) / 2);
+  background: color-mix(in srgb, var(--_tone) 12%, transparent);
+  color: var(--_tone);
+  font-family: var(--tp-font-display);
+  font-size: var(--tp-text-xs);
+  font-weight: var(--tp-weight-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tp-tracking-label);
+  white-space: nowrap;
+}
+
+.tp-badge--primary { --_tone: var(--tp-primary); }
+.tp-badge--interactive { --_tone: var(--tp-interactive); }
+.tp-badge--success { --_tone: var(--tp-success); }
+.tp-badge--warning { --_tone: var(--tp-warning); }
+.tp-badge--danger { --_tone: var(--tp-danger); }
+.tp-badge--info { --_tone: var(--tp-info); }
+
+[data-tier="1"] { --_tone: var(--tp-tier-1); }
+[data-tier="2"] { --_tone: var(--tp-tier-2); }
+[data-tier="3"] { --_tone: var(--tp-tier-3); }
+[data-tier="4"] { --_tone: var(--tp-tier-4); }
+[data-tier="5"] { --_tone: var(--tp-tier-5); }
+
+/* --- Meter -------------------------------------------------------------- */
+/* <div class="tp-meter" style="--value:.62" role="meter" aria-valuenow="62"> */
+
+.tp-meter {
+  --_fill: var(--_tone, var(--tp-primary));
+  --_seg-mask: repeating-linear-gradient(
+    90deg,
+    #000 0 var(--tp-meter-seg),
+    transparent var(--tp-meter-seg) calc(var(--tp-meter-seg) + var(--tp-meter-gap))
+  );
+  position: relative;
+  height: 0.625rem;
+  background: color-mix(in srgb, var(--_fill) 14%, transparent);
+  -webkit-mask: var(--_seg-mask);
+  mask: var(--_seg-mask);
+}
+
+.tp-meter::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(clamp(0, var(--value, 0), 1) * 100%);
+  background: var(--_fill);
+  transition: width calc(var(--tp-duration) * 3) var(--tp-ease);
+}
+
+.tp-meter--interactive { --_fill: var(--tp-interactive); }
+.tp-meter--success { --_fill: var(--tp-success); }
+.tp-meter--warning { --_fill: var(--tp-warning); }
+.tp-meter--danger { --_fill: var(--tp-danger); }
+
+/* --- Key / value stat --------------------------------------------------- */
+
+.tp-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.tp-stat__value {
+  font-family: var(--tp-font-display);
+  font-size: var(--tp-text-xl);
+  font-weight: var(--tp-weight-display);
+  color: var(--tp-text-heading);
+  line-height: 1;
+}
+
+/* --- Table -------------------------------------------------------------- */
+
+.tp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--tp-text-sm);
+}
+
+.tp-table th {
+  padding: var(--tp-space-2) var(--tp-space-3);
+  text-align: left;
+  font-family: var(--tp-font-display);
+  font-size: var(--tp-text-xs);
+  font-weight: var(--tp-weight-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tp-tracking-label);
+  color: var(--tp-text-label);
+  border-bottom: var(--tp-border-w) solid var(--tp-border-strong);
+}
+
+.tp-table td {
+  padding: var(--tp-space-2) var(--tp-space-3);
+  border-bottom: var(--tp-border-w) solid var(--tp-border);
+}
+
+.tp-table tbody tr {
+  transition: background var(--tp-duration) var(--tp-ease);
+}
+
+.tp-table tbody tr:hover { background: var(--tp-surface-2); }
+
+.tp-table tbody tr[aria-selected="true"] {
+  background: var(--tp-surface-3);
+  box-shadow: inset 2px 0 0 var(--tp-interactive);
+}
+
+/* --- Alerts ------------------------------------------------------------- */
+
+.tp-alert {
+  --_tone: var(--tp-info);
+  display: flex;
+  gap: var(--tp-space-3);
+  padding: var(--tp-space-3) var(--tp-space-4);
+  border-left: 3px solid var(--_tone);
+  background: color-mix(in srgb, var(--_tone) 10%, var(--tp-surface));
+  border-radius: 0 var(--tp-radius) var(--tp-radius) 0;
+}
+
+.tp-alert__title {
+  margin: 0 0 0.125rem;
+  font-family: var(--tp-font-display);
+  font-size: var(--tp-text-sm);
+  font-weight: var(--tp-weight-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tp-tracking-label);
+  color: var(--_tone);
+}
+
+.tp-alert p { margin: 0; font-size: var(--tp-text-sm); color: var(--tp-text-muted); }
+
+.tp-alert--success { --_tone: var(--tp-success); }
+.tp-alert--warning { --_tone: var(--tp-warning); }
+.tp-alert--danger { --_tone: var(--tp-danger); }
+
+/* --- Log / feed --------------------------------------------------------- */
+
+.tp-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.tp-log li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--tp-space-3);
+  padding: var(--tp-space-2) 0;
+  border-bottom: var(--tp-border-w) dashed var(--tp-border);
+  font-size: var(--tp-text-sm);
+}
+
+.tp-log time {
+  font-family: var(--tp-font-mono);
+  font-size: var(--tp-text-xs);
+  color: var(--tp-text-dim);
+  padding-top: 0.15em;
+}
+
+/* --- Divider ------------------------------------------------------------ */
+
+.tp-divider {
+  height: var(--tp-border-w);
+  border: 0;
+  margin: var(--tp-space-2) 0;
+  background: var(--tp-border);
+}
+
+/* --- Dialog ------------------------------------------------------------- */
+
+.tp-dialog {
+  width: min(32rem, calc(100vw - 2rem));
+  padding: 0;
+  border: 0;
+  color: var(--tp-text);
+  background: transparent;
+  overflow: visible;
+}
+
+.tp-dialog::backdrop {
+  background: var(--tp-overlay);
+  backdrop-filter: blur(2px);
+}
+
+/* --- Motion preference -------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

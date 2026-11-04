@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!-- Runs the TEMPEST launcher without a console window.
+     Usage: wscript.exe //B //Nologo hidden.wsf "<node.exe>" [launcher args...] -->
+<package>
+  <job id="tempest">
+    <script language="JScript"><![CDATA[
+      var shell = new ActiveXObject("WScript.Shell");
+      var fso = new ActiveXObject("Scripting.FileSystemObject");
+      var here = fso.GetParentFolderName(WScript.ScriptFullName);
+      var args = WScript.Arguments;
+      var node = args.length > 0 ? args(0) : "node";
+      var cmd = '"' + node + '" "' + here + '\\tempest.js"';
+      for (var i = 1; i < args.length; i++) cmd += ' "' + args(i) + '"';
+      shell.Run(cmd, 0, false);
+    ]]></script>
+  </job>
+</package>

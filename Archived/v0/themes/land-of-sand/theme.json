@@ -1,0 +1,88 @@
+{
+  "id": "land-of-sand",
+  "name": "Land of Sand",
+  "version": "0.1.0",
+  "description": "Retro sci-fi RTS command deck: bevelled steel-blue frames over a starfield, orange-gold engraved titles, cyan readouts, segmented bars and a desert planet glowing in the corner.",
+  "inspiration": [
+    "Land of Sand: Personal UI Design (Andrii Shafetov), a tribute to early-2000s real-time strategy interfaces"
+  ],
+  "stylesheet": "theme.css",
+  "fonts": {
+    "stylesheets": [
+      "https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Share+Tech+Mono&display=swap"
+    ]
+  },
+  "palette": {
+    "main": [
+      { "name": "Deep Space", "hex": "#070B12", "role": "Ground" },
+      { "name": "Gunmetal", "hex": "#0E1B28", "role": "Panels" },
+      { "name": "Steel Bevel", "hex": "#6F94AD", "role": "Frames, headers" },
+      { "name": "Sand Gold", "hex": "#E8902F", "role": "Titles, primary actions" },
+      { "name": "Readout Cyan", "hex": "#46C8FF", "role": "Interactive: focus, selection, labels" }
+    ],
+    "secondary": [
+      { "name": "Silver", "hex": "#A9B8C4", "role": "Tier 1 · Common" },
+      { "name": "Oasis Green", "hex": "#5FD35A", "role": "Tier 2 · Uncommon · success" },
+      { "name": "Argon Blue", "hex": "#4AA3FF", "role": "Tier 3 · Rare · info" },
+      { "name": "Nebula", "hex": "#B77BFF", "role": "Tier 4 · Epic" },
+      { "name": "Signal Red", "hex": "#E0412F", "role": "Danger, back/cancel" },
+      { "name": "Dune Gold", "hex": "#F2B443", "role": "Tier 5 · Legendary · credits" }
+    ]
+  },
+  "lexicon": {
+    "app.tagline": "Strategic Command Interface",
+    "universe": "Universe",
+    "universe.plural": "Universes",
+    "timeline": "Chronology",
+    "era": "Epoch",
+    "era.plural": "Epochs",
+    "system": "Star System",
+    "system.plural": "Star Systems",
+    "world": "Planet",
+    "world.plural": "Planets",
+    "religion": "Creed",
+    "religion.plural": "Creeds",
+    "global_faction": "Great House",
+    "global_faction.plural": "Great Houses & Guilds",
+    "nation": "Dominion",
+    "nation.plural": "Dominions",
+    "regional_faction": "Syndicate",
+    "regional_faction.plural": "Syndicates & Councils",
+    "region": "Sector",
+    "region.plural": "Sectors",
+    "community": "Settlement",
+    "community.plural": "Settlements",
+    "event": "Report",
+    "event.plural": "Field Reports",
+    "place": "Site",
+    "place.plural": "Sites",
+    "group": "Clan",
+    "group.plural": "Clans & Orders",
+    "team": "Squad",
+    "team.plural": "Squads",
+    "relation": "Link",
+    "relation.plural": "Links",
+    "individual": "Personnel",
+    "individual.plural": "Personnel",
+    "combatant": "Hostile",
+    "combatant.plural": "Hostiles",
+    "initiative": "Engagement",
+    "hp": "Integrity",
+    "armor": "Shields",
+    "slots": "Ability Charges",
+    "campaign": "Saga",
+    "campaign.plural": "Sagas",
+    "session": "Mission",
+    "session.plural": "Missions",
+    "article": "Dispatch",
+    "article.plural": "Dispatches",
+    "item": "Equipment",
+    "item.plural": "Equipment",
+    "currency": "Credits",
+    "currency.short": "cr",
+    "threat": "Threat",
+    "influence": "Control",
+    "status.ok": "All systems green",
+    "status.boot": "Establishing uplink…"
+  }
+}

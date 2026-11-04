@@ -1,0 +1,49 @@
+{
+  "id": "standard",
+  "name": "Tempest Standard",
+  "version": "0.1.0",
+  "description": "Neutral, genre-free baseline. Use it as the template when authoring a new theme.",
+  "stylesheet": "theme.css",
+  "fonts": { "stylesheets": [] },
+  "palette": {
+    "main": [
+      { "name": "Ink", "hex": "#111316", "role": "Backdrop" },
+      { "name": "Slate", "hex": "#181B20", "role": "Panels" },
+      { "name": "Signal", "hex": "#4F8CFF", "role": "Primary + interactive" },
+      { "name": "Amber", "hex": "#F5B041", "role": "Accent" }
+    ],
+    "secondary": [
+      { "name": "Common", "hex": "#A2A8B1", "role": "Tier 1" },
+      { "name": "Uncommon", "hex": "#3FBF7F", "role": "Tier 2 · success" },
+      { "name": "Rare", "hex": "#4F8CFF", "role": "Tier 3 · info" },
+      { "name": "Epic", "hex": "#A259FF", "role": "Tier 4" },
+      { "name": "Legendary", "hex": "#F5B041", "role": "Tier 5" }
+    ]
+  },
+  "lexicon": {
+    "app.tagline": "Universe World Manager",
+    "universe": "Universe",
+    "universe.plural": "Universes",
+    "timeline": "Time-Line",
+    "individual": "Individual",
+    "individual.plural": "Individuals",
+    "combatant": "Mob",
+    "combatant.plural": "Mobs",
+    "initiative": "Initiative Tracker",
+    "hp": "Hit Points",
+    "armor": "Armor Class",
+    "slots": "Ability Slots",
+    "relation": "Relationship",
+    "relation.plural": "Relationships",
+    "event": "Event",
+    "event.plural": "Events",
+    "session": "Session",
+    "session.plural": "Sessions",
+    "currency": "Gold",
+    "currency.short": "gp",
+    "threat": "Threat",
+    "influence": "Influence",
+    "status.ok": "Ready",
+    "status.boot": "Loading…"
+  }
+}

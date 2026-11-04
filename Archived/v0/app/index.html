@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TEMPEST</title>
+  <link rel="icon" href="/assets/tempest.ico">
+  <link rel="stylesheet" href="/themes/_base/tokens.css">
+  <link rel="stylesheet" href="/themes/_base/components.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,500;0,700;1,400&family=VT323&display=swap">
+  <link rel="stylesheet" href="/app/app.css">
+  <script type="module" src="/app/main.js"></script>
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="app-top">
+      <a class="app-brand" href="#/" title="All universes">
+        <span class="tp-display tp-glitch app-wordmark" data-text="TEMPEST">TEMPEST</span>
+        <span class="tp-deco" id="top-subtitle" data-lex="app.tagline">Universe World Manager</span>
+      </a>
+
+      <button class="tp-frame tp-btn tp-btn--sm app-search" id="search-btn" type="button" hidden title="Quick search (Ctrl+K)">
+        Search <kbd>Ctrl</kbd><kbd>K</kbd>
+      </button>
+
+      <div class="app-clock" id="clock" hidden>
+        <div class="app-clock__readout">
+          <span class="tp-label" id="clock-era">World clock</span>
+          <span class="app-clock__value tp-mono" id="clock-value">—</span>
+        </div>
+        <div class="app-clock__controls">
+          <button class="tp-frame tp-btn tp-btn--sm" data-advance="1h" title="Advance one hour">+1h</button>
+          <button class="tp-frame tp-btn tp-btn--sm" data-advance="1d" title="Advance one day">+1d</button>
+          <form class="app-clock__custom" id="clock-form">
+            <input class="tp-input" id="clock-input" placeholder="e.g. 3h 30m" aria-label="Advance clock by">
+            <button class="tp-frame tp-btn tp-btn--interactive tp-btn--sm">Advance</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="app-top__controls">
+        <label class="tp-field">
+          <span class="tp-label">Theme</span>
+          <select class="tp-select" id="theme-select" aria-label="Theme"></select>
+        </label>
+        <label class="tp-field">
+          <span class="tp-label">Effects</span>
+          <select class="tp-select" id="effects-select" aria-label="Effects intensity">
+            <option value="off">Off</option>
+            <option value="subtle">Subtle</option>
+            <option value="full">Full</option>
+          </select>
+        </label>
+        <div class="app-screen" id="screen-ctl" hidden>
+          <span class="tp-label">Player screen</span>
+          <span class="app-screen__now" id="screen-now" title="What the player screen is showing">Main Viewer</span>
+          <div class="app-screen__actions">
+            <button class="tp-frame tp-btn tp-btn--interactive tp-btn--sm" id="screen-open" title="Open the player screen (station layout) in its own window">Open</button>
+            <button class="tp-frame tp-btn tp-btn--sm" id="screen-open-full" title="Open the player screen in full-screen layout">Full</button>
+            <button class="tp-frame tp-btn tp-btn--sm" id="screen-message" title="Push a message or alert">Message</button>
+            <button class="tp-frame tp-btn tp-btn--ghost tp-btn--sm" id="screen-clear" title="Return the player screen to its default view">Clear</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="app-nav" id="nav" aria-label="World" hidden></nav>
+
+    <main class="app-main" id="main"></main>
+  </div>
+
+  <div class="app-toasts" id="toasts" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+/* Style-guide layout only — all colour/type comes from theme tokens. */
+
+.sg-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tp-space-4);
+  padding: var(--tp-space-3) var(--tp-space-5);
+  background: color-mix(in srgb, var(--tp-bg) 88%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: var(--tp-border-w) solid var(--tp-border);
+}
+
+.sg-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.sg-wordmark { font-size: var(--tp-text-xl); }
+
+.sg-topbar__controls {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--tp-space-3);
+}
+
+.sg-theme-picker { min-width: 13rem; }
+
+.sg-main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--tp-space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tp-space-7);
+}
+
+.sg-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tp-space-3);
+}
+
+.sg-section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--tp-space-3);
+  padding-bottom: var(--tp-space-2);
+  border-bottom: var(--tp-border-w) solid var(--tp-border);
+}
+
+.sg-desc { margin: 0; max-width: 70ch; }
+
+.sg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: var(--tp-space-4);
+}
+
+.sg-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tp-space-2);
+}
+
+.sg-row--end { justify-content: flex-end; }
+
+.sg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--tp-space-2);
+  padding-block: var(--tp-space-3);
+}
+
+.sg-flush { padding: 0; }
+
+.sg-narrow { max-width: 24rem; }
+
+/* Dossier composite */
+.sg-dossier {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--tp-space-4);
+}
+
+.sg-dossier__main { grid-row: span 2; }
+
+.sg-lede { margin: 0; color: var(--tp-text-muted); max-width: 60ch; }
+
+.sg-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--tp-space-4);
+}
+
+.sg-influence {
+  display: grid;
+  grid-template-columns: 8rem 1fr 3rem;
+  align-items: center;
+  gap: var(--tp-space-2) var(--tp-space-3);
+  font-size: var(--tp-text-sm);
+}
+
+/* Palette */
+.sg-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: var(--tp-space-3);
+  margin-bottom: var(--tp-space-3);
+}
+
+.sg-swatches--sm { grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); }
+
+.sg-swatch {
+  display: flex;
+  flex-direction: column;
+  border: var(--tp-border-w) solid var(--tp-border);
+  border-radius: var(--tp-radius);
+  overflow: hidden;
+  background: var(--tp-surface);
+}
+
+.sg-swatch__chip {
+  height: 88px;
+  border-bottom: var(--tp-border-w) solid var(--tp-border);
+}
+
+.sg-swatches--sm .sg-swatch__chip { height: 56px; }
+
+.sg-swatch__info {
+  padding: var(--tp-space-2) var(--tp-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.sg-swatch__name {
+  font-family: var(--tp-font-display);
+  font-weight: var(--tp-weight-label);
+  text-transform: var(--tp-display-case);
+  letter-spacing: var(--tp-tracking-label);
+  font-size: var(--tp-text-sm);
+}
+
+.sg-swatch__role { font-size: var(--tp-text-xs); color: var(--tp-text-muted); }
+
+/* Type specimen */
+.sg-type {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--tp-space-4);
+}
+
+.sg-type > div {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  align-items: baseline;
+  gap: var(--tp-space-4);
+}
+
+.sg-type p { margin: 0; }
+
+@media (max-width: 900px) {
+  .sg-dossier { grid-template-columns: 1fr; }
+  .sg-dossier__main { grid-row: auto; }
+  .sg-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .sg-main { padding: var(--tp-space-4); }
+  .sg-topbar { padding: var(--tp-space-3) var(--tp-space-4); }
+  .sg-type > div { grid-template-columns: 1fr; gap: var(--tp-space-1); }
+  .sg-influence { grid-template-columns: 6rem 1fr 2.5rem; }
+}
