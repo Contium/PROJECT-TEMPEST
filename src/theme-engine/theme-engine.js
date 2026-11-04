@@ -14,6 +14,7 @@ const THEME_KEY = 'tempest.theme';
 const EFFECTS_KEY = 'tempest.effects';
 const ENTER_ATTR = 'data-theme-entering';
 const ENTER_MS = 600;
+const SWAP_ATTR = 'data-theme-swapping';
 
 /** Intensity of decorative effects (scanlines, glitch, boot flicker…). Themes read :root[data-effects]. */
 export const EFFECT_LEVELS = ['off', 'subtle', 'full'];
@@ -158,16 +159,23 @@ export class ThemeEngine extends EventTarget {
     if (this.#pending !== token) return this.#current;
 
     const previous = this.#current;
+    // Commit the swap with transitions off (components.css), then force a style
+    // flush so every element already holds the new theme's values when they come
+    // back on. Without this, each frame/button/link would start a crossfade from
+    // the old theme's colours, which never finishes while frames are throttled.
+    this.#root.setAttribute(SWAP_ATTR, '');
     this.#root.dataset.theme = chain[0].id;
     if (chain.length > 1) this.#root.dataset.variant = id;
     else delete this.#root.dataset.variant;
+    // Drop outgoing theme stylesheets only after the new ones are live.
+    const keep = new Set(sheets.map((s) => s.marker));
+    document.head.querySelectorAll('link[data-tp^="theme:"]').forEach((link) => keep.has(link.dataset.tp) || link.remove());
+    void this.#root.offsetWidth; // style + layout flush, pseudo-elements included
+    this.#root.removeAttribute(SWAP_ATTR);
     if (animate) {
       this.#root.setAttribute(ENTER_ATTR, '');
       setTimeout(() => this.#root.removeAttribute(ENTER_ATTR), ENTER_MS);
     }
-    // Drop outgoing theme stylesheets only after the new ones are live.
-    const keep = new Set(sheets.map((s) => s.marker));
-    document.head.querySelectorAll('link[data-tp^="theme:"]').forEach((link) => keep.has(link.dataset.tp) || link.remove());
 
     this.#current = manifest;
     this.applyLexicon();

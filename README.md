@@ -582,7 +582,6 @@ The PDFs are in `assets/cyberpunkRED/`, with a second copy in `Archived/v0/offic
 
 | What | Files | Author |
 |---|---|---|
-| GitHub Desktop installer | `assets/GitHubDesktopSetup-x64.exe` | © GitHub, Inc.; a free download from [desktop.github.com](https://desktop.github.com/) |
 | Samsung USB Driver for Mobile Phones v1.9.5.0 | `Archived/v0/official_references/Arani/Regions/Veridia/` | © Samsung Electronics; a free download from Samsung |
 | Sample pictures: the "Hush" cyberdeck, the C-9 pistol, a rainy market street, a cyberpunk portrait | `assets/3315cc85-….jpg`, `assets/f2622374-….jpg`, `assets/abe729c0-….jpg`, `assets/image2.jpg` | Author not recorded |
 | Test floor plans (levels 1 and 2) | `assets/cyberpunkRED/Test_Maps/`, and a copy under `Archived/v0/official_references/` | Author not recorded |
