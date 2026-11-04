@@ -2,6 +2,11 @@
   "name": "tempest",
   "version": "1.0.0-alpha",
   "private": true,
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Contium/PROJECT-TEMPEST.git"
+  },
   "description": "TEMPEST — a local game-master tool for TTRPGs: characters, world, combat and items, pushed to a player screen, with hot-swappable themes.",
   "scripts": {
     "start": "node server/index.js",
