@@ -297,10 +297,10 @@ In-world news articles, made with the **Screamsheet Generator** and kept under *
 - **Players** only ever get revealed screamsheets, as printed: never the generator's picks or which entries it mentions.
 
 > [!IMPORTANT]
-> **The generator's tables are not included.** They are R. Talsorian Games' copyrighted text, so TEMPEST imports them from your own copy of the free *Screamsheet Generator* PDF. Until you do, the generator offers to import one. Importing needs Python 3 with `pypdf`:
+> **Import the tables once before first use.** The generator's tables are R. Talsorian Games' text, so TEMPEST reads them from the free *Screamsheet Generator* PDF (a copy is in `assets/cyberpunkRED/`) instead of storing them in its code. Until you import them, the generator offers to. Importing needs Python 3 with `pypdf`:
 >
 > ```bash
-> python scripts/import_screamsheet.py "<path to the PDF>" "%LOCALAPPDATA%\TEMPEST\packs\screamsheet"
+> python scripts/import_screamsheet.py "assets/cyberpunkRED/RTG-CPR-DLC-ScreamsheetGenerator.pdf" "%LOCALAPPDATA%\TEMPEST\packs\screamsheet"
 > ```
 
 ### Items
@@ -488,7 +488,7 @@ scripts/            Icon generator, Night City district tracer, screamsheet tabl
 src/theme-engine/   ThemeEngine: load, hot-swap, persist, lexicon
 themes/             The theme library (_base holds the token contract and shared components)
 styleguide/         Living style guide
-assets/             Icons and the built-in map images
+assets/             Icons, the built-in map images, and Cyberpunk RED reference files (see credits)
 docs/screenshots/   The pictures in this README
 test/               node:test suites
 Archived/v0/        Version zero, kept for reference and never served
@@ -534,27 +534,68 @@ TEMPEST is in **alpha** (`1.0.0-alpha`). This is the **v1 rebuild**; version zer
 
 ## Third-party content and credits
 
-TEMPEST is an unofficial fan tool. It is not affiliated with, endorsed or sponsored by R. Talsorian Games, CD PROJEKT RED, or any other company or artist named below.
+TEMPEST is an unofficial fan tool. It is not affiliated with, endorsed or sponsored by R. Talsorian Games, CD PROJEKT RED, or any other company or artist named below. Everything in this section belongs to its authors and is **not** covered by TEMPEST's GPL license.
 
-**Kept in the repository:**
+### Code and data
 
-| What | Source | Licence |
+| What | Author and source | Licence |
 |---|---|---|
-| `app/vendor/land-110m.json` | [world-atlas](https://github.com/topojson/world-atlas) 2.0.2, built from [Natural Earth](https://www.naturalearthdata.com/) | Natural Earth data is public domain; world-atlas is ISC |
+| `app/vendor/land-110m.json` | [world-atlas](https://github.com/topojson/world-atlas) 2.0.2 by Mike Bostock, built from [Natural Earth](https://www.naturalearthdata.com/) | Natural Earth data is public domain; world-atlas is ISC |
 | `app/vendor/qrcode-generator/` | [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) 1.4.4 by Kazuhiko Arase | MIT |
+| Fonts (loaded at runtime, not stored here): Rajdhani, Orbitron, Share Tech Mono, Cinzel, EB Garamond, Exo 2 | Their designers, via [Google Fonts](https://fonts.google.com/) | SIL Open Font License |
 
 See `app/vendor/README.md` for details.
 
-**Loaded at runtime:** the themes' fonts (Rajdhani, Orbitron, Share Tech Mono, Cinzel, EB Garamond, Exo 2) come from [Google Fonts](https://fonts.google.com/) under the SIL Open Font License.
+### R. Talsorian Games
 
-**R. Talsorian Games material:** *Cyberpunk RED*, *Night City* and the *Screamsheet Generator* are R. Talsorian Games' trademarks and copyrighted works.
-- The City Map's layer images in `assets/maps/nightcity/` are web copies of R. Talsorian's free *Night City 2045 Atlas*. They remain R. Talsorian's property and are **not** covered by this project's license. The district outlines in `districts.json` were traced by TEMPEST's own script.
-- The screamsheet tables are **not included**; you import them from your own copy of the PDF.
+**© R. Talsorian Games, Inc.** These are free downloads from [R. Talsorian Games](https://rtalsoriangames.com/), kept here as reference material and for TEMPEST's Cyberpunk RED features. *Cyberpunk RED*, *Night City* and *Screamsheet* are trademarks of R. Talsorian Games; *Cyberpunk* is a registered trademark of CD PROJEKT S.A.
 
-**Theme inspiration:** the themes are original CSS, inspired by the *Cyberpunk 2077* UI art bible (Neo-Militarism and Neo-Kitsch), the *MOONTOWN* fantasy game UI portfolio, and Andrii Shafetov's *Land of Sand* UI design. They use no artwork from those works.
+| Title | Files |
+|---|---|
+| *Night City 2045 Atlas* (Full, Street Names Only, w District Names, w Locations) | `assets/Night City 2045 Atlas Maps/` (JPG and PDF), the cover `assets/Night_City_Atlas_Cover.jpg`, and the City Map's web copies in `assets/maps/nightcity/*.jpg` |
+| *Cyberpunk RED Easy Mode* | `Cyberpunk_RED_Easy_Mode.pdf` |
+| *Cyberpunk RED* Character Sheet | `RTG-CPR-CharacterSheet.pdf` |
+| *Cyberpunk RED* Core Rulebook FAQ v1.3 | `RTG-CPR-CoreBookFAQv1.3.pdf` |
+| Data Pack character sheet | `RTG-CPR-DataPack-Charsheet-CLC.pdf` |
+| *100 Logos* v1.1 | `RTG-CPR-DLC-100Logosv1.1.pdf` |
+| *Breaking Your Stuff* v1.1 | `RTG-CPR-DLC-BreakingYourStuffv1.1.pdf` |
+| *Edgerunner Folio* | `RTG-CPR-DLC-Edgerunner-Folio.pdf` |
+| *Halloween Screamsheets* | `RTG-CPR-DLC-HalloweenScreamsheets.pdf` |
+| *JPK Conversion Guide* v1.1 | `RTG-CPR-DLC-JPKConversionGuidev1.1.pdf` |
+| *Night City Tarot* v1.2 | `RTG-CPR-DLC-NightCityTarot-v1.2.pdf` |
+| *Screamsheet Generator* | `RTG-CPR-DLC-ScreamsheetGenerator.pdf` |
+| *Weapon Rebalance* | `RTG-CPR-DLC-WeaponRebalance.pdf` |
+| Mooks Sheet (form-fillable) | `RTG-CPR-MooksSheetFormFillable.pdf` |
+| *Night City Weather* | `RTG-CPR-NightCityWeather.pdf` |
+| *Red Chrome Cargo* | `RTG-CPR-RedChromeCargo-RED.pdf` |
+
+The PDFs are in `assets/cyberpunkRED/`, with a second copy in `Archived/v0/official_references/cyberpunkRED/`. TEMPEST's own work built on them: the Night City district outlines (`assets/maps/nightcity/districts.json`), traced by `scripts/extract-districts.py`, and the screamsheet generator's code, which reads the tables from the PDF rather than storing them.
+
+### Cyberpunk logos and pictures
+
+| What | Files | Author |
+|---|---|---|
+| Arasaka and Militech logos | `assets/cyberpunkRED/Logos/`, and a copy under `Archived/v0/official_references/` | The *Cyberpunk* setting's fictional corporations, © R. Talsorian Games / CD PROJEKT RED |
+| Portrait of Wakako Okada | `assets/images.jpg` | *Cyberpunk 2077*, © CD PROJEKT RED |
+
+### Other files
+
+| What | Files | Author |
+|---|---|---|
+| GitHub Desktop installer | `assets/GitHubDesktopSetup-x64.exe` | © GitHub, Inc.; a free download from [desktop.github.com](https://desktop.github.com/) |
+| Samsung USB Driver for Mobile Phones v1.9.5.0 | `Archived/v0/official_references/Arani/Regions/Veridia/` | © Samsung Electronics; a free download from Samsung |
+| Sample pictures: the "Hush" cyberdeck, the C-9 pistol, a rainy market street, a cyberpunk portrait | `assets/3315cc85-….jpg`, `assets/f2622374-….jpg`, `assets/abe729c0-….jpg`, `assets/image2.jpg` | Author not recorded |
+| Test floor plans (levels 1 and 2) | `assets/cyberpunkRED/Test_Maps/`, and a copy under `Archived/v0/official_references/` | Author not recorded |
+| *Veridia* city map and *True Faith* sigil, for the Arani setting | `Archived/v0/official_references/Arani/` | Author not recorded |
+
+If you made one of the pictures marked "Author not recorded", or own anything here and want it credited differently or removed, please open an issue.
+
+### Theme inspiration
+
+The themes are original CSS, inspired by the *Cyberpunk 2077* UI art bible (Neo-Militarism and Neo-Kitsch) by CD PROJEKT RED, the *MOONTOWN* fantasy game UI portfolio, and Andrii Shafetov's *Land of Sand* UI design. They use no artwork from those works.
 
 ## License
 
 TEMPEST is free software: you can redistribute it and/or modify it under the terms of the **GNU General Public License version 3** as published by the Free Software Foundation, or (at your option) any later version. It is distributed in the hope that it will be useful, but **without any warranty**; without even the implied warranty of merchantability or fitness for a particular purpose. See [LICENSE](LICENSE) for the full text.
 
-Third-party files keep their own licences (see [above](#third-party-content-and-credits)), and the R. Talsorian Games material is not covered by the GPL.
+Third-party files keep their own licences and owners (see [above](#third-party-content-and-credits)); none of them is covered by the GPL.
