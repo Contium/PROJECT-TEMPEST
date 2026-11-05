@@ -1,0 +1,24 @@
+{
+  "id": "cpoi_47d7f63f",
+  "city": "nightcity",
+  "name": "Halcyon Biotics Tower",
+  "icon": "corp",
+  "x": 0.7335,
+  "y": 0.3985,
+  "district": "exec-zone",
+  "description": "Forty floors of white glass and armed reception staff.",
+  "revealed": true,
+  "refs": [
+    {
+      "id": "char_5b413680",
+      "note": "Office on the 31st floor"
+    },
+    {
+      "id": "story_c18274f7",
+      "note": "Target"
+    }
+  ],
+  "maps": [],
+  "createdAt": "2026-11-04T21:37:38.639Z",
+  "updatedAt": "2026-11-04T21:37:38.639Z"
+}

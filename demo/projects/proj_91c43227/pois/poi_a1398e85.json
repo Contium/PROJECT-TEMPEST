@@ -1,0 +1,12 @@
+{
+  "id": "poi_a1398e85",
+  "name": "Kowloon Arcology",
+  "type": "city",
+  "lon": 114.17,
+  "lat": 22.32,
+  "description": "Hong Kong. Where Doc Haas buys parts nobody else will sell.",
+  "revealed": true,
+  "maps": [],
+  "createdAt": "2026-11-04T21:37:38.617Z",
+  "updatedAt": "2026-11-04T21:37:38.617Z"
+}

@@ -18,7 +18,7 @@ test('item presets: default fields and the nine rarities', async () => {
   assert.equal(rarity.type, 'rarity');
   assert.deepEqual(rarity.rarities.map((r) => r.name), ['Very Common', 'Common', 'Uncommon', 'Rare', 'Super Rare', 'Exotic', 'Legendary', 'Fabled', 'Mythic']);
   assert.deepEqual(rarity.default, { rarity: 'very_common' }, 'starts on the first rarity');
-  assert.deepEqual(P.addableOf(p).map((a) => a.type), ['parent', 'longtext', 'image', 'gallery', 'stat']);
+  assert.deepEqual(P.addableOf(p).map((a) => a.type), ['parent', 'longtext', 'image', 'gallery', 'stat', 'statblock']);
   assert.equal(P.newField('parent', 'items').parentType, 'any', 'an item can belong to anything');
   assert.throws(() => P.removeField(p, 'rarity'), /cannot be removed/);
 

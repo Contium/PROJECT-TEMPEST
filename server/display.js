@@ -13,7 +13,8 @@
 //
 // The server builds every display itself from the project's data, so a push can
 // never carry GM-only contents: entries go through playerEntity(), lists through
-// rosterEntry(), POIs come from the players' lists (hidden ones are refused).
+// rosterEntry(), POIs come from the players' lists (hidden ones are refused),
+// networks through playerNetwork() (revealed nodes only, never the GM's notes).
 // The displays are kept in <data>/v1/display.json, so a restart keeps them.
 
 const fs = require('node:fs');
@@ -131,6 +132,18 @@ function createDisplay(file, library) {
       const sheet = await stores.screamsheets.get(req.id);
       if (!sheet.revealed) throw new StoreError(409, 'That screamsheet is hidden from players: reveal it first');
       return { project, article: playerCopy(sheet), title: sheet.headline };
+    }
+    if (req.mode === 'network') {
+      const { playerNetwork } = await appModule('netrun/network-model.js');
+      const net = await stores.networks.get(req.id);
+      // Only the cards of revealed nodes are read; their players' copies follow each card's own sheet.
+      const cards = new Map();
+      for (const n of net.nodes) {
+        if (!n.card || !net.revealed.includes(n.id) || cards.has(n.card)) continue;
+        const card = await stores.netcards.get(n.card).catch(() => null);
+        if (card) cards.set(n.card, card);
+      }
+      return { project, network: playerNetwork(net, cards, M.playerEntity, { focus: req.focus }), title: net.name };
     }
     if (req.mode === 'globe' || req.mode === 'poi') {
       const seen = await library.listPois(req.project, { view: 'player' });

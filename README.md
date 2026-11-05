@@ -142,6 +142,7 @@ The shortcuts store the folder's path and the path to `node.exe`, so run `npm ru
 | `TEMPEST_LAN_PORT` | GM port + 1 (`4078`) | The network player screen's port |
 | `TEMPEST_LAN_HOST` | `0.0.0.0` | Where the network player screen listens. `127.0.0.1` keeps it off the network while testing. |
 | `TEMPEST_NO_TRAY` | unset | Any value skips the tray icon when launching |
+| `TEMPEST_NO_DEMO` | unset | Any value stops the server from installing the [demo project](#demo-project) |
 
 **Where things are kept** (on Linux, read `~/.local/share/TEMPEST`, or `$XDG_DATA_HOME/TEMPEST`, for `%LOCALAPPDATA%\TEMPEST`):
 
@@ -154,7 +155,24 @@ The shortcuts store the folder's path and the path to `node.exe`, so run `npm ru
 | Imported screamsheet tables | `%LOCALAPPDATA%\TEMPEST\packs\screamsheet\` |
 | Logs | `%LOCALAPPDATA%\TEMPEST\logs\server.log` |
 
-**Security:** the GM server listens on `127.0.0.1` only. Requests that change anything must come from TEMPEST's own pages, with the host, origin and content type all checked. `Archived/`, `server/`, `launcher/`, `test/` and dot-folders are never served. The network player screen is a separate, read-only server; see [The player screen on your network](#the-player-screen-on-your-network).
+**Security:** the GM server listens on `127.0.0.1` only. Requests that change anything must come from TEMPEST's own pages, with the host, origin and content type all checked. `Archived/`, `server/`, `launcher/`, `test/`, `demo/` and dot-folders are never served. The network player screen is a separate, read-only server; see [The player screen on your network](#the-player-screen-on-your-network).
+
+### Demo project
+
+TEMPEST ships with a demo campaign, **Cyberpunk (Sample)**, in `demo/projects/`. The first time the server starts, it copies the demo into your data folder, so a new install opens on a campaign that uses every section:
+
+- **Characters:** the Static Saints, a crew of player characters built on the *Cyberpunk RED: Player Character* template. They come with full STATS, Skills, a cyberware body diagram and Lifepaths, plus their fixer, a ripperdoc, a corporate exec, a gang boss, a cyberpsycho and a sewer-dwelling creature.
+- **World:** linked gigs, an event and a rumor, with who's involved, payouts and the GM-only truth. Two screamsheets.
+- **Items:** gear from Very Common to Legendary.
+- **Maps:** places on the World View globe (one hidden from players), and pins across Night City's districts on the City Map, linked to the people and stories there.
+- **Netrunning:** the **Steeltooth Bar** NET architecture, ready to run, and a deck of net cards to build more from: Password, File, Control Node, six Black ICE (Skunk, Liche, Raven, Hellhound, Wisp, Sabertooth) and an Imp Demon, on the three *Cyberpunk RED* net card templates.
+
+The demo installs **once**. Edit it freely: a later start never overwrites it, and if you delete it, it stays deleted. When an update ships more in the demo (like the Netrunning cards), an installed demo gets each new file once, never over one of yours, and never again after you delete it. `<data>\v1\demo.json` records what was installed and offered. To get the whole demo back, delete that file and the project, then restart. Set `TEMPEST_NO_DEMO=1` to skip it. The standalone binaries include it too.
+
+**Rebuilding the demo:** `scripts/build-demo.mjs` seeds a project through a running server's API, skipping anything that already exists by name. Copy the result into `demo/projects/<id>/` (leave out any `*.tmp` files). `scripts/build-netrun-demo.mjs` writes the Netrunning part (presets, cards and the Steeltooth Bar) straight into the demo folder. `test/demo.test.mjs` checks every shipped file against the app's rules and checks that every link and image resolves.
+
+> [!WARNING]
+> **Projects missing?** On Windows, an app installed as a package (MSIX) gets a private copy of `AppData`. A TEMPEST server *started by* such an app, for example a coding assistant's desktop app or its terminal, saves into `%LOCALAPPDATA%\Packages\<that app>\LocalCache\Local\TEMPEST` instead of `%LOCALAPPDATA%\TEMPEST`. The TEMPEST you start yourself can't see that copy. Start TEMPEST from its Start Menu shortcut or your own terminal. To rescue projects saved there, copy their folders from `…\LocalCache\Local\TEMPEST\v1\projects\` into `%LOCALAPPDATA%\TEMPEST\v1\projects\` with File Explorer.
 
 ## User guide
 
@@ -202,7 +220,7 @@ The GM window has these sections, shown as tabs across the top bar:
 | **Characters** | Players · NPCs · Monsters · Creatures |
 | **World** | Events · Stories · Rumors · Screamsheets · Timeline |
 | **World View** | Only with Planetary maps: the 3D globe |
-| **Combat** | Not built yet |
+| **Combat** | Netrunning (Network Builder · Card Forge · Networks) |
 | **Items** | One list, filtered by rarity |
 | **The Forge** | Presets: Characters/Creatures · Stories/Rumors/Events · Items |
 
@@ -212,7 +230,17 @@ The GM window has these sections, shown as tabs across the top bar:
 
 ### Character presets (The Forge)
 
-A **preset** is your own template for a character sheet: which fields it has, where they sit, and what players get to see of each. It holds the structure and default values. Images belong to characters, so presets have image *slots* but no pictures. **Create New** at the bottom turns a preset into characters.
+A **preset** is your own template for a character sheet: which fields it has, where they sit, and what players get to see of each. It holds the structure and default values. Images belong to characters, so presets have image *slots* but no pictures.
+
+Under the preset toolbar, three tabs split the page, and the last one used is remembered:
+
+| Tab | What's on it |
+|---|---|
+| **Create New** (the default) | The form for a new character from the open preset, with the sheet beside it, updating as you type and staying in view as you scroll |
+| **Design** | The builder (main section, sections, *Add* bar) and the field settings |
+| **Preview** | The whole sheet at full width, as the GM or the players see it |
+
+**Long presets fold:** a preset with more than five sections opens with them folded, in the builder and in the form. In the builder, ▸/▾ (or the field count) folds and unfolds a section, and **Fold all** / **Unfold all** do every one. In the form, click a section's name, or use **Open all sections** / **Close all**. Moving a field into a folded section unfolds it.
 
 **Default fields** sit at the top of the main section, in a fixed order, and can't be removed or moved:
 
@@ -240,6 +268,7 @@ A **preset** is your own template for a character sheet: which fields it has, wh
 - **Where new fields go:** *Add* puts them in whichever list you last clicked; the *Add* bar names it.
 - **Moving fields:** drag them between lists, use ▲/▼, or set *Location* in the field's settings.
 - **Sections** can be reordered or removed. Removing one removes its fields, after asking. Reducing the column count moves fields from the dropped columns into the last remaining one.
+- **Body diagram:** set a section's **Layout** to *Body diagram* for cyberware, wounds or armor by body part. A figure (`app/forge/art/body-figure.webp`) sits behind the section, and its fields are boxes in front of it, with leader lines, in five zones: *Above the head*, *Left of the figure*, *Right of the figure*, *Over the hips*, and *Beside the figure* (a list to the right). On narrow screens the figure shrinks to a banner and the boxes stack. Switching back to *Columns* keeps every field. On light themes the figure is drawn as ink.
 
 **Each field's settings** (click it):
 - **Name**, its **type options** and a **default value**.
@@ -250,7 +279,18 @@ A **preset** is your own template for a character sheet: which fields it has, wh
   - **Rumored:** players see the field's name, with the contents obscured as redacted bars, static or your own text.
 - **References:** GM only. Marks the field as carrying links to other entries for quick access.
 
-**Preview** draws the sheet as the GM sees it (Shown and Rumored fields marked) or as players will.
+The sheet (on the **Create New** and **Preview** tabs) is drawn as the GM sees it (Shown and Rumored fields marked) or as players will: switch with **GM view** / **Player view**.
+
+#### Templates
+
+**New from template…**, next to **New**, starts an unsaved preset from a ready-made one. Once open it is an ordinary preset: change anything, then **Save** it.
+
+| Template | What's in it |
+|---|---|
+| **Cyberpunk RED: Player Character** | The official character sheet (R. Talsorian Games), page by page, in 123 fields. The **Handle**, a **Role** picked from the ten Roles, each named with its Role Ability, the Role Ability Rank (default 4) and the ability's text. The ten **STATS**; LUCK and EMP are pools, as they're spent or lost in play. **Hit Points**, Seriously Wounded, Death Save, **Humanity**, Critical Injuries and Addictions. All **66 Skills** in their nine groups, each labelled with its STAT, and ×2 for those that cost double. **Weapons & Armor**, **Cyberware** as a body diagram like the sheet's skeleton page (each eye, arm and leg, the Cyberaudio Suite and Neural Link around the figure; internal, external, fashionware and borgware beside it), **Gear** (ammunition, cash, lifestyle and housing), **Reputation** (aliases, events, Improvement Points) and the whole **Lifepath**. |
+
+- **Numbers the rules derive** (Hit Points = 10 + 5 × (BODY + WILL) ÷ 2 rounded up, Seriously Wounded = half of that rounded up, Death Save = BODY, Humanity = EMP × 10) are fields you fill in.
+- **Defaults:** every STAT starts at 5 and the derived numbers match that (35 HP, 18, 5, 50 Humanity). Skills start at 0 and are entered as Skill Levels: add the STAT for a check.
 
 **Saving and sharing:**
 - **Save** (or Ctrl+S) stores the preset in the project.
@@ -261,10 +301,10 @@ A **preset** is your own template for a character sheet: which fields it has, wh
 
 #### Create New
 
-The bottom of the designer is a form built from the preset, so making a character takes one page:
+The **Create New** tab is a form built from the preset, so making a character takes one page:
 
 1. Build or open a preset.
-2. Fill in the form. Fields you haven't touched follow the preset's defaults as you change them, and the **Preview** shows the character as you go.
+2. On the **Create New** tab, fill in the form. Fields you haven't touched follow the preset's defaults as you change them, and the sheet beside the form shows the character as you go.
 3. Click **Create New**.
 
 The character is saved and filed under **Characters** by its Category. A notice links straight to it, and the form clears for the next one.
@@ -351,6 +391,45 @@ The third kind of preset, made in **The Forge › Items**.
 
 The **Items** section is a single list of everything you've made (`#/items`), as cards with the item type and a rarity badge. When more than one rarity is in use, chips across the top filter by rarity. Each item has its own page at `#/items/<id>`.
 
+### Stat Blocks
+
+A field type for characters, items and net cards: a row of named stats read together, as a rulebook prints them (`PER · SPD · ATK · DEF · REZ`, or `STR · DEX · CON …`).
+
+- **In the designer:** add **Stat Block**, then name its stats (1 to 12), reorder them with ← →, and give any of them a default.
+- **Values** are short text (up to 12 characters), so `4`, `3d6` and `—` all fit.
+- **On the sheet** it's a small table: the names across the top, the values beneath.
+
+### Netrunning (Combat)
+
+**Combat › Netrunning** builds NET architectures out of cards and reveals them to the players floor by floor. It has three sub-tabs:
+
+| Sub-tab | Address | What it's for |
+|---|---|---|
+| **Network Builder** | `#/combat/netrunning/builder` | Put net cards together into a network |
+| **Card Forge** | `#/combat/netrunning/cards` | Design net cards and make them |
+| **Networks** | `#/combat/netrunning/networks` | Your saved networks: run one and reveal it |
+
+**Card Forge.** The fourth kind of preset, with the same designer as The Forge (Create New · Design · Preview).
+- **Default fields:** Type (Password, File, Control Node, Black ICE, Demon or Other), Primary Image, Name, DV and Short Description. Add Long Descriptions, Images, Galleries, Stats and **Stat Blocks**.
+- **Templates** (**New from template**): *Cyberpunk RED: Black ICE* (Class, then PER · SPD · ATK · DEF · REZ, then Effect), *Demon* (REZ · Interface · NET Actions · Combat #) and *Password, File or Control Node* (what it does, its contents, kept Rumored, and what it controls).
+- **Your net cards:** the list above the designer. Open a card (`#/combat/netrunning/<card id>`) to edit it, push it to the players or delete it.
+
+**Network Builder.**
+- **Palette:** your net cards, searchable and filtered by type, on the left.
+- **Adding:** click a card to add it below the selected node; the new node becomes the selection, so clicking card after card builds a line straight down. With nothing selected, the card starts a new branch at the top. You can also drag a card onto any node to hang it there.
+- **Branches:** select the node to branch from and click another card. Two branches merge when a node **comes after** both: pick *+ Also comes after…* in its settings, like the Hellhounds that guard the bottom of the Steeltooth Bar.
+- **Node settings:** its card, a **Label** players read instead of the card's name (*Control Node (Cameras)*), its **DV** here, **How many** (*Hellhound ×2*) and a **GM note**.
+- **Rearranging:** move a branch left or right, add an empty slot above or below, remove a node (what hung below it moves up) or a whole branch.
+- **Layout:** the map lays itself out as the rulebook draws architectures: chamfered boxes in rows, a single line straight down, each node centred over its branches, and merged nodes below every branch that leads to them.
+- **Saving:** **Save** (Ctrl+S). Unsaved work is kept as a draft in the browser. Delete removes the selected node and Esc lets go of it.
+
+**Networks.** Open a network to run it. You see the whole architecture, with hidden nodes dimmed.
+- **Revealing:** **Reveal next** reveals the next node down the architecture, top to bottom. Click any node to reveal or hide just that one, read its GM note, and see its card's full sheet. **Reveal all** and **Hide all** do every node at once.
+- **Update the player screen as I reveal** (on by default): every reveal goes straight to the player screens, with the new node lit and its card beside the map, as the card's own sheet allows.
+- **Show the way ahead:** players also see a blank box for each hidden node at the top or right below a revealed one.
+- **Player view** previews exactly what the players get. **⇪ Push network** and **⇪ Push, lit** push by hand.
+- **What players never get:** hidden nodes (not even their names or how many there are, unless *Show the way ahead* is on), GM notes, and Rumored fields of a card.
+
 ### World View (Planetary maps)
 
 With the project's map system set to **Planetary**, a **World View** section appears (`#/worldview`). It shows an **interactive 3D Earth** drawn as holographic line art in the theme's colours.
@@ -426,6 +505,7 @@ You push what players should see, and every player screen shows it at once, live
 | The City Map | **⇪ Push map** | The city map on the current layer, the selected district lit, with the revealed points |
 | A district | **⇪ Push district** | That district lit and framed |
 | A city point | **⇪ Push** | Its icon, name, district, description and maps |
+| A network (Combat › Netrunning › Networks) | **⇪ Push network**, or each reveal with *Update the player screen* on | Its revealed nodes as a map, one lit, with that node's card beside it |
 
 **Named screens:**
 - Every time a player screen opens (the network link or QR code, a reload, or **Open**), it asks **Who's watching?** The last name used on that device is filled in, so Enter keeps it. Tap the name in the screen's corner to change it.
@@ -504,6 +584,7 @@ TEMPEST's look comes from a hot-swappable theme library. The theme applies to th
 app/                The GM window and player screen (one page; #/player is the player screen)
   forge/            Presets, the designer, sheets and entries
   maps/             World View globe, City Map, points of interest
+  netrun/           Combat › Netrunning: Network Builder, Card Forge, Networks, the architecture map
   push/             Pushing, the player screen, full screen
   screamsheets/     The screamsheet generator and articles
   projects/         Project picker, settings, network sharing card
@@ -541,11 +622,14 @@ npm test
 |---|---|---|
 | Projects and settings | `server/projects.js`, `app/projects/` | `test/projects.test.js`, `test/settings.test.js` |
 | Presets and entries | `app/forge/`, `server/presets.js`, `server/entities.js`, `server/assets.js` | `test/preset-model.test.mjs`, `test/characters.test.js`, `test/stories.test.js`, `test/items.test.js` |
+| Preset templates | `app/forge/templates/` | `test/preset-templates.test.mjs` |
 | Globe and points | `app/maps/globe-math.js`, `app/maps/globe.js`, `app/maps/world-view.js`, `server/pois.js` | `test/globe-math.test.mjs`, `test/pois.test.js` |
 | City Map | `app/maps/city-map.js`, `app/maps/city-map-model.js`, `app/maps/city-poi-model.js` | `test/city-map.test.mjs`, `test/city-pois.test.js` |
 | Pushing and player screens | `app/push/`, `server/display.js` | `test/push.test.js` |
 | Network player screen | `server/lan.js`, `app/projects/network.js` | `test/lan.test.js` |
 | Screamsheets | `app/screamsheets/`, `server/packs.js` | `test/screamsheets.test.js` |
+| Netrunning (net cards, Stat Blocks, networks) | `app/netrun/`, `app/forge/templates/cyberpunk-red-net.js`, `server/pois.js` (store) | `test/netrun.test.js` |
+| Demo project | `server/demo.js`, `demo/`, `scripts/build-demo.mjs`, `scripts/build-netrun-demo.mjs` | `test/demo.test.mjs` |
 | Sections and routing | `app/sections.js`, `app/main.js` | `test/sections.test.mjs` |
 
 ### Building the binaries
@@ -569,7 +653,7 @@ TEMPEST is in **alpha** (`1.0.0-alpha`). This is the **v1 rebuild**; version zer
 
 | Built | Still to come |
 |---|---|
-| Projects and settings, The Forge (all three preset kinds), Characters, World (events, stories, rumors, screamsheets), Items, World View, Night City City Map, pushing, named and networked player screens, themes | Combat, the Timeline, the Planar, Cartographer and Galactic map systems, Locations and Factions |
+| Projects and settings, The Forge (all three preset kinds), Characters, World (events, stories, rumors, screamsheets), Items, World View, Night City City Map, Combat › Netrunning (net cards, networks, revealing them to players), pushing, named and networked player screens, themes | The rest of Combat (initiative, encounters), the Timeline, the Planar, Cartographer and Galactic map systems, Locations and Factions |
 
 ## Third-party content and credits
 
@@ -587,7 +671,7 @@ See `app/vendor/README.md` for details.
 
 ### R. Talsorian Games
 
-**© R. Talsorian Games, Inc.** These are free downloads from [R. Talsorian Games](https://rtalsoriangames.com/), kept here as reference material and for TEMPEST's Cyberpunk RED features. *Cyberpunk RED*, *Night City* and *Screamsheet* are trademarks of R. Talsorian Games; *Cyberpunk* is a registered trademark of CD PROJEKT S.A.
+**© R. Talsorian Games, Inc.** These are free downloads from [R. Talsorian Games](https://rtalsoriangames.com/), kept here as reference material and for TEMPEST's Cyberpunk RED features. The **Cyberpunk RED: Player Character** preset template (`app/forge/templates/cyberpunk-red-player.js`) follows the layout and terms of their character sheet and *Easy Mode* rules. The net card templates (`app/forge/templates/cyberpunk-red-net.js`) and the demo's Netrunning cards use the NET Architecture terms of the *Cyberpunk RED* Core Rulebook and its Black ICE and Demon stat lines (check the numbers against your copy). The cards' effects are short summaries in TEMPEST's own words. *Cyberpunk RED*, *Night City* and *Screamsheet* are trademarks of R. Talsorian Games; *Cyberpunk* is a registered trademark of CD PROJEKT S.A.
 
 | Title | Files |
 |---|---|
@@ -625,6 +709,7 @@ The PDFs are in `assets/cyberpunkRED/`, with a second copy in `Archived/v0/offic
 | Sample pictures: the "Hush" cyberdeck, the C-9 pistol, a rainy market street, a cyberpunk portrait | `assets/3315cc85-….jpg`, `assets/f2622374-….jpg`, `assets/abe729c0-….jpg`, `assets/image2.jpg` | Author not recorded |
 | Test floor plans (levels 1 and 2) | `assets/cyberpunkRED/Test_Maps/`, and a copy under `Archived/v0/official_references/` | Author not recorded |
 | *Veridia* city map and *True Faith* sigil, for the Arani setting | `Archived/v0/official_references/Arani/` | Author not recorded |
+| The body diagram's skeleton figure | `app/forge/art/body-figure.webp` | Made for TEMPEST by the project's author; cropped, with its callout labels removed |
 
 If you made one of the pictures marked "Author not recorded", or own anything here and want it credited differently or removed, please open an issue.
 

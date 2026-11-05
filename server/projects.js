@@ -5,6 +5,8 @@
 //   <data>/v1/projects/<id>/characters/…     its characters   (server/entities.js)
 //   <data>/v1/projects/<id>/stories/…        its stories, rumors and events
 //   <data>/v1/projects/<id>/items/…          its items
+//   <data>/v1/projects/<id>/netcards/…       its net cards (Combat › Netrunning › Card Forge)
+//   <data>/v1/projects/<id>/networks/…       its NET architectures (Combat › Netrunning)
 //   <data>/v1/projects/<id>/pois/…           its points of interest on the World View globe
 //   <data>/v1/projects/<id>/assets/…         its images       (server/assets.js)
 //
@@ -27,9 +29,10 @@ const { StoreError, createPresetStore, handlePresets } = require('./presets');
 const { createEntityStore, handleEntities } = require('./entities');
 
 // The entity kinds a project stores (folder = route = kind).
-const ENTITY_KINDS = ['characters', 'stories', 'items'];
+const ENTITY_KINDS = ['characters', 'stories', 'items', 'netcards'];
 const { createAssetStore, handleAssets } = require('./assets');
-const { createPoiStore, handlePois, CITY, SCREAMSHEETS } = require('./pois');
+const { createPoiStore, handlePois, CITY, SCREAMSHEETS, NETWORKS } = require('./pois');
+const SUBS = 'presets|characters|stories|items|netcards|networks|entities|pois|citypois|screamsheets|assets';
 
 const PROJECT_ID = /^proj_[0-9a-f]{8}$/;
 const THEME_ID = /^[a-z0-9][a-z0-9_-]{0,63}$/;
@@ -100,6 +103,7 @@ function createProjectLibrary(v1Dir) {
           pois: createPoiStore(path.join(dir, 'pois')),
           citypois: createPoiStore(path.join(dir, 'citypois'), CITY),
           screamsheets: createPoiStore(path.join(dir, 'screamsheets'), SCREAMSHEETS),
+          networks: createPoiStore(path.join(dir, 'networks'), NETWORKS),
         });
       }
       return stores.get(id);
@@ -224,14 +228,14 @@ async function migrateLegacy(v1Dir, projectsDir) {
 /** Route /api/projects/*; `rest` is the path after /api/projects. Returns true when handled. */
 async function handleProjects(library, req, res, rest, params, helpers) {
   const { readJson, sendJson } = helpers;
-  const m = rest.match(/^(?:\/([^/]+))?(\/(?:presets|characters|stories|items|entities|pois|citypois|screamsheets|assets)(?:\/.*)?)?$/);
+  const m = rest.match(new RegExp(`^(?:\\/([^/]+))?(\\/(?:${SUBS})(?:\\/.*)?)?$`));
   if (!m) return false;
   const id = m[1] ? decodeURIComponent(m[1]) : null;
   const sub = m[2];
   try {
     if (sub) {
       const stores = await library.open(id);
-      const [, kind, inner] = sub.match(/^\/(presets|characters|stories|items|entities|pois|citypois|screamsheets|assets)(.*)$/);
+      const [, kind, inner] = sub.match(new RegExp(`^\\/(${SUBS})(.*)$`));
       if (kind === 'presets') return handlePresets(stores.presets, req, res, inner, helpers);
       if (ENTITY_KINDS.includes(kind)) return handleEntities(stores[kind], req, res, inner, params, helpers);
       if (kind === 'pois') {
@@ -244,6 +248,7 @@ async function handleProjects(library, req, res, rest, params, helpers) {
       }
       if (kind === 'citypois') return handlePois(stores.citypois, req, res, inner, params, helpers);
       if (kind === 'screamsheets') return handlePois(stores.screamsheets, req, res, inner, params, helpers);
+      if (kind === 'networks') return handlePois(stores.networks, req, res, inner, params, helpers);
       if (kind === 'entities') {
         if (req.method !== 'GET' || inner) return false;
         const all = (await Promise.all(ENTITY_KINDS.map((k) => stores[k].list()))).flat();

@@ -44,6 +44,7 @@ const SHIPPED = [
   'assets/maps',
   'assets/tempest.ico',
   'assets/tempest-256.png',
+  'demo',
   'scripts/import_screamsheet.py',
   'scripts/make-icon.js',
   'package.json',

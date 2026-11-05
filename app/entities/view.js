@@ -97,15 +97,29 @@ function list(root, { kind, category }, all) {
 
 // --- one entry ------------------------------------------------------------------------------
 
-async function detail(root, id, { kind, category, everyone, lookup, api }) {
-  const back = category ? `#/${kindOf(kind).section}/${category.tab}` : `#/${kindOf(kind).section}`;
+/**
+ * One entry's page somewhere other than its kind's own tab (e.g. a net card under
+ * Combat › Netrunning): `back` is where "← All …" leads, `backLabel` what it says.
+ */
+export async function entryPage(root, id, { kind, back, backLabel }) {
+  const everyone = await allEntities().catch((err) => (toastError(err), []));
+  const lookup = (x) => {
+    const e = everyone.find((y) => y.id === x);
+    return e ? { name: e.name, href: hrefOf(e), image: e.image } : null;
+  };
+  return detail(root, id, { kind, category: null, everyone, lookup, api: entitiesApi(kind), back, backLabel });
+}
+
+async function detail(root, id, { kind, category, everyone, lookup, api, back: backHref = null, backLabel = null }) {
+  const back = backHref ?? (category ? `#/${kindOf(kind).section}/${category.tab}` : `#/${kindOf(kind).section}`);
+  const allLabel = backLabel ?? `All ${titleOf(kind, category)}`;
   let e;
   try {
     e = await api.get(id);
   } catch (err) {
     root.replaceChildren(el('article', { class: 'tp-frame tp-panel app-placeholder' },
       el('div', { class: 'tp-panel__body' }, el('p', { class: 'tp-h3' }, 'Not found'), el('p', { class: 'tp-muted' }, err.message),
-        el('a', { class: 'tp-frame tp-btn', href: back }, `All ${titleOf(kind, category)}`))));
+        el('a', { class: 'tp-frame tp-btn', href: back }, allLabel))));
     return {};
   }
   // Its category says it lives on another tab (e.g. it was moved): go there.
@@ -132,7 +146,7 @@ async function detail(root, id, { kind, category, everyone, lookup, api }) {
     root.replaceChildren(
       el('div', { class: 'cv' },
         el('div', { class: 'cv-bar' },
-          el('a', { class: 'app-link', href: back }, `← All ${titleOf(kind, category)}`),
+          el('a', { class: 'app-link', href: back }, `← ${allLabel}`),
           el('span', { class: 'app-actions' },
             seg,
             editing ? null : pushButton('Push', () => push({ mode: 'entity', id: e.id }), { title: 'Show this entry on the player screen, as the Player view shows it' }),

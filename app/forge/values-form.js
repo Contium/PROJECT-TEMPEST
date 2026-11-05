@@ -30,7 +30,7 @@ const PARENT_FILTERS = {
 };
 const isCharacter = (c) => c.kind === 'characters';
 // Pickers mark entries that aren't characters: "(story)", "(item)".
-const kindTag = (c) => ({ stories: ' (story)', items: ' (item)' })[c.kind] ?? '';
+const kindTag = (c) => ({ stories: ' (story)', items: ' (item)', netcards: ' (net card)' })[c.kind] ?? '';
 
 export function valuesForm({ sheet, state, candidates = [], selfId = null, onChange = () => {} }) {
   const node = el('div', { class: 'vf' });
@@ -81,6 +81,8 @@ export function valuesForm({ sheet, state, candidates = [], selfId = null, onCha
       case 'stat':
       case 'rarity':
         return statEditor(f);
+      case 'statblock':
+        return blockEditor(f);
       case 'date':
         return dateEditor(f);
       case 'cast':
@@ -314,6 +316,23 @@ export function valuesForm({ sheet, state, candidates = [], selfId = null, onCha
       f.stat === 'flex' ? el('span', { class: 'tp-dim vf-hint' }, 'may go past the limit') : null);
   }
 
+  /** A Stat Block: one small box per stat, named above it. */
+  function blockEditor(f) {
+    const v = state.values[f.id] ?? f.default ?? {};
+    return el('span', { class: 'vf-block' },
+      f.stats.map((st) => el('label', { class: 'vf-block__stat' },
+        el('span', { class: 'tp-label' }, st.label),
+        el('input', {
+          class: 'tp-input vf-block__input', value: v[st.id] ?? '', maxlength: 12, 'data-key': `v:${f.id}:${st.id}`, 'aria-label': `${f.label}: ${st.label}`,
+          onInput: (e) => {
+            const cur = { ...(state.values[f.id] ?? f.default ?? {}) };
+            if (e.target.value.trim()) cur[st.id] = e.target.value;
+            else delete cur[st.id];
+            setValue(f.id, cur);
+          },
+        }))));
+  }
+
   // --- per-field extras: player text, references ---------------------------------------------
 
   function shownEditor(f) {
@@ -371,14 +390,36 @@ export function valuesForm({ sheet, state, candidates = [], selfId = null, onCha
         f.references ? refsEditor(f) : null));
   }
 
+  // Sections fold away (<details>), so a long sheet's form stays short; long sheets
+  // (more than FOLD_OVER sections) start folded. What's open survives redraws.
+  const FOLD_OVER = 5;
+  let open = null; // ids of the open sections; null until the first draw
+
   function draw() {
     const fields = sheet.fields;
+    if (!open) open = new Set(sheet.layout.sections.length > FOLD_OVER ? [] : sheet.layout.sections.map((s) => s.id));
+    const many = sheet.layout.sections.length > 1;
+    const setAll = (on) => {
+      open = new Set(on ? sheet.layout.sections.map((s) => s.id) : []);
+      draw();
+    };
     node.replaceChildren(...[
       el('div', { class: 'vf-group' }, [...defaultIdsOf(sheet), ...sheet.layout.main].map((id) => row(fields[id]))),
-      sheet.layout.sections.map((s) =>
-        el('div', { class: 'vf-group' },
-          el('h3', { class: 'tp-label vf-group__title' }, s.title || 'Untitled section'),
-          s.columns.flat().map((id) => row(fields[id])))),
+      many
+        ? el('div', { class: 'vf-folds' },
+          el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', onClick: () => setAll(true) }, 'Open all sections'),
+          el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', onClick: () => setAll(false) }, 'Close all'))
+        : null,
+      sheet.layout.sections.map((s) => {
+        const ids = s.columns.flat();
+        const details = el('details', { class: 'vf-group vf-fold', open: open.has(s.id) || !many },
+          el('summary', { class: 'vf-fold__head' },
+            el('span', { class: 'tp-label vf-group__title' }, s.title || 'Untitled section'),
+            el('span', { class: 'tp-dim vf-fold__count' }, `${ids.length} field${ids.length === 1 ? '' : 's'}`)),
+          ids.map((id) => row(fields[id])));
+        details.addEventListener('toggle', () => (details.open ? open.add(s.id) : open.delete(s.id)));
+        return details;
+      }),
     ].flat().filter(Boolean));
   }
 

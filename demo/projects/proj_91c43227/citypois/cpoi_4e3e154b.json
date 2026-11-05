@@ -1,0 +1,15 @@
+{
+  "id": "cpoi_4e3e154b",
+  "city": "nightcity",
+  "name": "Kabuki Night Market",
+  "icon": "shop",
+  "x": 0.5075,
+  "y": 0.3295,
+  "district": "kabuki",
+  "description": "Stalls under tarps and neon. Anything is for sale, briefly.",
+  "revealed": true,
+  "refs": [],
+  "maps": [],
+  "createdAt": "2026-11-04T21:37:38.648Z",
+  "updatedAt": "2026-11-04T21:37:38.648Z"
+}

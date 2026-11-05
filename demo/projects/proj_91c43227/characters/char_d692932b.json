@@ -1,0 +1,873 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "characters",
+  "id": "char_d692932b",
+  "name": "The Tin Man",
+  "category": "monster",
+  "presetId": "preset_09b03704",
+  "presetName": "Cyberpunk RED Character",
+  "sheet": {
+    "kind": "characters",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Category",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "npc"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Primary Image",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Name",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "species": {
+        "id": "species",
+        "type": "text",
+        "label": "Species",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "size": {
+        "id": "size",
+        "type": "size",
+        "label": "Size",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Medium"
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "f_0f1fa419": {
+        "id": "f_0f1fa419",
+        "type": "longtext",
+        "label": "Role & Reputation",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_c46c35bc": {
+        "id": "f_c46c35bc",
+        "type": "stat",
+        "label": "INT",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "f_d056c40a": {
+        "id": "f_d056c40a",
+        "type": "stat",
+        "label": "REF",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "f_680ac7c5": {
+        "id": "f_680ac7c5",
+        "type": "stat",
+        "label": "DEX",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "f_ea8d4bcc": {
+        "id": "f_ea8d4bcc",
+        "type": "stat",
+        "label": "TECH",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "f_e7ae30fc": {
+        "id": "f_e7ae30fc",
+        "type": "stat",
+        "label": "COOL",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "f_38973e6f": {
+        "id": "f_38973e6f",
+        "type": "stat",
+        "label": "WILL",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "f_dfe343d9": {
+        "id": "f_dfe343d9",
+        "type": "stat",
+        "label": "LUCK",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "f_fec0ed33": {
+        "id": "f_fec0ed33",
+        "type": "stat",
+        "label": "MOVE",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "f_35508685": {
+        "id": "f_35508685",
+        "type": "stat",
+        "label": "BODY",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "f_c423747b": {
+        "id": "f_c423747b",
+        "type": "stat",
+        "label": "EMP",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "f_012cc8c7": {
+        "id": "f_012cc8c7",
+        "type": "stat",
+        "label": "Hit Points",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "pool",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 40,
+          "max": 40
+        }
+      },
+      "f_bcb11b58": {
+        "id": "f_bcb11b58",
+        "type": "stat",
+        "label": "Humanity",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "flex",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 50,
+          "max": 50
+        }
+      },
+      "f_e269ce5c": {
+        "id": "f_e269ce5c",
+        "type": "longtext",
+        "label": "Weapons",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_0c24089e": {
+        "id": "f_0c24089e",
+        "type": "longtext",
+        "label": "Armor",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_4f726d8c": {
+        "id": "f_4f726d8c",
+        "type": "longtext",
+        "label": "Cyberware",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_5ba6d046": {
+        "id": "f_5ba6d046",
+        "type": "longtext",
+        "label": "Background",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_a8e0a725": {
+        "id": "f_a8e0a725",
+        "type": "longtext",
+        "label": "Secret",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": true,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [
+        "f_0f1fa419"
+      ],
+      "sections": [
+        {
+          "id": "s_518a8a07",
+          "title": "Stats",
+          "layout": "columns",
+          "columns": [
+            [
+              "f_c46c35bc",
+              "f_d056c40a",
+              "f_680ac7c5"
+            ],
+            [
+              "f_ea8d4bcc",
+              "f_e7ae30fc",
+              "f_38973e6f"
+            ],
+            [
+              "f_dfe343d9",
+              "f_fec0ed33",
+              "f_35508685",
+              "f_c423747b"
+            ]
+          ]
+        },
+        {
+          "id": "s_67cd07af",
+          "title": "Condition",
+          "layout": "columns",
+          "columns": [
+            [
+              "f_012cc8c7"
+            ],
+            [
+              "f_bcb11b58"
+            ]
+          ]
+        },
+        {
+          "id": "s_c98ed3df",
+          "title": "Loadout",
+          "layout": "columns",
+          "columns": [
+            [
+              "f_e269ce5c"
+            ],
+            [
+              "f_0c24089e"
+            ],
+            [
+              "f_4f726d8c"
+            ]
+          ]
+        },
+        {
+          "id": "s_d814dc31",
+          "title": "Notes",
+          "layout": "columns",
+          "columns": [
+            [
+              "f_5ba6d046"
+            ],
+            [
+              "f_a8e0a725"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "values": {
+    "category": "monster",
+    "name": "The Tin Man",
+    "species": "Human",
+    "size": "Medium",
+    "summary": "A cyberpsycho stalking Watson's rooftops. More metal than man.",
+    "f_0f1fa419": "Cyberpsycho. MAX-TAC Priority One.",
+    "f_c46c35bc": {
+      "value": 4
+    },
+    "f_d056c40a": {
+      "value": 8
+    },
+    "f_680ac7c5": {
+      "value": 8
+    },
+    "f_ea8d4bcc": {
+      "value": 3
+    },
+    "f_e7ae30fc": {
+      "value": 2
+    },
+    "f_38973e6f": {
+      "value": 8
+    },
+    "f_dfe343d9": {
+      "value": 3
+    },
+    "f_fec0ed33": {
+      "value": 8
+    },
+    "f_35508685": {
+      "value": 10
+    },
+    "f_c423747b": {
+      "value": 1
+    },
+    "f_012cc8c7": {
+      "value": 55,
+      "max": 55
+    },
+    "f_bcb11b58": {
+      "value": 0,
+      "max": 10
+    },
+    "f_e269ce5c": "Mantis Blades (x2) · 3d6\nPopup Heavy SMG · 3d6, Autofire 3",
+    "f_0c24089e": "Subdermal Armor and plating, SP 15",
+    "f_4f726d8c": "Full Borg chassis (partial)\nMantis Blades, Popup Heavy SMG, Sandevistan, Grafted Muscle and Bone Lace, Cybereyes with Targeting Scope",
+    "f_5ba6d046": "Once a Halcyon Biotics security guard named Owen Tamsin. Halcyon's \"Patient Zero\" trial pushed him over the edge.",
+    "f_a8e0a725": "His implants still broadcast on a Halcyon research frequency. Someone is watching through his eyes."
+  },
+  "shown": {},
+  "refs": {},
+  "createdAt": "2026-11-04T21:37:38.542Z",
+  "updatedAt": "2026-11-04T21:37:38.542Z"
+}

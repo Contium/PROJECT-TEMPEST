@@ -1,0 +1,144 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "netcards",
+  "id": "ncard_5ee10021",
+  "name": "Imp",
+  "category": "demon",
+  "presetId": "preset-cpr-demon",
+  "presetName": "Cyberpunk RED: Demon",
+  "sheet": {
+    "kind": "netcards",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Type",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "demon"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Primary Image",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Name",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "dv": {
+        "id": "dv",
+        "type": "text",
+        "label": "DV",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "demon_stats": {
+        "id": "demon_stats",
+        "type": "statblock",
+        "label": "Stats",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stats": [
+          {
+            "id": "rez",
+            "label": "REZ"
+          },
+          {
+            "id": "interface",
+            "label": "Interface"
+          },
+          {
+            "id": "net_actions",
+            "label": "NET Actions"
+          },
+          {
+            "id": "combat",
+            "label": "Combat #"
+          }
+        ],
+        "default": {}
+      },
+      "effect": {
+        "id": "effect",
+        "type": "longtext",
+        "label": "Effect",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [
+        "demon_stats",
+        "effect"
+      ],
+      "sections": []
+    }
+  },
+  "values": {
+    "category": "demon",
+    "name": "Imp",
+    "summary": "A small Demon that keeps a small architecture running.",
+    "demon_stats": {
+      "rez": "15",
+      "interface": "3",
+      "net_actions": "2",
+      "combat": "14"
+    },
+    "effect": "Runs the architecture's Black ICE and defends its floors; it acts on its own NET Actions."
+  },
+  "shown": {},
+  "refs": {},
+  "createdAt": "2026-11-04T23:00:00.000Z",
+  "updatedAt": "2026-11-04T23:00:00.000Z"
+}

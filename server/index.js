@@ -11,21 +11,25 @@ const { createProjectLibrary, handleProjects } = require('./projects');
 const { createDisplay, handleDisplay } = require('./display');
 const { createLan, handleLan } = require('./lan');
 const { handlePacks } = require('./packs');
+const { installDemos } = require('./demo');
 
 const { ROOT, PORT, HOST } = P;
 const THEMES_DIR = path.join(ROOT, 'themes');
 const VERSION = require('../package.json').version;
 const ALLOWED_HOSTS = new Set([`127.0.0.1:${PORT}`, `localhost:${PORT}`]);
 // v1 keeps its data apart from v0's universes, which stay untouched in DATA_DIR/universes.
-// Everything the user makes lives in a project (server/projects.js).
+// Everything the user makes lives in a project (server/projects.js). The shipped
+// demo campaign joins them the first time (server/demo.js).
+installDemos({ root: ROOT, v1Dir: path.join(P.DATA_DIR, 'v1') });
 const projects = createProjectLibrary(path.join(P.DATA_DIR, 'v1'));
 // What the player screen shows: the GM's last push (server/display.js).
 const display = createDisplay(path.join(P.DATA_DIR, 'v1', 'display.json'), projects);
 // The player screen on the local network, when the GM shares it (server/lan.js).
 const lan = createLan({ file: path.join(P.DATA_DIR, 'v1', 'lan.json'), port: P.LAN_PORT, host: process.env.TEMPEST_LAN_HOST || '0.0.0.0', serveStatic: (req, res, p) => serveStatic(req, res, p), listThemes: () => listThemes(), display, library: projects });
 // Folders in the project that are never served (old versions, reference PDFs, built
-// binaries), and the standalone binary itself when TEMPEST runs from one.
-const PRIVATE_DIRS = ['Archived', 'official_references', 'test', 'server', 'launcher', 'dist', 'tempest.exe', 'tempest'];
+// binaries, the demo campaign's GM-only files), and the standalone binary itself
+// when TEMPEST runs from one.
+const PRIVATE_DIRS = ['Archived', 'official_references', 'test', 'server', 'launcher', 'dist', 'demo', 'tempest.exe', 'tempest'];
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',

@@ -90,6 +90,10 @@
   /* Effects */
   --tp-glow: none;
   --tp-glow-interactive: none;
+  /* The body diagram's dark art, turned into ink on parchment */
+  --tp-figure-blend: multiply;
+  --tp-figure-filter: invert(1) hue-rotate(180deg) sepia(0.45) saturate(0.7);
+  --tp-figure-opacity: 0.8;
   --tp-focus-ring: 0 0 0 2px var(--mt-vellum), 0 0 0 3.5px var(--mt-blue);
   --tp-meter-seg: 999px; /* solid bars, like the character sheet's stats */
   --tp-meter-gap: 0px;

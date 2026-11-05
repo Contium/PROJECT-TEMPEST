@@ -1,0 +1,234 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "items",
+  "id": "item_d44186f4",
+  "name": "\"Zero Day\" Cyberdeck",
+  "presetId": "preset_5da2c279",
+  "presetName": "Gear",
+  "sheet": {
+    "kind": "items",
+    "fields": {
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Primary Image",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Name",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "itemtype": {
+        "id": "itemtype",
+        "type": "text",
+        "label": "Item Type",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "rarity": {
+        "id": "rarity",
+        "type": "rarity",
+        "label": "Rarity",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "rarity",
+        "rarities": [
+          {
+            "id": "very_common",
+            "name": "Very Common",
+            "color": "#8a8f98",
+            "style": "plain"
+          },
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#c8ccd2",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "super_rare",
+            "name": "Super Rare",
+            "color": "#22c3d6",
+            "style": "glow"
+          },
+          {
+            "id": "exotic",
+            "name": "Exotic",
+            "color": "#e0569a",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          },
+          {
+            "id": "fabled",
+            "name": "Fabled",
+            "color": "#a259ff",
+            "style": "shimmer"
+          },
+          {
+            "id": "mythic",
+            "name": "Mythic",
+            "color": "#ff4d4d",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "rarity": "very_common"
+        }
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "f_e4fdec85": {
+        "id": "f_e4fdec85",
+        "type": "stat",
+        "label": "Cost (eb)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 100
+        }
+      },
+      "f_205b3c2c": {
+        "id": "f_205b3c2c",
+        "type": "longtext",
+        "label": "Game Stats",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_ef26d02e": {
+        "id": "f_ef26d02e",
+        "type": "longtext",
+        "label": "Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [
+        "f_e4fdec85",
+        "f_205b3c2c",
+        "f_ef26d02e"
+      ],
+      "sections": []
+    }
+  },
+  "values": {
+    "name": "\"Zero Day\" Cyberdeck",
+    "itemtype": "Cyberdeck",
+    "rarity": {
+      "rarity": "rare"
+    },
+    "summary": "Overclock's deck: a cheap shell around excellent code.",
+    "f_e4fdec85": {
+      "value": 1000
+    },
+    "f_205b3c2c": "7 program slots. +1 to Backdoor checks against Halcyon architectures (he has their source).",
+    "f_ef26d02e": "Wrapped in stickers from bands that broke up before Dez was born."
+  },
+  "shown": {},
+  "refs": {},
+  "createdAt": "2026-11-04T21:37:38.587Z",
+  "updatedAt": "2026-11-04T21:37:38.587Z"
+}

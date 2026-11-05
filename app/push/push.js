@@ -38,14 +38,15 @@ export const targetLabel = (to = target) => (to === 'all' ? 'every screen' : to.
 /**
  * Push a view; a project-scoped one gets the open project. Goes to the screens picked in
  * the top bar unless `to` says otherwise. Toasts what went up, with Clear to take it down.
- * Resolves to the display, or null if it failed.
+ * Resolves to the display, or null if it failed. `quiet` skips the toast (updates the GM
+ * makes again and again, like revealing a network node by node).
  */
-export async function push(request, { to = target } = {}) {
+export async function push(request, { to = target, quiet = false } = {}) {
   try {
     const scoped = request.mode === 'message' || request.mode === 'ambient' ? request : { project: currentProjectId(), ...request };
     const shown = await display.push({ ...scoped, theme: theme(), to });
     const who = to === 'all' ? '' : ` for ${targetLabel(to)}`;
-    if (shown.mode !== 'ambient') toast(`On screen${who}: ${shown.title}`, { tone: 'success', action: { label: 'Clear', run: () => clear({ to }) } });
+    if (shown.mode !== 'ambient' && !quiet) toast(`On screen${who}: ${shown.title}`, { tone: 'success', action: { label: 'Clear', run: () => clear({ to }) } });
     return shown;
   } catch (err) {
     toastError(err);

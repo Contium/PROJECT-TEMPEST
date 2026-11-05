@@ -11,7 +11,7 @@
 // GM view shows everything, marks Shown/Rumored fields, and lists GM-only references.
 
 import { el } from '../ui.js';
-import { PARENT_TYPES, STAT_KINDS, categoriesOf, kindOf, formatDate } from './preset-model.js';
+import { PARENT_TYPES, STAT_KINDS, BODY_ZONES, categoriesOf, kindOf, formatDate } from './preset-model.js';
 
 /**
  * renderSheet(sheet, { view: 'gm' | 'player', values?, shown?, refs?, lookup?, imageUrl?, pushImage?, preview? })
@@ -42,10 +42,34 @@ export function renderSheet(preset, opts = {}) {
         block(f('summary'), ctx)),
       extra.length ? el('div', { class: 'sheet__main-extra' }, extra) : null),
     preset.layout.sections.map((s) =>
-      el('section', { class: 'sheet__section' },
+      el('section', { class: `sheet__section ${s.layout === 'body' ? 'sheet__section--body' : ''}` },
         s.title ? el('h3', { class: 'tp-h3 sheet__section-title' }, s.title) : null,
-        el('div', { class: `sheet__columns sheet__columns--${s.columns.length}` },
-          s.columns.map((col) => el('div', { class: 'sheet__column' }, col.map((id) => block(f(id), ctx))))))));
+        s.layout === 'body'
+          ? bodyDiagram(s, f, ctx)
+          : el('div', { class: `sheet__columns sheet__columns--${s.columns.length}` },
+            s.columns.map((col) => el('div', { class: 'sheet__column' }, col.map((id) => block(f(id), ctx))))))));
+}
+
+/** The figure art behind a body diagram (app/forge/art/). */
+export const BODY_ART = '/app/forge/art/body-figure.webp';
+
+/**
+ * A body diagram: the figure in the middle, its zones' fields as boxes in front
+ * of it (above the head, either side, over the hips), and the 'beside' zone as a
+ * list next to it. Narrow sheets stack everything under a smaller figure.
+ */
+function bodyDiagram(section, f, ctx) {
+  const zone = (i) => {
+    const id = BODY_ZONES[i].id;
+    const fields = section.columns[i].map((fid) => block(f(fid), ctx)).filter(Boolean);
+    return fields.length || ctx.preview ? el('div', { class: `sheet__zone sheet__zone--${id}`, 'data-zone': id }, fields) : null;
+  };
+  return el('div', { class: 'sheet__body' },
+    el('div', { class: 'sheet__figure' },
+      el('div', { class: 'sheet__figure-stage', 'aria-hidden': 'true' },
+        el('img', { class: 'sheet__figure-art', src: BODY_ART, alt: '', loading: 'lazy', draggable: 'false' })),
+      zone(0), zone(1), zone(2), zone(3)),
+    zone(4));
 }
 
 const valueOf = (field, ctx) => (field.id in ctx.values ? ctx.values[field.id] : field.default);
@@ -130,9 +154,18 @@ function contents(field, value, ctx, as) {
     case 'stat':
     case 'rarity':
       return stat(field, value);
+    case 'statblock':
+      return statBlock(field, value);
     default:
       return empty();
   }
+}
+
+/** A Stat Block: the stats' names in a row, their values under them, as a rulebook prints them. */
+export function statBlock(field, v) {
+  return el('table', { class: 'sheet__block' },
+    el('thead', {}, el('tr', {}, field.stats.map((s) => el('th', { scope: 'col' }, s.label)))),
+    el('tbody', {}, el('tr', {}, field.stats.map((s) => el('td', { class: 'tp-mono' }, v?.[s.id] ?? '—')))));
 }
 
 function picture(assetId, ctx, cls, alt, set) {

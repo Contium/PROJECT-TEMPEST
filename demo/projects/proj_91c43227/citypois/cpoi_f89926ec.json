@@ -1,0 +1,20 @@
+{
+  "id": "cpoi_f89926ec",
+  "city": "nightcity",
+  "name": "Mama Ndiaye's Noodle Bar",
+  "icon": "contact",
+  "x": 0.5135,
+  "y": 0.3215,
+  "district": "kabuki",
+  "description": "Six stools, one pot, and the best job board in Kabuki.",
+  "revealed": true,
+  "refs": [
+    {
+      "id": "char_652e9dae",
+      "note": "Owner"
+    }
+  ],
+  "maps": [],
+  "createdAt": "2026-11-04T21:37:38.627Z",
+  "updatedAt": "2026-11-04T21:37:38.627Z"
+}

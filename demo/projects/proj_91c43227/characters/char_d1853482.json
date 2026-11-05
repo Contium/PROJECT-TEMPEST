@@ -1,0 +1,135 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "characters",
+  "id": "char_d1853482",
+  "name": "Wakako Okada",
+  "category": "npc",
+  "presetId": "preset_5df8ecff",
+  "presetName": "New character preset",
+  "sheet": {
+    "kind": "characters",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Category",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "npc"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Primary Image",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Name",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "species": {
+        "id": "species",
+        "type": "text",
+        "label": "Species",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "size": {
+        "id": "size",
+        "type": "size",
+        "label": "Size",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Medium"
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "f_b26f7553": {
+        "id": "f_b26f7553",
+        "type": "longtext",
+        "label": "Notes",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_453991ea": {
+        "id": "f_453991ea",
+        "type": "parent",
+        "label": "Founder:",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "parentType": "character"
+      }
+    },
+    "layout": {
+      "main": [
+        "f_b26f7553",
+        "f_453991ea"
+      ],
+      "sections": []
+    }
+  },
+  "values": {
+    "category": "npc",
+    "image": "img_6a77b7d5cbd89bf2d620ed65",
+    "name": "Wakako Okada",
+    "species": "Human",
+    "size": "Medium",
+    "f_b26f7553": ""
+  },
+  "shown": {},
+  "refs": {},
+  "createdAt": "2026-11-03T22:45:27.621Z",
+  "updatedAt": "2026-11-03T22:45:27.621Z"
+}

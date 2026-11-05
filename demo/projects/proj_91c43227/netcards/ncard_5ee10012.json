@@ -1,0 +1,183 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "netcards",
+  "id": "ncard_5ee10012",
+  "name": "Liche",
+  "category": "ice",
+  "presetId": "preset-cpr-black-ice",
+  "presetName": "Cyberpunk RED: Black ICE",
+  "sheet": {
+    "kind": "netcards",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Type",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "ice"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Primary Image",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Name",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "dv": {
+        "id": "dv",
+        "type": "text",
+        "label": "DV",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "ice_class": {
+        "id": "ice_class",
+        "type": "stat",
+        "label": "Class",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "rarity",
+        "rarities": [
+          {
+            "id": "anti_personnel",
+            "name": "Anti-Personnel",
+            "color": "#ff4d4d",
+            "style": "glow"
+          },
+          {
+            "id": "anti_program",
+            "name": "Anti-Program",
+            "color": "#22c3d6",
+            "style": "glow"
+          }
+        ],
+        "default": {
+          "rarity": "anti_personnel"
+        }
+      },
+      "ice_stats": {
+        "id": "ice_stats",
+        "type": "statblock",
+        "label": "Stats",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stats": [
+          {
+            "id": "per",
+            "label": "PER"
+          },
+          {
+            "id": "spd",
+            "label": "SPD"
+          },
+          {
+            "id": "atk",
+            "label": "ATK"
+          },
+          {
+            "id": "def",
+            "label": "DEF"
+          },
+          {
+            "id": "rez",
+            "label": "REZ"
+          }
+        ],
+        "default": {}
+      },
+      "effect": {
+        "id": "effect",
+        "type": "longtext",
+        "label": "Effect",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [
+        "ice_class",
+        "ice_stats",
+        "effect"
+      ],
+      "sections": []
+    }
+  },
+  "values": {
+    "category": "ice",
+    "name": "Liche",
+    "summary": "Scrambles the mind behind the deck.",
+    "ice_class": {
+      "rarity": "anti_personnel"
+    },
+    "ice_stats": {
+      "per": "8",
+      "spd": "2",
+      "atk": "6",
+      "def": "2",
+      "rez": "25"
+    },
+    "effect": "A hit leaves the Netrunner's INT, REF and DEX lowered for about an hour."
+  },
+  "shown": {},
+  "refs": {},
+  "createdAt": "2026-11-04T23:00:00.000Z",
+  "updatedAt": "2026-11-04T23:00:00.000Z"
+}

@@ -19,10 +19,11 @@
 //   citymap   { project, city, layer, district }           a City Map with its revealed POIs, a district lit
 //   citypoi   { project, city, id }                        one City Map POI (revealed only)
 //   article   { project, id }                              a screamsheet (revealed only), as printed
+//   network   { project, id, focus }                       a NET architecture: its revealed nodes, one lit
 
 import { ENTITY_ID, ASSET_ID, KINDS, fieldsInOrder } from '../forge/preset-model.js';
 
-export const PUSH_MODES = ['ambient', 'message', 'entity', 'roster', 'handout', 'globe', 'poi', 'citymap', 'citypoi', 'article'];
+export const PUSH_MODES = ['ambient', 'message', 'entity', 'roster', 'handout', 'globe', 'poi', 'citymap', 'citypoi', 'article', 'network'];
 export const TONES = [
   { id: 'info', label: 'Info' },
   { id: 'success', label: 'Good news' },
@@ -35,9 +36,11 @@ const THEME_ID = /^[a-z0-9][a-z0-9_-]{0,63}$/;
 const GLOBE_POI = /^(poi_[0-9a-f]{8}|unique_[a-z0-9_]+)$/;
 const CITY_POI = /^cpoi_[0-9a-f]{8}$/;
 const SCREAMSHEET = /^ss_[0-9a-f]{8}$/;
+const NETWORK = /^net_[0-9a-f]{8}$/;
+const NET_NODE = /^n[0-9a-f]{6}$/;
 
 /** The animation family the themes key on (data-push-kind on the player screen). */
-export const pushKind = (mode) => ({ entity: 'entity', poi: 'entity', citypoi: 'entity', roster: 'roster', handout: 'handout', message: 'message', globe: 'map', citymap: 'map', article: 'article' })[mode] ?? 'ambient';
+export const pushKind = (mode) => ({ entity: 'entity', poi: 'entity', citypoi: 'entity', roster: 'roster', handout: 'handout', message: 'message', globe: 'map', citymap: 'map', network: 'map', article: 'article' })[mode] ?? 'ambient';
 
 export class PushError extends Error {
   constructor(message, status = 400) {
@@ -85,6 +88,9 @@ export function normalizePushRequest(input) {
     case 'article':
       if (!SCREAMSHEET.test(input.id ?? '')) throw new PushError('No such screamsheet', 404);
       return { ...out, id: input.id };
+    case 'network':
+      if (!NETWORK.test(input.id ?? '')) throw new PushError('No such network', 404);
+      return { ...out, id: input.id, focus: NET_NODE.test(input.focus ?? '') ? input.focus : null };
     case 'poi':
       if (!GLOBE_POI.test(input.id ?? '')) throw new PushError('No such point of interest', 404);
       return { ...out, id: input.id };

@@ -1,0 +1,285 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "stories",
+  "id": "story_a6fe0f1c",
+  "name": "Kabuki Night Market Blackout",
+  "category": "event",
+  "presetId": "preset_e8478d5a",
+  "presetName": "Gig / Story",
+  "sheet": {
+    "kind": "stories",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Type",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "event"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Primary Image",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Title",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "start": {
+        "id": "start",
+        "type": "date",
+        "label": "Start",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "end": {
+        "id": "end",
+        "type": "date",
+        "label": "End",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "f_bf5aae98": {
+        "id": "f_bf5aae98",
+        "type": "parent",
+        "label": "Leads to",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "parentType": "story"
+      },
+      "f_5614b4d0": {
+        "id": "f_5614b4d0",
+        "type": "longtext",
+        "label": "The Job",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_01a830e7": {
+        "id": "f_01a830e7",
+        "type": "location",
+        "label": "Where",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "mode": "obscure"
+      },
+      "f_69f9405f": {
+        "id": "f_69f9405f",
+        "type": "cast",
+        "label": "Who's Involved",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "mode": "involved",
+        "sides": [
+          "Side A",
+          "Side B"
+        ]
+      },
+      "f_18599300": {
+        "id": "f_18599300",
+        "type": "stat",
+        "label": "Payout (eb)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "f_1b88e90a": {
+        "id": "f_1b88e90a",
+        "type": "longtext",
+        "label": "Complications",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_ebdb6fa6": {
+        "id": "f_ebdb6fa6",
+        "type": "longtext",
+        "label": "What's Really Going On",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": true,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [
+        "f_bf5aae98",
+        "f_5614b4d0",
+        "f_01a830e7",
+        "f_69f9405f",
+        "f_18599300"
+      ],
+      "sections": [
+        {
+          "id": "s_2d4be0b4",
+          "title": "GM Notes",
+          "columns": [
+            [
+              "f_1b88e90a"
+            ],
+            [
+              "f_ebdb6fa6"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "values": {
+    "category": "event",
+    "image": "img_027cdd5a99c88b7db38afdd8",
+    "name": "Kabuki Night Market Blackout",
+    "start": {
+      "y": 2045,
+      "m": 11,
+      "d": 5,
+      "time": "21:30"
+    },
+    "end": {
+      "y": 2045,
+      "m": 11,
+      "d": 5,
+      "time": "23:00"
+    },
+    "summary": "The grid drops across Kabuki for ninety minutes, and the night market turns into a free-for-all.",
+    "f_5614b4d0": "Every stall goes dark at once. Vendors with generators become kings, looters work the edges, and the Tyger Claws move in to \"keep order\" for a fee.",
+    "f_01a830e7": {
+      "text": "Kabuki night market, Watson"
+    },
+    "f_69f9405f": {
+      "people": [
+        {
+          "id": "char_a14f1dad",
+          "note": "His noodle bar is one of the few places with lights on"
+        },
+        {
+          "id": "char_65cc6cbc",
+          "note": "Seen running through the market with someone's cyberarm"
+        }
+      ]
+    },
+    "f_18599300": {
+      "value": 0
+    },
+    "f_1b88e90a": "A MAX-TAC AV circles overhead for the whole blackout but never lands.",
+    "f_ebdb6fa6": "The blackout was a cover for a data heist on a substation; Lt. Reyes's team was there to watch, not help."
+  },
+  "shown": {},
+  "refs": {},
+  "createdAt": "2026-11-04T02:55:40.464Z",
+  "updatedAt": "2026-11-04T02:58:44.721Z"
+}

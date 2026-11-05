@@ -1,0 +1,34 @@
+{
+  "id": "ss_34ba0108",
+  "headline": "The Plot Thickens! Rumors About shootout Continue to Grow!",
+  "body": "Lt. Mara \"Hammerhead\" Reyes continues to wow us! Their latest project may be their biggest achievement yet!\n\nWhile fans laud this new braindance as [Adjective], [Adjective], and even [Adjective], critics have had harsher words. Wakako Okada’s notoriously straightforward column even took a threatening turn. “If the Upper Marina cancel the premiere, maybe someone will do us a favor and blow up the freakin’ place before Lt. Mara \"Hammerhead\" Reyes can inflict any more of this crap on us,” Wakako Okada wrote.\n\nThe fan’s have just one question: Just what will Marcus \"Ledger\" Okonkwo do next?!",
+  "outlet": "Night City Today",
+  "byline": "",
+  "dateline": "",
+  "layout": "plain",
+  "revealed": true,
+  "selection": {
+    "typeId": "in-neon-lights",
+    "intro": 0,
+    "body": 1,
+    "conclusion": 4,
+    "headline": "NL4"
+  },
+  "values": {
+    "incident": "shootout",
+    "media type": "braindance",
+    "critic's name": "Wakako Okada",
+    "event type": "premiere",
+    "name 2": "Marcus \"Ledger\" Okonkwo",
+    "venue": "Upper Marina",
+    "name 1": "Lt. Mara \"Hammerhead\" Reyes"
+  },
+  "edited": false,
+  "mentions": [
+    "char_d1853482",
+    "char_a14f1dad",
+    "char_b91339e6"
+  ],
+  "createdAt": "2026-11-04T03:15:25.910Z",
+  "updatedAt": "2026-11-04T20:53:12.400Z"
+}

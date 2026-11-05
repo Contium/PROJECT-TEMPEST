@@ -25,15 +25,25 @@ import * as M from './preset-model.js';
 import { renderSheet, rarityBadge } from './sheet.js';
 import { valuesForm } from './values-form.js';
 import { forge, defaultValues, categoryOf, hrefOf, plural } from './entity-model.js';
+import { templatesFor } from './templates/index.js';
 
 // Kept per project: each project has its own draft and last-opened preset.
 const DRAFT_KEY = () => `tempest.${currentProjectId()}.forge.${KIND}.draft`;
 const LAST_KEY = () => `tempest.${currentProjectId()}.forge.${KIND}.last`;
 let KIND = 'characters'; // the kind being designed (set by mount)
-const TYPE_ICON = { rarity: '✦', category: '◈', image: '▣', text: 'T', size: '⇕', shorttext: '¶', date: '◷', parent: '↑', longtext: '≡', gallery: '▦', stat: '◧', cast: '⚔', location: '⌖' };
+const MODE_KEY = () => `tempest.forge.${KIND}.mode`;
+const MODES = [
+  { id: 'create', label: 'Create New', hint: 'Fill in a new entry from this preset, with the sheet beside the form' },
+  { id: 'design', label: 'Design', hint: 'Add, arrange and set up the preset\'s fields' },
+  { id: 'preview', label: 'Preview', hint: 'The whole sheet, as the GM or the players see it' },
+];
+/** Presets with more sections than this open with their sections folded. */
+const FOLD_OVER = 5;
+const TYPE_ICON = { rarity: '✦', category: '◈', image: '▣', text: 'T', size: '⇕', shorttext: '¶', date: '◷', parent: '↑', longtext: '≡', gallery: '▦', stat: '◧', statblock: '▤', cast: '⚔', location: '⌖' };
 
-export async function mount(root, { tab } = {}) {
-  KIND = ['stories', 'items'].includes(tab?.id) ? tab.id : 'characters';
+export async function mount(root, { tab, kind, onCreated = null } = {}) {
+  // The Forge's tabs name their kind; Combat › Netrunning › Card Forge passes kind: 'netcards'.
+  KIND = M.PRESET_KINDS.includes(kind) ? kind : ['stories', 'items'].includes(tab?.id) ? tab.id : 'characters';
   const api = presetsApi(KIND);
   const entities = entitiesApi(KIND);
   const NEW_NAME = `New ${M.kindOf(KIND).entity} preset`;
@@ -50,6 +60,10 @@ export async function mount(root, { tab } = {}) {
     // Create New: what's filled in so far. Untouched fields follow the preset's defaults.
     forging: null,
     people: [], // the project's entities of every kind, for Parent, References, Characters and Location pickers
+    // Which part of the page shows: 'create' (form + live preview), 'design' (builder + field settings)
+    // or 'preview' (the whole sheet). Remembered per kind.
+    mode: MODES.some((m) => m.id === store.get(MODE_KEY())) ? store.get(MODE_KEY()) : 'create',
+    collapsed: new Set(), // builder sections folded away (ids)
   };
   const freshForging = (preset) => ({ values: defaultValues(preset), shown: {}, refs: {}, touched: new Set() });
 
@@ -87,11 +101,15 @@ export async function mount(root, { tab } = {}) {
     s.selected = 'name';
     s.target = { area: 'main' };
     s.forging = freshForging(preset);
+    s.collapsed = foldedFor(preset);
     form = null;
     if (!isNew) store.set(LAST_KEY(), preset.id);
     persistDraft();
     renderAll();
   }
+
+  /** Long presets open with their sections folded, so the builder fits on a screen or two. */
+  const foldedFor = (preset) => new Set(preset.layout.sections.length > FOLD_OVER ? preset.layout.sections.map((x) => x.id) : []);
 
   async function refreshLibrary() {
     s.library = await api.list().catch((err) => (toastError(err), s.library));
@@ -135,6 +153,16 @@ export async function mount(root, { tab } = {}) {
   async function newPreset() {
     if (!(await canLeave())) return;
     load(M.newPreset(NEW_NAME, KIND), { isNew: true });
+  }
+
+  /** Start an unsaved preset from a ready-made template (app/forge/templates/). */
+  async function fromTemplate(templateId) {
+    const template = templatesFor(KIND).find((t) => t.id === templateId);
+    if (!template || !(await canLeave())) return renderToolbar();
+    const preset = template.build();
+    preset.id = M.newId('preset');
+    load(preset, { isNew: true });
+    toast(`Started from "${template.name}". Save it to keep it.`);
   }
 
   async function duplicate() {
@@ -210,20 +238,54 @@ export async function mount(root, { tab } = {}) {
   // --- layout -------------------------------------------------------------------------------
 
   const toolbar = el('div', { class: 'tp-frame tp-panel fd-toolbar' });
+  const modeBar = el('nav', { class: 'tp-tabs fd-modes', role: 'tablist', 'aria-label': 'The Forge' });
   const builder = el('div', { class: 'fd-builder' });
   const inspector = el('aside', { class: 'tp-frame tp-panel fd-inspector', 'aria-label': 'Field settings' });
   const preview = el('section', { class: 'tp-frame tp-panel fd-preview', 'aria-label': 'Preview' });
   const creator = el('section', { class: 'tp-frame tp-panel fd-create', 'aria-label': 'Create New' });
-  const page = el('div', { class: 'fd' }, toolbar, el('div', { class: 'fd-work' }, builder, inspector), preview, creator);
+  const work = el('div', { class: 'fd-work', role: 'tabpanel' }, builder, inspector);
+  const make = el('div', { class: 'fd-make', role: 'tabpanel' }, creator, preview);
+  const page = el('div', { class: 'fd' }, toolbar, modeBar, work, make);
   root.append(page);
   let form = null; // the Create New values form
 
   function renderAll() {
     renderToolbar();
+    renderModes();
     renderBuilder();
     renderInspector();
     renderCreator();
     renderPreview();
+  }
+
+  // --- modes: Create New · Design · Preview --------------------------------------------------
+
+  function setMode(mode) {
+    if (mode === s.mode) return;
+    s.mode = mode;
+    store.set(MODE_KEY(), mode);
+    renderModes();
+    page.scrollIntoView({ block: 'start' });
+  }
+
+  function renderModes() {
+    modeBar.replaceChildren(...MODES.map((m) =>
+      el('button', {
+        type: 'button', role: 'tab', class: 'tp-tab fd-modes__tab', title: m.hint,
+        'aria-selected': String(s.mode === m.id), tabindex: s.mode === m.id ? '0' : '-1',
+        onClick: () => setMode(m.id),
+        onKeydown: (e) => {
+          const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+          if (!step) return;
+          const next = MODES[(MODES.findIndex((x) => x.id === s.mode) + step + MODES.length) % MODES.length];
+          setMode(next.id);
+          modeBar.querySelector('[aria-selected="true"]')?.focus();
+        },
+      }, m.label)));
+    work.hidden = s.mode !== 'design';
+    make.hidden = s.mode === 'design';
+    creator.hidden = s.mode !== 'create';
+    make.classList.toggle('fd-make--preview', s.mode === 'preview');
   }
 
   // --- toolbar: library and file actions -----------------------------------------------------
@@ -246,6 +308,14 @@ export async function mount(root, { tab } = {}) {
         el('div', { class: 'app-actions fd-toolbar__actions' },
           el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--primary', onClick: save, disabled: !dirty() && !s.isNew, title: 'Save (Ctrl+S)' }, 'Save'),
           el('button', { type: 'button', class: 'tp-frame tp-btn', onClick: newPreset }, 'New'),
+          templatesFor(KIND).length
+            ? el('select', {
+              class: 'tp-select fd-toolbar__template', 'aria-label': 'Start a new preset from a template', title: 'Start a new preset from a ready-made template',
+              onChange: (e) => fromTemplate(e.target.value),
+            },
+            el('option', { value: '', selected: true }, 'New from template…'),
+            templatesFor(KIND).map((t) => el('option', { value: t.id, title: t.description }, t.name)))
+            : null,
           el('button', { type: 'button', class: 'tp-frame tp-btn', onClick: duplicate }, 'Duplicate'),
           el('button', { type: 'button', class: 'tp-frame tp-btn', onClick: importPreset, title: 'Load a preset from a .json file' }, 'Import'),
           el('button', { type: 'button', class: 'tp-frame tp-btn', onClick: exportPreset, title: 'Save this preset as a .json file to share or back up' }, 'Export'),
@@ -348,7 +418,7 @@ export async function mount(root, { tab } = {}) {
     const sec = s.preset.layout.sections.find((x) => x.id === t.section);
     if (!sec) return 'Main section';
     const name = sec.title || 'Untitled section';
-    return sec.columns.length > 1 ? `${name}, column ${t.column + 1}` : name;
+    return sec.layout === 'body' || sec.columns.length > 1 ? `${name}, ${M.columnLabel(sec, t.column).toLowerCase()}` : name;
   }
 
   function addField(type) {
@@ -364,6 +434,7 @@ export async function mount(root, { tab } = {}) {
     const out = attempt(() => M.addSection(s.preset, `Section ${s.preset.layout.sections.length + 1}`));
     if (!out) return;
     s.target = { area: 'section', section: out.id, column: 0 };
+    s.collapsed.delete(out.id);
     change(out.preset);
     builder.querySelector(`[data-section="${out.id}"] input`)?.select();
   }
@@ -372,6 +443,16 @@ export async function mount(root, { tab } = {}) {
     const f = s.preset.fields[id];
     change(M.removeField(s.preset, id));
     toast(`Removed "${f.label}"`);
+  }
+
+  function toggleFold(sectionId) {
+    if (!s.collapsed.delete(sectionId)) s.collapsed.add(sectionId);
+    renderBuilder();
+  }
+
+  function fold(all) {
+    s.collapsed = new Set(all ? s.preset.layout.sections.map((x) => x.id) : []);
+    renderBuilder();
   }
 
   async function removeSection(sec) {
@@ -390,20 +471,38 @@ export async function mount(root, { tab } = {}) {
           el('span', { class: 'tp-label' }, 'Add'),
           M.addableOf(KIND).map((a) => el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm', title: a.hint, onClick: () => addField(a.type) }, `+ ${a.label}`)),
           el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--interactive', title: 'A new lower section; split it into up to three columns', onClick: addSection }, '+ Section'),
-          el('span', { class: 'fd-palette__to tp-dim' }, 'to ', el('strong', {}, targetName(s.target)), ' · click a list to choose where'))),
+          el('span', { class: 'fd-palette__to tp-dim' }, 'to ', el('strong', {}, targetName(s.target)), ' · click a list to choose where'),
+          p.layout.sections.length
+            ? el('span', { class: 'fd-palette__fold' },
+              el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', onClick: () => fold(true), disabled: s.collapsed.size === p.layout.sections.length }, 'Fold all'),
+              el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', onClick: () => fold(false), disabled: !s.collapsed.size }, 'Unfold all'))
+            : null)),
       el('div', { class: 'tp-frame tp-panel fd-area fd-area--main' },
         el('header', { class: 'tp-panel__head' }, el('h2', { class: 'tp-panel__title' }, 'Main section'), el('span', { class: 'tp-dim' }, 'Always at the top')),
         el('div', { class: 'tp-panel__body' },
           el('ul', { class: 'fd-list fd-list--fixed' }, M.defaultIdsOf(KIND).map(chip)),
           dropList({ area: 'main' }, p.layout.main, 'Fields added here appear under the defaults.'))),
-      p.layout.sections.map((sec, i) =>
-        el('div', { class: 'tp-frame tp-panel fd-area', 'data-section': sec.id },
+      p.layout.sections.map((sec, i) => {
+        const folded = s.collapsed.has(sec.id);
+        const count = sec.columns.flat().length;
+        return el('div', { class: `tp-frame tp-panel fd-area ${folded ? 'is-folded' : ''}`, 'data-section': sec.id },
           el('header', { class: 'tp-panel__head fd-area__head' },
+            el('button', {
+              type: 'button', class: 'fd-icon-btn fd-area__fold', 'aria-expanded': String(!folded),
+              'aria-label': `${folded ? 'Unfold' : 'Fold'} ${sec.title || 'untitled section'}`, onClick: () => toggleFold(sec.id),
+            }, folded ? '▸' : '▾'),
             el('input', {
               class: 'tp-input fd-area__title', value: sec.title, placeholder: 'Untitled section', maxlength: 60, 'aria-label': 'Section title', 'data-key': `section:${sec.id}`,
               onInput: (e) => change(M.updateSection(s.preset, sec.id, { title: e.target.value })),
             }),
-            el('label', { class: 'fd-area__cols' },
+            folded ? el('button', { type: 'button', class: 'fd-area__count tp-dim', onClick: () => toggleFold(sec.id) }, `${count} field${count === 1 ? '' : 's'}${sec.layout === 'body' ? ' · body diagram' : ''}`) : null,
+            folded ? null : el('label', { class: 'fd-area__cols' },
+              el('span', { class: 'tp-label' }, 'Layout'),
+              el('select', {
+                class: 'tp-select fd-area__layout', 'aria-label': 'Section layout',
+                onChange: (e) => change(M.setSectionLayout(s.preset, sec.id, e.target.value)),
+              }, M.SECTION_LAYOUTS.map((l) => el('option', { value: l.id, selected: (sec.layout ?? 'columns') === l.id, title: l.hint }, l.label)))),
+            folded || sec.layout === 'body' ? null : el('label', { class: 'fd-area__cols' },
               el('span', { class: 'tp-label' }, 'Columns'),
               el('span', { class: 'fd-seg', role: 'group', 'aria-label': 'Columns' },
                 [1, 2, 3].map((n) => el('button', { type: 'button', class: `fd-seg__btn ${sec.columns.length === n ? 'is-on' : ''}`, 'aria-pressed': String(sec.columns.length === n), onClick: () => change(M.setColumns(s.preset, sec.id, n)) }, n)))),
@@ -411,8 +510,16 @@ export async function mount(root, { tab } = {}) {
               el('button', { type: 'button', class: 'fd-icon-btn', 'aria-label': 'Move section up', disabled: i === 0, onClick: () => change(M.moveSection(s.preset, sec.id, -1)) }, '▲'),
               el('button', { type: 'button', class: 'fd-icon-btn', 'aria-label': 'Move section down', disabled: i === p.layout.sections.length - 1, onClick: () => change(M.moveSection(s.preset, sec.id, 1)) }, '▼'),
               el('button', { type: 'button', class: 'fd-icon-btn fd-icon-btn--danger', 'aria-label': 'Remove section', onClick: () => removeSection(sec) }, '×'))),
-          el('div', { class: `tp-panel__body fd-columns fd-columns--${sec.columns.length}` },
-            sec.columns.map((col, c) => dropList({ area: 'section', section: sec.id, column: c }, col, sec.columns.length > 1 ? `Column ${c + 1}: drop or add fields` : 'Drop or add fields here'))))),
+          folded ? null
+          : sec.layout === 'body'
+            // The five zones, laid out roughly where they sit around the figure.
+            ? el('div', { class: 'tp-panel__body fd-body' },
+              M.BODY_ZONES.map((z, c) => el('div', { class: `fd-body__zone fd-body__zone--${z.id}` },
+                el('span', { class: 'tp-label' }, z.label),
+                dropList({ area: 'section', section: sec.id, column: c }, sec.columns[c], 'Drop or add fields here'))))
+            : el('div', { class: `tp-panel__body fd-columns fd-columns--${sec.columns.length}` },
+              sec.columns.map((col, c) => dropList({ area: 'section', section: sec.id, column: c }, col, sec.columns.length > 1 ? `Column ${c + 1}: drop or add fields` : 'Drop or add fields here'))));
+      }),
       p.layout.sections.length ? null : el('p', { class: 'tp-muted fd-hint' }, 'Add a Section for anything that belongs below the main section, such as stats, gear or lore.'),
     ].flat().filter(Boolean));
     restoreFocus(builder);
@@ -445,14 +552,18 @@ export async function mount(root, { tab } = {}) {
     const options = [{ value: 'main', label: 'Main section', target: { area: 'main' } }];
     for (const sec of s.preset.layout.sections) {
       sec.columns.forEach((_, c) => options.push({
-        value: `${sec.id}:${c}`, label: sec.columns.length > 1 ? `${sec.title || 'Untitled section'} › Column ${c + 1}` : sec.title || 'Untitled section',
+        value: `${sec.id}:${c}`, label: sec.layout === 'body' || sec.columns.length > 1 ? `${sec.title || 'Untitled section'} › ${M.columnLabel(sec, c)}` : sec.title || 'Untitled section',
         target: { area: 'section', section: sec.id, column: c },
       }));
     }
     const current = at.area === 'main' ? 'main' : `${at.section}:${at.column}`;
     return el('select', {
       class: 'tp-select', 'aria-label': 'Location',
-      onChange: (e) => change(M.moveField(s.preset, f.id, options.find((o) => o.value === e.target.value).target)),
+      onChange: (e) => {
+        const target = options.find((o) => o.value === e.target.value).target;
+        if (target.section) s.collapsed.delete(target.section); // show where the field went
+        change(M.moveField(s.preset, f.id, target));
+      },
     }, options.map((o) => el('option', { value: o.value, selected: o.value === current }, o.label)));
   }
 
@@ -486,9 +597,40 @@ export async function mount(root, { tab } = {}) {
           const next = stat === 'rarity' ? { rarity: f.rarities[0]?.id } : stat === 'fixed' ? { value: d.value ?? 0 } : { value: d.value ?? 10, max: d.max ?? 10 };
           set({ stat, default: next });
         })), f.stat === 'rarity' ? rarityEditor(f) : null];
+      case 'statblock':
+        return [blockStatsEditor(f)];
       default:
         return [];
     }
+  }
+
+  /** A Stat Block's stats: rename, reorder, add (up to 12) and remove. */
+  function blockStatsEditor(f) {
+    const now = () => s.preset.fields[f.id];
+    const rename = (i, label) => set({ stats: now().stats.map((x, j) => (j === i ? { ...x, label } : x)) }, { inspector: false });
+    const swap = (i, j) => {
+      const stats = [...now().stats];
+      [stats[i], stats[j]] = [stats[j], stats[i]];
+      set({ stats });
+    };
+    const removeAt = (i) => {
+      const cur = now();
+      const gone = cur.stats[i].id;
+      const { [gone]: _, ...rest } = cur.default ?? {};
+      set({ stats: cur.stats.filter((_, j) => j !== i), default: rest });
+    };
+    return el('div', { class: 'fd-sides' },
+      el('span', { class: 'tp-label' }, `Stats (${f.stats.length} of ${M.MAX_BLOCK_STATS})`),
+      f.stats.map((st, i) =>
+        el('div', { class: 'fd-inline' },
+          el('input', { class: 'tp-input', value: st.label, maxlength: 16, 'aria-label': `Stat ${i + 1} name`, 'data-key': `bstat:${i}`, onInput: (e) => rename(i, e.target.value) }),
+          el('button', { type: 'button', class: 'fd-icon-btn', 'aria-label': `Move ${st.label} left`, disabled: i === 0, onClick: () => swap(i, i - 1) }, '←'),
+          el('button', { type: 'button', class: 'fd-icon-btn', 'aria-label': `Move ${st.label} right`, disabled: i === f.stats.length - 1, onClick: () => swap(i, i + 1) }, '→'),
+          el('button', { type: 'button', class: 'fd-icon-btn fd-icon-btn--danger', 'aria-label': `Remove ${st.label}`, disabled: f.stats.length < 2, onClick: () => removeAt(i) }, '×'))),
+      f.stats.length < M.MAX_BLOCK_STATS
+        ? el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm', onClick: () => set({ stats: [...now().stats, M.newBlockStat(now())] }) }, '+ Stat')
+        : null,
+      el('span', { class: 'fd-field__hint tp-dim' }, 'Read left to right, like a rulebook stat line. Values are short text, so "4", "3d6" or "—" all fit.'));
   }
 
   /** Combat sides: 1–3, each with a starting name (renamable per story). */
@@ -552,7 +694,9 @@ export async function mount(root, { tab } = {}) {
       case 'category':
         return field('Default category', el('select', { class: 'tp-select', onChange: (e) => set({ default: e.target.value }) },
           M.categoriesOf(KIND).map((c) => el('option', { value: c.id, selected: d === c.id }, c.label))),
-        `Always set: it decides which ${KIND === 'stories' ? 'World' : 'Characters'} tab a ${ENTITY} made from this preset goes in`);
+        KIND === 'netcards'
+          ? `Always set: what kind of node a ${ENTITY} made from this preset is in a NET architecture`
+          : `Always set: it decides which ${KIND === 'stories' ? 'World' : 'Characters'} tab a ${ENTITY} made from this preset goes in`);
       case 'size':
         return field('Default size', el('select', { class: 'tp-select', onChange: (e) => set({ default: e.target.value }) }, M.SIZES.map((x) => el('option', { value: x, selected: d === x }, x))));
       case 'stat': {
@@ -562,6 +706,21 @@ export async function mount(root, { tab } = {}) {
             onChange: (e) => set({ default: { ...d, [key]: Number(e.target.value) || 0 } }) }));
         return field('Default value', el('div', { class: 'fd-inline' }, num('value', 'Value'), f.stat !== 'fixed' ? num('max', 'Limit') : null),
           f.stat === 'flex' ? 'A flexible pool can go beyond its limit' : f.stat === 'pool' ? 'A pool stays within 0 and its limit' : null);
+      }
+      case 'statblock': {
+        const cur = () => s.preset.fields[f.id].default ?? {};
+        return field('Default values', el('span', { class: 'vf-block' },
+          f.stats.map((st) => el('label', { class: 'vf-block__stat' },
+            el('span', { class: 'tp-label' }, st.label),
+            el('input', {
+              class: 'tp-input vf-block__input', value: d?.[st.id] ?? '', maxlength: M.MAX_STAT_TEXT, 'data-key': `default:${st.id}`,
+              onInput: (e) => {
+                const next = { ...cur() };
+                if (e.target.value.trim()) next[st.id] = e.target.value;
+                else delete next[st.id];
+                set({ default: next }, { inspector: false });
+              },
+            })))), `What each new ${ENTITY} starts with (optional)`);
       }
       default:
         return null;
@@ -624,7 +783,7 @@ export async function mount(root, { tab } = {}) {
     creator.replaceChildren(
       el('header', { class: 'tp-panel__head' },
         el('h2', { class: 'tp-panel__title' }, 'Create New'),
-        el('span', { class: 'tp-dim' }, `Fill in a ${ENTITY} from this preset; the preview above follows along.`)),
+        el('span', { class: 'tp-dim' }, `Fill in a ${ENTITY} from this preset; the sheet beside it follows along.`)),
       el('div', { class: 'tp-panel__body' },
         form.node,
         el('div', { class: 'fd-create__foot' },
@@ -644,10 +803,12 @@ export async function mount(root, { tab } = {}) {
       try {
         const made = await entities.create(character);
         // Characters and stories land on their category's tab; items in the one Items list.
-        const where = categoryOf(KIND, made.category);
-        toast(`Created "${made.name}" in ${where ? plural(where.label) : M.kindOf(KIND).label}`, {
+        // Net cards all land in the Card Forge's library.
+        const where = KIND === 'netcards' ? null : categoryOf(KIND, made.category);
+        toast(`Created "${made.name}" in ${where ? plural(where.label) : KIND === 'netcards' ? 'your net cards' : M.kindOf(KIND).label}`, {
           tone: 'success', timeout: 8000, link: { href: hrefOf(made), label: 'Open' },
         });
+        onCreated?.(made);
         await refreshPeople();
         s.forging = freshForging(s.preset);
         renderCreator();
@@ -727,6 +888,7 @@ export async function mount(root, { tab } = {}) {
     s.saved = draft.saved ?? '';
     s.isNew = Boolean(draft.isNew) || !s.library.some((p) => p.id === draft.preset.id);
     s.forging = freshForging(s.preset);
+    s.collapsed = foldedFor(s.preset);
     renderAll();
   } else {
     await openFirst(true);

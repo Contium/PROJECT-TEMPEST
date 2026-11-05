@@ -1,0 +1,5258 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "characters",
+  "id": "char_ce151765",
+  "name": "Sabine \"Patchwork\" Okoye",
+  "category": "player",
+  "presetId": "preset_9c17111f",
+  "presetName": "Cyberpunk RED: Player Character",
+  "sheet": {
+    "kind": "characters",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Category",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "player"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Portrait",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Handle",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "species": {
+        "id": "species",
+        "type": "text",
+        "label": "Species",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Human"
+      },
+      "size": {
+        "id": "size",
+        "type": "size",
+        "label": "Size",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Medium"
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_role": {
+        "id": "cpr_role",
+        "type": "stat",
+        "label": "Role",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "rarity",
+        "rarities": [
+          {
+            "id": "rockerboy",
+            "name": "Rockerboy (Charismatic Impact)",
+            "color": "#e0569a",
+            "style": "glow"
+          },
+          {
+            "id": "solo",
+            "name": "Solo (Combat Awareness)",
+            "color": "#ff4d4d",
+            "style": "glow"
+          },
+          {
+            "id": "netrunner",
+            "name": "Netrunner (Interface)",
+            "color": "#22c3d6",
+            "style": "glow"
+          },
+          {
+            "id": "tech",
+            "name": "Tech (Maker)",
+            "color": "#f5b041",
+            "style": "outline"
+          },
+          {
+            "id": "medtech",
+            "name": "Medtech (Medicine)",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "media",
+            "name": "Media (Credibility)",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "exec",
+            "name": "Exec (Teamwork)",
+            "color": "#c8ccd2",
+            "style": "outline"
+          },
+          {
+            "id": "lawman",
+            "name": "Lawman (Backup)",
+            "color": "#5b7cfa",
+            "style": "outline"
+          },
+          {
+            "id": "fixer",
+            "name": "Fixer (Operator)",
+            "color": "#a259ff",
+            "style": "outline"
+          },
+          {
+            "id": "nomad",
+            "name": "Nomad (Moto)",
+            "color": "#c27c4e",
+            "style": "outline"
+          }
+        ],
+        "default": {
+          "rarity": "solo"
+        }
+      },
+      "cpr_rank": {
+        "id": "cpr_rank",
+        "type": "stat",
+        "label": "Role Ability Rank",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 4
+        }
+      },
+      "cpr_role_ability": {
+        "id": "cpr_role_ability",
+        "type": "longtext",
+        "label": "Role Ability",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_int": {
+        "id": "cpr_int",
+        "type": "stat",
+        "label": "INT (Intelligence)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "cpr_ref": {
+        "id": "cpr_ref",
+        "type": "stat",
+        "label": "REF (Reflexes)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "cpr_dex": {
+        "id": "cpr_dex",
+        "type": "stat",
+        "label": "DEX (Dexterity)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "cpr_tech": {
+        "id": "cpr_tech",
+        "type": "stat",
+        "label": "TECH (Technique)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "cpr_cool": {
+        "id": "cpr_cool",
+        "type": "stat",
+        "label": "COOL",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "cpr_will": {
+        "id": "cpr_will",
+        "type": "stat",
+        "label": "WILL (Willpower)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "cpr_luck": {
+        "id": "cpr_luck",
+        "type": "stat",
+        "label": "LUCK",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "pool",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5,
+          "max": 5
+        }
+      },
+      "cpr_move": {
+        "id": "cpr_move",
+        "type": "stat",
+        "label": "MOVE (Movement)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "cpr_body": {
+        "id": "cpr_body",
+        "type": "stat",
+        "label": "BODY",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "cpr_emp": {
+        "id": "cpr_emp",
+        "type": "stat",
+        "label": "EMP (Empathy)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "pool",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5,
+          "max": 5
+        }
+      },
+      "cpr_hp": {
+        "id": "cpr_hp",
+        "type": "stat",
+        "label": "Hit Points",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "pool",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 35,
+          "max": 35
+        }
+      },
+      "cpr_seriously_wounded": {
+        "id": "cpr_seriously_wounded",
+        "type": "stat",
+        "label": "Seriously Wounded (−2 to all actions)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 18
+        }
+      },
+      "cpr_death_save": {
+        "id": "cpr_death_save",
+        "type": "stat",
+        "label": "Death Save",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 5
+        }
+      },
+      "cpr_humanity": {
+        "id": "cpr_humanity",
+        "type": "stat",
+        "label": "Humanity",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "pool",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 50,
+          "max": 50
+        }
+      },
+      "cpr_critical_injuries": {
+        "id": "cpr_critical_injuries",
+        "type": "longtext",
+        "label": "Critical Injuries",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_addictions": {
+        "id": "cpr_addictions",
+        "type": "longtext",
+        "label": "Addictions",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_sk_concentration": {
+        "id": "cpr_sk_concentration",
+        "type": "stat",
+        "label": "Concentration (WILL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_conceal_reveal": {
+        "id": "cpr_sk_conceal_reveal",
+        "type": "stat",
+        "label": "Conceal/Reveal Object (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_lip_reading": {
+        "id": "cpr_sk_lip_reading",
+        "type": "stat",
+        "label": "Lip Reading (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_perception": {
+        "id": "cpr_sk_perception",
+        "type": "stat",
+        "label": "Perception (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_tracking": {
+        "id": "cpr_sk_tracking",
+        "type": "stat",
+        "label": "Tracking (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_athletics": {
+        "id": "cpr_sk_athletics",
+        "type": "stat",
+        "label": "Athletics (DEX)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_contortionist": {
+        "id": "cpr_sk_contortionist",
+        "type": "stat",
+        "label": "Contortionist (DEX)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_dance": {
+        "id": "cpr_sk_dance",
+        "type": "stat",
+        "label": "Dance (DEX)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_endurance": {
+        "id": "cpr_sk_endurance",
+        "type": "stat",
+        "label": "Endurance (WILL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_resist_torture": {
+        "id": "cpr_sk_resist_torture",
+        "type": "stat",
+        "label": "Resist Torture/Drugs (WILL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_stealth": {
+        "id": "cpr_sk_stealth",
+        "type": "stat",
+        "label": "Stealth (DEX)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_drive_land": {
+        "id": "cpr_sk_drive_land",
+        "type": "stat",
+        "label": "Drive Land Vehicle (REF)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_pilot_air": {
+        "id": "cpr_sk_pilot_air",
+        "type": "stat",
+        "label": "Pilot Air Vehicle (REF, ×2)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_pilot_sea": {
+        "id": "cpr_sk_pilot_sea",
+        "type": "stat",
+        "label": "Pilot Sea Vehicle (REF)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_riding": {
+        "id": "cpr_sk_riding",
+        "type": "stat",
+        "label": "Riding (REF)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_accounting": {
+        "id": "cpr_sk_accounting",
+        "type": "stat",
+        "label": "Accounting (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_animal_handling": {
+        "id": "cpr_sk_animal_handling",
+        "type": "stat",
+        "label": "Animal Handling (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_bureaucracy": {
+        "id": "cpr_sk_bureaucracy",
+        "type": "stat",
+        "label": "Bureaucracy (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_business": {
+        "id": "cpr_sk_business",
+        "type": "stat",
+        "label": "Business (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_composition": {
+        "id": "cpr_sk_composition",
+        "type": "stat",
+        "label": "Composition (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_criminology": {
+        "id": "cpr_sk_criminology",
+        "type": "stat",
+        "label": "Criminology (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_cryptography": {
+        "id": "cpr_sk_cryptography",
+        "type": "stat",
+        "label": "Cryptography (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_deduction": {
+        "id": "cpr_sk_deduction",
+        "type": "stat",
+        "label": "Deduction (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_education": {
+        "id": "cpr_sk_education",
+        "type": "stat",
+        "label": "Education (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_gamble": {
+        "id": "cpr_sk_gamble",
+        "type": "stat",
+        "label": "Gamble (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_language": {
+        "id": "cpr_sk_language",
+        "type": "stat",
+        "label": "Language: Streetslang (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_library_search": {
+        "id": "cpr_sk_library_search",
+        "type": "stat",
+        "label": "Library Search (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_local_expert": {
+        "id": "cpr_sk_local_expert",
+        "type": "stat",
+        "label": "Local Expert: Your Home (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_science": {
+        "id": "cpr_sk_science",
+        "type": "stat",
+        "label": "Science (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_tactics": {
+        "id": "cpr_sk_tactics",
+        "type": "stat",
+        "label": "Tactics (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_wilderness": {
+        "id": "cpr_sk_wilderness",
+        "type": "stat",
+        "label": "Wilderness Survival (INT)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_brawling": {
+        "id": "cpr_sk_brawling",
+        "type": "stat",
+        "label": "Brawling (DEX)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_evasion": {
+        "id": "cpr_sk_evasion",
+        "type": "stat",
+        "label": "Evasion (DEX)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_martial_arts": {
+        "id": "cpr_sk_martial_arts",
+        "type": "stat",
+        "label": "Martial Arts (DEX, ×2)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_melee_weapon": {
+        "id": "cpr_sk_melee_weapon",
+        "type": "stat",
+        "label": "Melee Weapon (DEX)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_acting": {
+        "id": "cpr_sk_acting",
+        "type": "stat",
+        "label": "Acting (COOL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_play_instrument": {
+        "id": "cpr_sk_play_instrument",
+        "type": "stat",
+        "label": "Play Instrument (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_archery": {
+        "id": "cpr_sk_archery",
+        "type": "stat",
+        "label": "Archery (REF)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_autofire": {
+        "id": "cpr_sk_autofire",
+        "type": "stat",
+        "label": "Autofire (REF, ×2)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_handgun": {
+        "id": "cpr_sk_handgun",
+        "type": "stat",
+        "label": "Handgun (REF)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_heavy_weapons": {
+        "id": "cpr_sk_heavy_weapons",
+        "type": "stat",
+        "label": "Heavy Weapons (REF, ×2)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_shoulder_arms": {
+        "id": "cpr_sk_shoulder_arms",
+        "type": "stat",
+        "label": "Shoulder Arms (REF)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_bribery": {
+        "id": "cpr_sk_bribery",
+        "type": "stat",
+        "label": "Bribery (COOL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_conversation": {
+        "id": "cpr_sk_conversation",
+        "type": "stat",
+        "label": "Conversation (EMP)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_human_perception": {
+        "id": "cpr_sk_human_perception",
+        "type": "stat",
+        "label": "Human Perception (EMP)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_interrogation": {
+        "id": "cpr_sk_interrogation",
+        "type": "stat",
+        "label": "Interrogation (COOL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_persuasion": {
+        "id": "cpr_sk_persuasion",
+        "type": "stat",
+        "label": "Persuasion (COOL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_personal_grooming": {
+        "id": "cpr_sk_personal_grooming",
+        "type": "stat",
+        "label": "Personal Grooming (COOL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_streetwise": {
+        "id": "cpr_sk_streetwise",
+        "type": "stat",
+        "label": "Streetwise (COOL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_trading": {
+        "id": "cpr_sk_trading",
+        "type": "stat",
+        "label": "Trading (COOL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_wardrobe_style": {
+        "id": "cpr_sk_wardrobe_style",
+        "type": "stat",
+        "label": "Wardrobe & Style (COOL)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_air_vehicle_tech": {
+        "id": "cpr_sk_air_vehicle_tech",
+        "type": "stat",
+        "label": "Air Vehicle Tech (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_basic_tech": {
+        "id": "cpr_sk_basic_tech",
+        "type": "stat",
+        "label": "Basic Tech (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_cybertech": {
+        "id": "cpr_sk_cybertech",
+        "type": "stat",
+        "label": "Cybertech (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_demolitions": {
+        "id": "cpr_sk_demolitions",
+        "type": "stat",
+        "label": "Demolitions (TECH, ×2)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_electronics": {
+        "id": "cpr_sk_electronics",
+        "type": "stat",
+        "label": "Electronics/Security Tech (TECH, ×2)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_first_aid": {
+        "id": "cpr_sk_first_aid",
+        "type": "stat",
+        "label": "First Aid (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_forgery": {
+        "id": "cpr_sk_forgery",
+        "type": "stat",
+        "label": "Forgery (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_land_vehicle_tech": {
+        "id": "cpr_sk_land_vehicle_tech",
+        "type": "stat",
+        "label": "Land Vehicle Tech (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_paint_draw": {
+        "id": "cpr_sk_paint_draw",
+        "type": "stat",
+        "label": "Paint/Draw/Sculpt (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_paramedic": {
+        "id": "cpr_sk_paramedic",
+        "type": "stat",
+        "label": "Paramedic (TECH, ×2)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_photography": {
+        "id": "cpr_sk_photography",
+        "type": "stat",
+        "label": "Photography/Film (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_pick_lock": {
+        "id": "cpr_sk_pick_lock",
+        "type": "stat",
+        "label": "Pick Lock (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_pick_pocket": {
+        "id": "cpr_sk_pick_pocket",
+        "type": "stat",
+        "label": "Pick Pocket (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_sea_vehicle_tech": {
+        "id": "cpr_sk_sea_vehicle_tech",
+        "type": "stat",
+        "label": "Sea Vehicle Tech (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_sk_weaponstech": {
+        "id": "cpr_sk_weaponstech",
+        "type": "stat",
+        "label": "Weaponstech (TECH)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_weapons": {
+        "id": "cpr_weapons",
+        "type": "longtext",
+        "label": "Weapons",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Weapon · DMG · Ammo · ROF · Notes\n"
+      },
+      "cpr_armor": {
+        "id": "cpr_armor",
+        "type": "longtext",
+        "label": "Armor",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Head: SP \nBody: SP \nShield: HP \nPenalty (applies to REF, DEX & MOVE): "
+      },
+      "cpr_cw_audio": {
+        "id": "cpr_cw_audio",
+        "type": "longtext",
+        "label": "Cyberaudio Suite",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_eye_r": {
+        "id": "cpr_cw_eye_r",
+        "type": "longtext",
+        "label": "Right Cybereye",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_arm_r": {
+        "id": "cpr_cw_arm_r",
+        "type": "longtext",
+        "label": "Right Cyberarm",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_leg_r": {
+        "id": "cpr_cw_leg_r",
+        "type": "longtext",
+        "label": "Right Cyberleg",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_eye_l": {
+        "id": "cpr_cw_eye_l",
+        "type": "longtext",
+        "label": "Left Cybereye",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_arm_l": {
+        "id": "cpr_cw_arm_l",
+        "type": "longtext",
+        "label": "Left Cyberarm",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_leg_l": {
+        "id": "cpr_cw_leg_l",
+        "type": "longtext",
+        "label": "Left Cyberleg",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_neural": {
+        "id": "cpr_cw_neural",
+        "type": "longtext",
+        "label": "Neural Link",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_internal": {
+        "id": "cpr_cw_internal",
+        "type": "longtext",
+        "label": "Internal Cyberware",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_external": {
+        "id": "cpr_cw_external",
+        "type": "longtext",
+        "label": "External Cyberware",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_fashion": {
+        "id": "cpr_cw_fashion",
+        "type": "longtext",
+        "label": "Fashionware",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cw_borg": {
+        "id": "cpr_cw_borg",
+        "type": "longtext",
+        "label": "Borgware",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_gear": {
+        "id": "cpr_gear",
+        "type": "longtext",
+        "label": "Gear",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Name · Notes\n"
+      },
+      "cpr_ammo": {
+        "id": "cpr_ammo",
+        "type": "longtext",
+        "label": "Ammunition",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_cash": {
+        "id": "cpr_cash",
+        "type": "stat",
+        "label": "Cash (eb)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_lifestyle": {
+        "id": "cpr_lifestyle",
+        "type": "longtext",
+        "label": "Lifestyle & Housing",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Lifestyle: \nHousing: \nRent: "
+      },
+      "cpr_aliases": {
+        "id": "cpr_aliases",
+        "type": "longtext",
+        "label": "Aliases",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_rep_events": {
+        "id": "cpr_rep_events",
+        "type": "longtext",
+        "label": "Reputation Events",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_reputation": {
+        "id": "cpr_reputation",
+        "type": "stat",
+        "label": "Reputation",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_ip": {
+        "id": "cpr_ip",
+        "type": "stat",
+        "label": "Improvement Points",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "cpr_lp_origins": {
+        "id": "cpr_lp_origins",
+        "type": "longtext",
+        "label": "Cultural Origins",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_lp_personality": {
+        "id": "cpr_lp_personality",
+        "type": "longtext",
+        "label": "Personality & Style",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Personality: \nClothing style: \nHairstyle: \nAffectation: "
+      },
+      "cpr_lp_values": {
+        "id": "cpr_lp_values",
+        "type": "longtext",
+        "label": "Motivations",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "What do you value most? \nFeelings about people: \nMost valued person: \nMost valued possession: "
+      },
+      "cpr_lp_family": {
+        "id": "cpr_lp_family",
+        "type": "longtext",
+        "label": "Family",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Family background: \nChildhood environment: \nFamily crisis: "
+      },
+      "cpr_lp_friends": {
+        "id": "cpr_lp_friends",
+        "type": "longtext",
+        "label": "Friends",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_lp_enemies": {
+        "id": "cpr_lp_enemies",
+        "type": "longtext",
+        "label": "Enemies",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "Who? \nWhat caused it? \nWhat can they throw at you? \nWhat’s gonna happen? "
+      },
+      "cpr_lp_love": {
+        "id": "cpr_lp_love",
+        "type": "longtext",
+        "label": "Tragic Love Affairs",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_lp_goals": {
+        "id": "cpr_lp_goals",
+        "type": "longtext",
+        "label": "Life Goals",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_lp_role": {
+        "id": "cpr_lp_role",
+        "type": "longtext",
+        "label": "Role-specific Lifepath",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "cpr_notes": {
+        "id": "cpr_notes",
+        "type": "longtext",
+        "label": "Notes",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [
+        "cpr_role",
+        "cpr_rank",
+        "cpr_role_ability"
+      ],
+      "sections": [
+        {
+          "id": "cpr_s_stats",
+          "title": "STATS",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_int",
+              "cpr_ref",
+              "cpr_dex",
+              "cpr_tech"
+            ],
+            [
+              "cpr_cool",
+              "cpr_will",
+              "cpr_luck",
+              "cpr_move"
+            ],
+            [
+              "cpr_body",
+              "cpr_emp"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_health",
+          "title": "Hit Points & Humanity",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_hp",
+              "cpr_seriously_wounded"
+            ],
+            [
+              "cpr_death_save",
+              "cpr_humanity"
+            ],
+            [
+              "cpr_critical_injuries",
+              "cpr_addictions"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_awareness",
+          "title": "Awareness Skills (Skill Level)",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_sk_concentration",
+              "cpr_sk_conceal_reveal"
+            ],
+            [
+              "cpr_sk_lip_reading",
+              "cpr_sk_perception"
+            ],
+            [
+              "cpr_sk_tracking"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_body",
+          "title": "Body Skills (Skill Level)",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_sk_athletics",
+              "cpr_sk_contortionist"
+            ],
+            [
+              "cpr_sk_dance",
+              "cpr_sk_endurance"
+            ],
+            [
+              "cpr_sk_resist_torture",
+              "cpr_sk_stealth"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_control",
+          "title": "Control Skills (Skill Level)",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_sk_drive_land",
+              "cpr_sk_pilot_air"
+            ],
+            [
+              "cpr_sk_pilot_sea",
+              "cpr_sk_riding"
+            ],
+            []
+          ]
+        },
+        {
+          "id": "cpr_s_education",
+          "title": "Education Skills (Skill Level)",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_sk_accounting",
+              "cpr_sk_animal_handling",
+              "cpr_sk_bureaucracy",
+              "cpr_sk_business",
+              "cpr_sk_composition",
+              "cpr_sk_criminology"
+            ],
+            [
+              "cpr_sk_cryptography",
+              "cpr_sk_deduction",
+              "cpr_sk_education",
+              "cpr_sk_gamble",
+              "cpr_sk_language",
+              "cpr_sk_library_search"
+            ],
+            [
+              "cpr_sk_local_expert",
+              "cpr_sk_science",
+              "cpr_sk_tactics",
+              "cpr_sk_wilderness"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_fighting",
+          "title": "Fighting Skills (Skill Level)",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_sk_brawling",
+              "cpr_sk_evasion"
+            ],
+            [
+              "cpr_sk_martial_arts",
+              "cpr_sk_melee_weapon"
+            ],
+            []
+          ]
+        },
+        {
+          "id": "cpr_s_performance",
+          "title": "Performance Skills (Skill Level)",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_sk_acting"
+            ],
+            [
+              "cpr_sk_play_instrument"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_ranged",
+          "title": "Ranged Weapon Skills (Skill Level)",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_sk_archery",
+              "cpr_sk_autofire"
+            ],
+            [
+              "cpr_sk_handgun",
+              "cpr_sk_heavy_weapons"
+            ],
+            [
+              "cpr_sk_shoulder_arms"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_social",
+          "title": "Social Skills (Skill Level)",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_sk_bribery",
+              "cpr_sk_conversation",
+              "cpr_sk_human_perception"
+            ],
+            [
+              "cpr_sk_interrogation",
+              "cpr_sk_persuasion",
+              "cpr_sk_personal_grooming"
+            ],
+            [
+              "cpr_sk_streetwise",
+              "cpr_sk_trading",
+              "cpr_sk_wardrobe_style"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_technique",
+          "title": "Technique Skills (Skill Level)",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_sk_air_vehicle_tech",
+              "cpr_sk_basic_tech",
+              "cpr_sk_cybertech",
+              "cpr_sk_demolitions",
+              "cpr_sk_electronics"
+            ],
+            [
+              "cpr_sk_first_aid",
+              "cpr_sk_forgery",
+              "cpr_sk_land_vehicle_tech",
+              "cpr_sk_paint_draw",
+              "cpr_sk_paramedic"
+            ],
+            [
+              "cpr_sk_photography",
+              "cpr_sk_pick_lock",
+              "cpr_sk_pick_pocket",
+              "cpr_sk_sea_vehicle_tech",
+              "cpr_sk_weaponstech"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_weapons",
+          "title": "Weapons & Armor",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_weapons"
+            ],
+            [
+              "cpr_armor"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_cyberware",
+          "title": "Cyberware",
+          "layout": "body",
+          "columns": [
+            [
+              "cpr_cw_audio"
+            ],
+            [
+              "cpr_cw_eye_r",
+              "cpr_cw_arm_r",
+              "cpr_cw_leg_r"
+            ],
+            [
+              "cpr_cw_eye_l",
+              "cpr_cw_arm_l",
+              "cpr_cw_leg_l"
+            ],
+            [
+              "cpr_cw_neural"
+            ],
+            [
+              "cpr_cw_internal",
+              "cpr_cw_external",
+              "cpr_cw_fashion",
+              "cpr_cw_borg"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_gear",
+          "title": "Gear",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_gear",
+              "cpr_ammo"
+            ],
+            [
+              "cpr_cash",
+              "cpr_lifestyle"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_reputation",
+          "title": "Reputation",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_aliases",
+              "cpr_rep_events"
+            ],
+            [
+              "cpr_reputation",
+              "cpr_ip"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_lifepath",
+          "title": "Lifepath",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_lp_origins",
+              "cpr_lp_personality",
+              "cpr_lp_values"
+            ],
+            [
+              "cpr_lp_family",
+              "cpr_lp_friends",
+              "cpr_lp_enemies"
+            ],
+            [
+              "cpr_lp_love",
+              "cpr_lp_goals",
+              "cpr_lp_role"
+            ]
+          ]
+        },
+        {
+          "id": "cpr_s_notes",
+          "title": "Notes",
+          "layout": "columns",
+          "columns": [
+            [
+              "cpr_notes"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "values": {
+    "category": "player",
+    "name": "Sabine \"Patchwork\" Okoye",
+    "species": "Human",
+    "size": "Medium",
+    "summary": "Street medic of the Static Saints. Stitches you up, then lectures you about it.",
+    "cpr_role": {
+      "rarity": "medtech"
+    },
+    "cpr_rank": {
+      "value": 4
+    },
+    "cpr_role_ability": "Medicine (Rank 4)\n· Surgery 2\n· Medical Pharmaceuticals 2: Speedheal, Antibiotic\nCan install cyberware and treat Critical Injuries that need Surgery.",
+    "cpr_int": {
+      "value": 7
+    },
+    "cpr_ref": {
+      "value": 6
+    },
+    "cpr_dex": {
+      "value": 6
+    },
+    "cpr_tech": {
+      "value": 8
+    },
+    "cpr_cool": {
+      "value": 5
+    },
+    "cpr_will": {
+      "value": 6
+    },
+    "cpr_luck": {
+      "value": 6,
+      "max": 6
+    },
+    "cpr_move": {
+      "value": 6
+    },
+    "cpr_body": {
+      "value": 5
+    },
+    "cpr_emp": {
+      "value": 6,
+      "max": 7
+    },
+    "cpr_hp": {
+      "value": 40,
+      "max": 40
+    },
+    "cpr_seriously_wounded": {
+      "value": 20
+    },
+    "cpr_death_save": {
+      "value": 5
+    },
+    "cpr_humanity": {
+      "value": 62,
+      "max": 70
+    },
+    "cpr_critical_injuries": "",
+    "cpr_addictions": "",
+    "cpr_sk_concentration": {
+      "value": 2
+    },
+    "cpr_sk_conceal_reveal": {
+      "value": 0
+    },
+    "cpr_sk_lip_reading": {
+      "value": 0
+    },
+    "cpr_sk_perception": {
+      "value": 4
+    },
+    "cpr_sk_tracking": {
+      "value": 0
+    },
+    "cpr_sk_athletics": {
+      "value": 2
+    },
+    "cpr_sk_contortionist": {
+      "value": 0
+    },
+    "cpr_sk_dance": {
+      "value": 0
+    },
+    "cpr_sk_endurance": {
+      "value": 0
+    },
+    "cpr_sk_resist_torture": {
+      "value": 2
+    },
+    "cpr_sk_stealth": {
+      "value": 2
+    },
+    "cpr_sk_drive_land": {
+      "value": 0
+    },
+    "cpr_sk_pilot_air": {
+      "value": 0
+    },
+    "cpr_sk_pilot_sea": {
+      "value": 0
+    },
+    "cpr_sk_riding": {
+      "value": 0
+    },
+    "cpr_sk_accounting": {
+      "value": 0
+    },
+    "cpr_sk_animal_handling": {
+      "value": 0
+    },
+    "cpr_sk_bureaucracy": {
+      "value": 0
+    },
+    "cpr_sk_business": {
+      "value": 0
+    },
+    "cpr_sk_composition": {
+      "value": 0
+    },
+    "cpr_sk_criminology": {
+      "value": 0
+    },
+    "cpr_sk_cryptography": {
+      "value": 0
+    },
+    "cpr_sk_deduction": {
+      "value": 2
+    },
+    "cpr_sk_education": {
+      "value": 4
+    },
+    "cpr_sk_gamble": {
+      "value": 0
+    },
+    "cpr_sk_language": {
+      "value": 4
+    },
+    "cpr_sk_library_search": {
+      "value": 0
+    },
+    "cpr_sk_local_expert": {
+      "value": 4
+    },
+    "cpr_sk_science": {
+      "value": 4
+    },
+    "cpr_sk_tactics": {
+      "value": 0
+    },
+    "cpr_sk_wilderness": {
+      "value": 0
+    },
+    "cpr_sk_brawling": {
+      "value": 2
+    },
+    "cpr_sk_evasion": {
+      "value": 4
+    },
+    "cpr_sk_martial_arts": {
+      "value": 0
+    },
+    "cpr_sk_melee_weapon": {
+      "value": 0
+    },
+    "cpr_sk_acting": {
+      "value": 0
+    },
+    "cpr_sk_play_instrument": {
+      "value": 0
+    },
+    "cpr_sk_archery": {
+      "value": 0
+    },
+    "cpr_sk_autofire": {
+      "value": 0
+    },
+    "cpr_sk_handgun": {
+      "value": 4
+    },
+    "cpr_sk_heavy_weapons": {
+      "value": 0
+    },
+    "cpr_sk_shoulder_arms": {
+      "value": 0
+    },
+    "cpr_sk_bribery": {
+      "value": 0
+    },
+    "cpr_sk_conversation": {
+      "value": 4
+    },
+    "cpr_sk_human_perception": {
+      "value": 4
+    },
+    "cpr_sk_interrogation": {
+      "value": 0
+    },
+    "cpr_sk_persuasion": {
+      "value": 2
+    },
+    "cpr_sk_personal_grooming": {
+      "value": 0
+    },
+    "cpr_sk_streetwise": {
+      "value": 0
+    },
+    "cpr_sk_trading": {
+      "value": 0
+    },
+    "cpr_sk_wardrobe_style": {
+      "value": 0
+    },
+    "cpr_sk_air_vehicle_tech": {
+      "value": 0
+    },
+    "cpr_sk_basic_tech": {
+      "value": 4
+    },
+    "cpr_sk_cybertech": {
+      "value": 4
+    },
+    "cpr_sk_demolitions": {
+      "value": 0
+    },
+    "cpr_sk_electronics": {
+      "value": 0
+    },
+    "cpr_sk_first_aid": {
+      "value": 6
+    },
+    "cpr_sk_forgery": {
+      "value": 0
+    },
+    "cpr_sk_land_vehicle_tech": {
+      "value": 0
+    },
+    "cpr_sk_paint_draw": {
+      "value": 0
+    },
+    "cpr_sk_paramedic": {
+      "value": 6
+    },
+    "cpr_sk_photography": {
+      "value": 0
+    },
+    "cpr_sk_pick_lock": {
+      "value": 0
+    },
+    "cpr_sk_pick_pocket": {
+      "value": 0
+    },
+    "cpr_sk_sea_vehicle_tech": {
+      "value": 0
+    },
+    "cpr_sk_weaponstech": {
+      "value": 0
+    },
+    "cpr_weapons": "Weapon · DMG · Ammo · ROF · Notes\nHeavy Pistol · 3d6 · 8 · 2 · Smartgun-linked\nKnife · 1d6 · — · 2 · Scalpel-sharp, for emergencies",
+    "cpr_armor": "Head: Light Armorjack, SP 11\nBody: Light Armorjack, SP 11\nShield: HP —\nPenalty (applies to REF, DEX & MOVE): none",
+    "cpr_cw_audio": "",
+    "cpr_cw_eye_r": "Cybereye\n· MicroOptics (medical scan overlay)",
+    "cpr_cw_arm_r": "",
+    "cpr_cw_leg_r": "",
+    "cpr_cw_eye_l": "",
+    "cpr_cw_arm_l": "",
+    "cpr_cw_leg_l": "",
+    "cpr_cw_neural": "Neural Link\n· Interface Plugs\n· Chipware Socket: Pharmaceutical Recall chip",
+    "cpr_cw_internal": "Nasal Filters",
+    "cpr_cw_external": "",
+    "cpr_cw_fashion": "",
+    "cpr_cw_borg": "",
+    "cpr_gear": "Name · Notes\nMedtech Bag · Bandages, sutures, a bone saw she never names\nAirhypo · Loaded with Speedheal\nAgent · Cracked screen, reliable\nFlashlight",
+    "cpr_ammo": "16 rounds Heavy Pistol basic",
+    "cpr_cash": {
+      "value": 1100
+    },
+    "cpr_lifestyle": "Lifestyle: Generic Prepak\nHousing: Cargo container, The Glen\nRent: 500eb/month",
+    "cpr_aliases": "Doc (she hates it), Patch",
+    "cpr_rep_events": "Kept a Chrome Vulture alive on a bar table while his crew held guns on her. They still send her flowers.",
+    "cpr_reputation": {
+      "value": 2
+    },
+    "cpr_ip": {
+      "value": 30
+    },
+    "cpr_lp_origins": "Sub-Saharan African; grew up speaking Igbo and Streetslang",
+    "cpr_lp_personality": "Personality: Stable and serious\nClothing style: Leisurewear\nHairstyle: Short and curly\nAffectation: Wears a surgical mask around her neck at all times",
+    "cpr_lp_values": "What do you value most? Honesty\nFeelings about people: Every person is a valuable individual\nMost valued person: Her younger brother, Ike, in a Corp school\nMost valued possession: Her late mentor's bone saw",
+    "cpr_lp_family": "Family background: Corporate Technicians\nChildhood environment: In a huge megastructure controlled by a Corp\nFamily crisis: Your family lost everything through betrayal",
+    "cpr_lp_friends": "Juniper \"Jinx\" Vale: like a younger sibling to her",
+    "cpr_lp_enemies": "Who? Doc Viktor Haas, ripperdoc\nWhat caused it? She reported his organ trade to the NCPD; nothing happened\nWhat can they throw at you? Bad chrome, hired gangers\nWhat’s gonna happen? She’ll be the one to put him out of business",
+    "cpr_lp_love": "None, yet. Too busy.",
+    "cpr_lp_goals": "Open a free clinic in The Glen that no Corp can buy.",
+    "cpr_lp_role": "What kind of Medtech? Street medic\nWho are your main clients? Edgerunners and the people who can't pay",
+    "cpr_notes": ""
+  },
+  "shown": {},
+  "refs": {},
+  "createdAt": "2026-11-04T21:37:38.477Z",
+  "updatedAt": "2026-11-04T21:37:38.477Z"
+}

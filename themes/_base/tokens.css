@@ -95,6 +95,9 @@
   /* --- Effects ----------------------------------------------------------- */
   --tp-glow: none;               /* glow applied to emphasised elements */
   --tp-glow-interactive: none;
+  --tp-figure-blend: screen;     /* body diagram art (a dark picture): how it meets the surface */
+  --tp-figure-filter: none;
+  --tp-figure-opacity: 0.9;
   --tp-focus-ring: 0 0 0 2px var(--tp-interactive);
   --tp-meter-seg: 6px;           /* meter segment width */
   --tp-meter-gap: 0px;           /* gap between meter segments; 0 = solid bar */

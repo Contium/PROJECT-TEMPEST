@@ -1,0 +1,120 @@
+{
+  "format": "tempest.preset",
+  "version": 1,
+  "kind": "netcards",
+  "id": "preset-cpr-net-node",
+  "name": "Cyberpunk RED: Net Node",
+  "createdAt": "2026-11-04T23:00:00.000Z",
+  "updatedAt": "2026-11-04T23:00:00.000Z",
+  "fields": {
+    "category": {
+      "id": "category",
+      "type": "category",
+      "label": "Type",
+      "visibility": "revealed",
+      "shown": "",
+      "rumor": {
+        "style": "redacted",
+        "text": ""
+      },
+      "references": false,
+      "default": "password"
+    },
+    "image": {
+      "id": "image",
+      "type": "image",
+      "label": "Primary Image",
+      "visibility": "revealed",
+      "shown": "",
+      "rumor": {
+        "style": "redacted",
+        "text": ""
+      },
+      "references": false,
+      "primary": true
+    },
+    "name": {
+      "id": "name",
+      "type": "text",
+      "label": "Name",
+      "visibility": "revealed",
+      "shown": "",
+      "rumor": {
+        "style": "redacted",
+        "text": ""
+      },
+      "references": false
+    },
+    "dv": {
+      "id": "dv",
+      "type": "text",
+      "label": "DV",
+      "visibility": "revealed",
+      "shown": "",
+      "rumor": {
+        "style": "redacted",
+        "text": ""
+      },
+      "references": false
+    },
+    "summary": {
+      "id": "summary",
+      "type": "shorttext",
+      "label": "Short Description",
+      "visibility": "revealed",
+      "shown": "",
+      "rumor": {
+        "style": "redacted",
+        "text": ""
+      },
+      "references": false
+    },
+    "effect": {
+      "id": "effect",
+      "type": "longtext",
+      "label": "What it does",
+      "visibility": "revealed",
+      "shown": "",
+      "rumor": {
+        "style": "redacted",
+        "text": ""
+      },
+      "references": false,
+      "default": ""
+    },
+    "contents": {
+      "id": "contents",
+      "type": "longtext",
+      "label": "Contents",
+      "visibility": "rumored",
+      "shown": "",
+      "rumor": {
+        "style": "redacted",
+        "text": ""
+      },
+      "references": false,
+      "default": ""
+    },
+    "controls": {
+      "id": "controls",
+      "type": "longtext",
+      "label": "Controls",
+      "visibility": "revealed",
+      "shown": "",
+      "rumor": {
+        "style": "redacted",
+        "text": ""
+      },
+      "references": false,
+      "default": ""
+    }
+  },
+  "layout": {
+    "main": [
+      "effect",
+      "contents",
+      "controls"
+    ],
+    "sections": []
+  }
+}

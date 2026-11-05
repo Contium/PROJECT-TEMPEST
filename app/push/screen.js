@@ -17,6 +17,7 @@ import { openImage } from '../image-viewer.js';
 import { pushKind, displayLabel, PUSH_MODES } from './push-model.js';
 import { fullscreenControl } from './fullscreen.js';
 import { renderArticle } from '../screamsheets/article.js';
+import { playerNetworkView } from '../netrun/player-view.js';
 
 const SVG = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs = {}) => {
@@ -103,6 +104,11 @@ export function mount(root, { engine }) {
         return globe(d);
       case 'citymap':
         return cityMap(d);
+      case 'network': {
+        const out = playerNetworkView(d.network, { url, fit: true, openImage: (items, i) => openImage(items.map((x) => ({ ...x, src: url(x.image) })), i) });
+        cleanup = out.cleanup;
+        return out.node;
+      }
       default:
         return el('div', { class: 'scr-standby' },
           el('h1', { class: 'tp-display tp-glitch', 'data-text': 'TEMPEST' }, 'TEMPEST'),

@@ -18,6 +18,7 @@ import * as projectsView from './projects/view.js';
 import * as settingsView from './projects/settings.js';
 import * as worldView from './maps/world-view.js';
 import * as screamsheetsView from './screamsheets/view.js';
+import * as netrunView from './netrun/view.js';
 import * as playerScreen from './push/screen.js';
 import { messageDialog, clear as clearScreen, watchDisplay, targetPicker } from './push/push.js';
 import { displayLabel } from './push/push-model.js';
@@ -42,6 +43,7 @@ const VIEWS = {
   'world/stories': entitiesView,
   'world/rumors': entitiesView,
   'world/screamsheets': screamsheetsView,
+  'combat/netrunning': netrunView,
   'forge/characters': presetDesigner,
   'forge/stories': presetDesigner,
   'forge/items': presetDesigner,

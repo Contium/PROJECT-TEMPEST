@@ -1,0 +1,12 @@
+{
+  "id": "poi_a76cdf3e",
+  "name": "Site 9 Clinical Facility",
+  "type": "unknown",
+  "lon": -115.8,
+  "lat": 37.25,
+  "description": "GM only. Halcyon's desert test site in Nevada, where Patient Zero began.",
+  "revealed": false,
+  "maps": [],
+  "createdAt": "2026-11-04T21:37:38.620Z",
+  "updatedAt": "2026-11-04T21:37:38.620Z"
+}

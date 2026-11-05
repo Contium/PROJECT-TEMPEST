@@ -1,0 +1,137 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "netcards",
+  "id": "ncard_5ee10002",
+  "name": "File",
+  "category": "file",
+  "presetId": "preset-cpr-net-node",
+  "presetName": "Cyberpunk RED: Net Node",
+  "sheet": {
+    "kind": "netcards",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Type",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "password"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Primary Image",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Name",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "dv": {
+        "id": "dv",
+        "type": "text",
+        "label": "DV",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "effect": {
+        "id": "effect",
+        "type": "longtext",
+        "label": "What it does",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "contents": {
+        "id": "contents",
+        "type": "longtext",
+        "label": "Contents",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "controls": {
+        "id": "controls",
+        "type": "longtext",
+        "label": "Controls",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [
+        "effect",
+        "contents",
+        "controls"
+      ],
+      "sections": []
+    }
+  },
+  "values": {
+    "category": "file",
+    "name": "File",
+    "dv": "8",
+    "summary": "Stored data, read with Eye-Dee.",
+    "effect": "Beaten with Eye-Dee: the Netrunner learns what's in it and can copy or erase it.",
+    "contents": "Whatever the run is after: set it per network in the node's GM note.",
+    "controls": ""
+  },
+  "shown": {},
+  "refs": {},
+  "createdAt": "2026-11-04T23:00:00.000Z",
+  "updatedAt": "2026-11-04T23:00:00.000Z"
+}

@@ -9,8 +9,11 @@
 // Preset {
 //   format: 'tempest.preset', version: 1, kind, id, name, createdAt, updatedAt,
 //   fields:  { [fieldId]: Field },
-//   layout:  { main: [fieldId…], sections: [{ id, title, columns: [[fieldId…], …1–3] }] }
+//   layout:  { main: [fieldId…], sections: [{ id, title, layout, columns: [[fieldId…], …] }] }
 // }
+// A section's layout is 'columns' (1–3 columns side by side) or 'body': a body
+// diagram, with the figure art behind and the fields as boxes in front of it, in
+// five zones (BODY_ZONES), stored as its five columns in that order.
 // The kind's default fields always exist and sit at the top of the main section,
 // in a fixed order; layout.main lists only the fields added below them. The
 // 'category' default field (Category / Type) always holds one of the kind's
@@ -46,6 +49,16 @@ export const STORY_TYPES = [
   { id: 'story', label: 'Story', tab: 'stories' },
   { id: 'rumor', label: 'Rumor', tab: 'rumors' },
   { id: 'event', label: 'Event', tab: 'events' },
+];
+
+/** What a net card is: the node types of a NET architecture (Combat › Netrunning). All live on one tab. */
+export const NET_CARD_TYPES = [
+  { id: 'password', label: 'Password', tab: 'netrunning' },
+  { id: 'file', label: 'File', tab: 'netrunning' },
+  { id: 'control', label: 'Control Node', tab: 'netrunning' },
+  { id: 'ice', label: 'Black ICE', tab: 'netrunning' },
+  { id: 'demon', label: 'Demon', tab: 'netrunning' },
+  { id: 'other', label: 'Other', tab: 'netrunning' },
 ];
 
 export const SIZES = ['Miniscule', 'Nano', 'Tiny', 'Small', 'Medium', 'Large', 'Giant', 'Gargantuan', 'Colossal'];
@@ -96,6 +109,26 @@ export const LOCATION_MODES = [
   { id: 'obscure', label: 'Obscure', hint: 'An empty picture frame and a short description of your own' },
 ];
 
+export const SECTION_LAYOUTS = [
+  { id: 'columns', label: 'Columns', hint: 'One to three columns side by side' },
+  { id: 'body', label: 'Body diagram', hint: 'A figure behind the section, its fields as boxes around it: cyberware, wounds, armor' },
+];
+
+/** The places on a body diagram, in the order a body section stores them as columns. */
+export const BODY_ZONES = [
+  { id: 'top', label: 'Above the head' },
+  { id: 'left', label: 'Left of the figure' },
+  { id: 'right', label: 'Right of the figure' },
+  { id: 'center', label: 'Over the hips' },
+  { id: 'side', label: 'Beside the figure' },
+];
+
+/** What a section's column is called in menus: "Column 2", or a body zone's name. */
+export function columnLabel(section, c) {
+  if (section.layout === 'body') return BODY_ZONES[c]?.label ?? `Zone ${c + 1}`;
+  return `Column ${c + 1}`;
+}
+
 export const RARITY_STYLES = [
   { id: 'plain', label: 'Plain' },
   { id: 'outline', label: 'Outline' },
@@ -131,6 +164,7 @@ export const ADDABLE = [
   { type: 'image', label: 'Image', hint: 'One more picture' },
   { type: 'gallery', label: 'Gallery', hint: 'Several pictures: floors, slideshow or grid' },
   { type: 'stat', label: 'Stat', hint: 'Pool, fixed number, flexible pool or rarity' },
+  { type: 'statblock', label: 'Stat Block', hint: 'A row of named numbers read together, like PER · SPD · ATK · DEF · REZ' },
   { type: 'cast', label: 'Characters', hint: 'Who takes part: the sides of a fight, or everyone involved' },
   { type: 'location', label: 'Location', hint: 'Where it happens: a location, any entry, or an obscure description' },
 ];
@@ -154,7 +188,7 @@ export const KINDS = {
       { id: 'summary', type: 'shorttext', label: 'Short Description' },
     ],
     facts: ['species', 'size'],
-    addable: ['parent', 'longtext', 'image', 'gallery', 'stat'],
+    addable: ['parent', 'longtext', 'image', 'gallery', 'stat', 'statblock'],
   },
   stories: {
     label: 'Stories/Rumors/Events', entity: 'story', entities: 'stories', idPrefix: 'story', section: 'world',
@@ -182,7 +216,22 @@ export const KINDS = {
       { id: 'summary', type: 'shorttext', label: 'Short Description' },
     ],
     facts: ['itemtype', 'rarity'],
-    addable: ['parent', 'longtext', 'image', 'gallery', 'stat'],
+    addable: ['parent', 'longtext', 'image', 'gallery', 'stat', 'statblock'],
+  },
+  netcards: {
+    // The pieces of a NET architecture (Combat › Netrunning › Card Forge), put together
+    // in the Network Builder. Every type lives on the one Netrunning tab.
+    label: 'Net Cards', entity: 'net card', entities: 'netcards', idPrefix: 'ncard', section: 'combat',
+    categories: NET_CARD_TYPES,
+    defaults: [
+      { id: 'category', type: 'category', label: 'Type', default: 'ice' },
+      { id: 'image', type: 'image', label: 'Primary Image', primary: true },
+      { id: 'name', type: 'text', label: 'Name' },
+      { id: 'dv', type: 'text', label: 'DV' },
+      { id: 'summary', type: 'shorttext', label: 'Short Description' },
+    ],
+    facts: ['dv'],
+    addable: ['longtext', 'image', 'gallery', 'stat', 'statblock'],
   },
 };
 export const PRESET_KINDS = Object.keys(KINDS);
@@ -201,10 +250,16 @@ export const DEFAULT_IDS = defaultIdsOf('characters');
 
 export const TYPE_LABELS = {
   category: 'Category', image: 'Image', text: 'Text', size: 'Size', shorttext: 'Short Description', date: 'Date', rarity: 'Rarity',
-  parent: 'Parent', longtext: 'Long Description', gallery: 'Gallery', stat: 'Stat', cast: 'Characters', location: 'Location',
+  parent: 'Parent', longtext: 'Long Description', gallery: 'Gallery', stat: 'Stat', statblock: 'Stat Block', cast: 'Characters', location: 'Location',
 };
 
-const MAX_FIELDS = 120;
+/** A Stat Block holds 1–12 stats; each value is a short text, so "4", "3d6" and "—" all fit. */
+export const MAX_BLOCK_STATS = 12;
+export const MAX_STAT_TEXT = 12;
+
+// Full game sheets are long: the Cyberpunk RED template (app/forge/templates/) uses
+// 123 fields, and this leaves room to extend it.
+const MAX_FIELDS = 200;
 const MAX_SECTIONS = 30;
 const MAX_TEXT = 4000;
 const MAX_LABEL = 60;
@@ -249,7 +304,17 @@ export function newField(type, kind = 'characters') {
   if (type === 'stat') Object.assign(field, { label: 'Stat', stat: 'pool', default: { value: 10, max: 10 }, rarities: structuredClone(DEFAULT_RARITIES) });
   if (type === 'cast') Object.assign(field, { label: 'Characters', mode: 'involved', sides: ['Side A', 'Side B'] });
   if (type === 'location') Object.assign(field, { label: 'Location', mode: 'direct' });
+  if (type === 'statblock') {
+    Object.assign(field, { label: 'Stats', stats: ['STAT 1', 'STAT 2', 'STAT 3'].map((label, i) => ({ id: `s${i + 1}`, label })), default: {} });
+  }
   return field;
+}
+
+/** A new stat for a Stat Block, with an id no other stat in it uses. */
+export function newBlockStat(field, label = 'STAT') {
+  let n = (field.stats?.length ?? 0) + 1;
+  while (field.stats?.some((s) => s.id === `s${n}`)) n += 1;
+  return { id: `s${n}`, label };
 }
 
 /** A blank preset of a kind, with just its default fields. */
@@ -348,7 +413,7 @@ export function updateField(preset, id, patch) {
 export function addSection(preset, title = 'New section') {
   if (preset.layout.sections.length >= MAX_SECTIONS) throw new PresetError([`A preset holds at most ${MAX_SECTIONS} sections`]);
   const p = clone(preset);
-  const section = { id: newId('s'), title, columns: [[]] };
+  const section = { id: newId('s'), title, layout: 'columns', columns: [[]] };
   p.layout.sections.push(section);
   return { preset: p, id: section.id };
 }
@@ -365,9 +430,29 @@ export function setColumns(preset, sectionId, count) {
   const n = Math.max(1, Math.min(3, Math.round(count)));
   const p = clone(preset);
   const s = p.layout.sections.find((x) => x.id === sectionId);
-  if (!s) return p;
+  if (!s || s.layout === 'body') return p; // a body diagram's zones are fixed
   while (s.columns.length < n) s.columns.push([]);
   while (s.columns.length > n) s.columns[n - 1].push(...s.columns.pop());
+  return p;
+}
+
+/**
+ * Switch a section between columns and a body diagram, keeping every field.
+ * To a body: columns 1, 2 and 3 become the left, right and beside zones.
+ * Back to columns: three columns, left / top and right / beside and hips.
+ */
+export function setSectionLayout(preset, sectionId, layout) {
+  const p = clone(preset);
+  const s = p.layout.sections.find((x) => x.id === sectionId);
+  if (!s || !SECTION_LAYOUTS.some((l) => l.id === layout) || (s.layout ?? 'columns') === layout) return p;
+  const c = s.columns;
+  if (layout === 'body') {
+    s.columns = [[], [...(c[0] ?? [])], [...(c[1] ?? [])], [], [...(c[2] ?? [])]];
+  } else {
+    const [top, left, right, center, side] = c;
+    s.columns = [[...left, ...top], [...right], [...center, ...side]].filter((col, i) => i === 0 || col.length);
+  }
+  s.layout = layout;
   return p;
 }
 
@@ -455,6 +540,33 @@ function cleanStat(field, value) {
   return { value: field.stat === 'pool' ? Math.min(Math.max(v, 0), max) : Math.max(v, 0), max };
 }
 
+/** A Stat Block's value: { [statId]: text } for the stats it has, empty ones left out. */
+function cleanBlock(field, value) {
+  const out = {};
+  if (isObj(value)) {
+    for (const s of field.stats) {
+      const v = value[s.id];
+      const text = (typeof v === 'number' && Number.isFinite(v) ? String(v) : str(v, MAX_STAT_TEXT)).trim().slice(0, MAX_STAT_TEXT);
+      if (text) out[s.id] = text;
+    }
+  }
+  return out;
+}
+
+/** A Stat Block's stats: 1–12 { id, label }, ids unique, labels short. */
+function cleanBlockStats(list) {
+  const seen = new Set();
+  const out = [];
+  for (const s of (Array.isArray(list) ? list : []).slice(0, MAX_BLOCK_STATS)) {
+    const label = str(s?.label, 16).trim() || 'STAT';
+    let id = /^[a-z][a-z0-9_]{0,15}$/.test(s?.id ?? '') ? s.id : `s${out.length + 1}`;
+    while (seen.has(id)) id = `${id}_2`.slice(-16);
+    seen.add(id);
+    out.push({ id, label });
+  }
+  return out.length ? out : [{ id: 's1', label: 'STAT' }];
+}
+
 /** A Characters field's value: the sides of a fight, or who's involved. */
 function cleanCast(field, value) {
   if (!isObj(value)) return undefined;
@@ -499,6 +611,8 @@ function cleanDefault(field, value, kind) {
     case 'stat':
     case 'rarity':
       return cleanStat(field, value);
+    case 'statblock':
+      return cleanBlock(field, value);
     default:
       return undefined; // dates, images, galleries, links and locations are per entity
   }
@@ -572,6 +686,7 @@ function cleanField(id, raw, problems, kind) {
     f.sides = sides.length ? sides : ['Side A', 'Side B'];
   }
   if (type === 'location') f.mode = oneOf(raw?.mode, LOCATION_MODES, 'direct');
+  if (type === 'statblock') f.stats = cleanBlockStats(raw?.stats);
   const value = cleanDefault(f, raw?.default ?? known?.default, kind);
   if (value !== undefined) f.default = value;
   return f;
@@ -615,11 +730,15 @@ export function normalizePreset(input) {
   };
   const layout = isObj(input.layout) ? input.layout : {};
   const main = take(layout.main);
-  const sections = (Array.isArray(layout.sections) ? layout.sections : []).slice(0, MAX_SECTIONS).map((s) => ({
-    id: FIELD_ID.test(s?.id ?? '') ? s.id : newId('s'),
-    title: str(s?.title, MAX_LABEL),
-    columns: (Array.isArray(s?.columns) && s.columns.length ? s.columns : [[]]).slice(0, 3).map(take),
-  }));
+  const sections = (Array.isArray(layout.sections) ? layout.sections : []).slice(0, MAX_SECTIONS).map((s) => {
+    const sectionLayout = oneOf(s?.layout, SECTION_LAYOUTS, 'columns');
+    const raw = Array.isArray(s?.columns) && s.columns.length ? s.columns : [[]];
+    // A body diagram always has its five zones; columns run one to three.
+    const columns = sectionLayout === 'body'
+      ? BODY_ZONES.map((_, i) => take(raw[i]))
+      : raw.slice(0, 3).map(take);
+    return { id: FIELD_ID.test(s?.id ?? '') ? s.id : newId('s'), title: str(s?.title, MAX_LABEL), layout: sectionLayout, columns };
+  });
   // Fields that exist but aren't placed anywhere join the main section, so nothing is lost.
   for (const id of Object.keys(rawFields)) if (!placed.has(id) && FIELD_ID.test(id)) main.push(...take([id]));
   if (problems.length) throw new PresetError(problems);

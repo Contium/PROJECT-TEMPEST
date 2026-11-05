@@ -1,0 +1,24 @@
+{
+  "id": "cpoi_e485da2a",
+  "city": "nightcity",
+  "name": "Chrome Vultures Salvage Yard",
+  "icon": "gang",
+  "x": 0.6625,
+  "y": 0.6455,
+  "district": "santo-domingo",
+  "description": "Fenced with car doors. Do not enter without an invitation.",
+  "revealed": true,
+  "refs": [
+    {
+      "id": "char_5a7754ea",
+      "note": "Holds court here"
+    },
+    {
+      "id": "story_18ca8c65",
+      "note": "Center of the fighting"
+    }
+  ],
+  "maps": [],
+  "createdAt": "2026-11-04T21:37:38.636Z",
+  "updatedAt": "2026-11-04T21:37:38.636Z"
+}

@@ -6,6 +6,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["server/index.js"],
       "port": 4077
+    },
+    {
+      "name": "tempest-sandbox",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["-e", "process.env.TEMPEST_PORT='4097';process.env.TEMPEST_DATA_DIR=require('path').join(require('os').tmpdir(),'tempest-sandbox');require('./server/index.js')"],
+      "port": 4097
     }
   ]
 }

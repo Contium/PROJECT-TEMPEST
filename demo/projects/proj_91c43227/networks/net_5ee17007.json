@@ -1,0 +1,100 @@
+{
+  "format": "tempest.network",
+  "version": 1,
+  "id": "net_5ee17007",
+  "name": "Steeltooth Bar",
+  "description": "The private network behind a Tyger Claws bar in Watson: the cameras, the alarm and the back-room ledger. Overclock can jack in from the booth by the toilets.",
+  "nodes": [
+    {
+      "id": "n5ee101",
+      "card": "ncard_5ee10001",
+      "label": "",
+      "dv": "6",
+      "count": 1,
+      "note": "",
+      "parents": []
+    },
+    {
+      "id": "n5ee102",
+      "card": "ncard_5ee10011",
+      "label": "",
+      "dv": "",
+      "count": 1,
+      "note": "",
+      "parents": [
+        "n5ee101"
+      ]
+    },
+    {
+      "id": "n5ee103",
+      "card": "ncard_5ee10003",
+      "label": "Control Node (Cameras)",
+      "dv": "8",
+      "count": 1,
+      "note": "Every camera in the bar and the alley out back. Loop the feed and the crew walks in unseen.",
+      "parents": [
+        "n5ee102"
+      ]
+    },
+    {
+      "id": "n5ee104",
+      "card": "ncard_5ee10001",
+      "label": "",
+      "dv": "8",
+      "count": 1,
+      "note": "",
+      "parents": [
+        "n5ee103"
+      ]
+    },
+    {
+      "id": "n5ee105",
+      "card": "ncard_5ee10012",
+      "label": "Liche, Raven",
+      "dv": "",
+      "count": 1,
+      "note": "Two Black ICE on one floor: the Liche and a Raven activate together.",
+      "parents": [
+        "n5ee103"
+      ]
+    },
+    {
+      "id": "n5ee106",
+      "card": "ncard_5ee10002",
+      "label": "",
+      "dv": "8",
+      "count": 1,
+      "note": "The back-room ledger: who owes the bar, and which Tyger Claws collect. Leverage on the owner.",
+      "parents": [
+        "n5ee104"
+      ]
+    },
+    {
+      "id": "n5ee107",
+      "card": "ncard_5ee10003",
+      "label": "Control Node (Alarm)",
+      "dv": "8",
+      "count": 1,
+      "note": "Trips the alarm, or keeps it quiet. Tripped, four bouncers come running.",
+      "parents": [
+        "n5ee105"
+      ]
+    },
+    {
+      "id": "n5ee108",
+      "card": "ncard_5ee10014",
+      "label": "",
+      "dv": "",
+      "count": 2,
+      "note": "Guards the bottom floor whichever way the Netrunner comes down.",
+      "parents": [
+        "n5ee106",
+        "n5ee107"
+      ]
+    }
+  ],
+  "revealed": [],
+  "hints": false,
+  "createdAt": "2026-11-04T23:00:00.000Z",
+  "updatedAt": "2026-11-04T23:00:00.000Z"
+}

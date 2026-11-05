@@ -1,0 +1,40 @@
+{
+  "id": "proj_91c43227",
+  "name": "Cyberpunk (Sample)",
+  "description": "TEMPEST demo campaign: the Static Saints, a crew of Night City edgerunners, caught between a ripperdoc, a boostergang and a biotech corp in 2045. Every section has examples: characters, gigs, gear, the globe and the City Map.",
+  "theme": "cyberpunk-red",
+  "createdAt": "2026-11-03T16:14:47.743Z",
+  "updatedAt": "2026-11-04T21:37:48.113Z",
+  "openedAt": "2026-11-03T16:14:47.743Z",
+  "settings": {
+    "money": {
+      "mode": "single",
+      "single": {
+        "name": "Eurodollars",
+        "symbol": "§",
+        "position": "after"
+      },
+      "custom": [
+        {
+          "id": "c1",
+          "name": "Bit",
+          "symbol": "b",
+          "value": 1
+        },
+        {
+          "id": "c2",
+          "name": "Crown",
+          "symbol": "cr",
+          "value": 100
+        }
+      ]
+    },
+    "maps": {
+      "mode": "planetary",
+      "nightCity": {
+        "enabled": true,
+        "revealed": true
+      }
+    }
+  }
+}

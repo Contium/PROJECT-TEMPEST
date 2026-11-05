@@ -1,0 +1,287 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "stories",
+  "id": "story_0ea5e98f",
+  "name": "Patient Zero",
+  "category": "story",
+  "presetId": "preset_e8478d5a",
+  "presetName": "Gig / Story",
+  "sheet": {
+    "kind": "stories",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Type",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "event"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Primary Image",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Title",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "start": {
+        "id": "start",
+        "type": "date",
+        "label": "Start",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "end": {
+        "id": "end",
+        "type": "date",
+        "label": "End",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "f_bf5aae98": {
+        "id": "f_bf5aae98",
+        "type": "parent",
+        "label": "Leads to",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "parentType": "story"
+      },
+      "f_5614b4d0": {
+        "id": "f_5614b4d0",
+        "type": "longtext",
+        "label": "The Job",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_01a830e7": {
+        "id": "f_01a830e7",
+        "type": "location",
+        "label": "Where",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "mode": "obscure"
+      },
+      "f_69f9405f": {
+        "id": "f_69f9405f",
+        "type": "cast",
+        "label": "Who's Involved",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "mode": "involved",
+        "sides": [
+          "Side A",
+          "Side B"
+        ]
+      },
+      "f_18599300": {
+        "id": "f_18599300",
+        "type": "stat",
+        "label": "Payout (eb)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "f_1b88e90a": {
+        "id": "f_1b88e90a",
+        "type": "longtext",
+        "label": "Complications",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_ebdb6fa6": {
+        "id": "f_ebdb6fa6",
+        "type": "longtext",
+        "label": "What's Really Going On",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": true,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [
+        "f_bf5aae98",
+        "f_5614b4d0",
+        "f_01a830e7",
+        "f_69f9405f",
+        "f_18599300"
+      ],
+      "sections": [
+        {
+          "id": "s_2d4be0b4",
+          "title": "GM Notes",
+          "layout": "columns",
+          "columns": [
+            [
+              "f_1b88e90a"
+            ],
+            [
+              "f_ebdb6fa6"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "values": {
+    "category": "story",
+    "name": "Patient Zero",
+    "start": {
+      "y": 2045,
+      "m": 3,
+      "d": 12
+    },
+    "end": {
+      "y": 2045,
+      "m": 3,
+      "d": 15
+    },
+    "summary": "The extracted researcher is carrying something Halcyon wants back, and so does the Tin Man.",
+    "f_5614b4d0": "Keep Dr. Imani Hale alive for three days until her buyer in Heywood can take her and her data.",
+    "f_01a830e7": {
+      "text": "A safehouse somewhere in The Glen, then a meet at Heywood Docks"
+    },
+    "f_69f9405f": {
+      "people": [
+        {
+          "id": "char_5b413680",
+          "note": "Wants Hale back, or wants to see what happens"
+        },
+        {
+          "id": "char_d692932b",
+          "note": "Drawn to Hale's implant signal"
+        },
+        {
+          "id": "char_ce151765",
+          "note": "The only one who can keep Hale's implant stable"
+        }
+      ]
+    },
+    "f_18599300": {
+      "value": 8000
+    },
+    "f_1b88e90a": "Hale's neural shunt is failing. Every hour it broadcasts louder. The Tin Man hears it.",
+    "f_ebdb6fa6": "The shunt is the Patient Zero trial. Hale put it in herself to smuggle the results out, and it is killing her the way it killed Owen Tamsin."
+  },
+  "shown": {},
+  "refs": {},
+  "createdAt": "2026-11-04T21:37:38.562Z",
+  "updatedAt": "2026-11-04T21:37:38.562Z"
+}

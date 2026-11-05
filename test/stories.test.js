@@ -18,7 +18,7 @@ test('story presets have their own default fields, types and addable fields', as
   assert.equal(p.fields.category.default, 'event');
   assert.deepEqual(P.categoriesOf(p).map((c) => [c.label, c.tab]), [['Story', 'stories'], ['Rumor', 'rumors'], ['Event', 'events']]);
   assert.deepEqual(P.addableOf(p).map((a) => a.label), ['Parent', 'Long Description', 'Image', 'Gallery', 'Stat', 'Characters', 'Location']);
-  assert.deepEqual(P.addableOf('characters').map((a) => a.type), ['parent', 'longtext', 'image', 'gallery', 'stat'], 'characters are unchanged');
+  assert.deepEqual(P.addableOf('characters').map((a) => a.type), ['parent', 'longtext', 'image', 'gallery', 'stat', 'statblock'], 'characters gain Stat Blocks too');
   assert.equal(P.addField(p, 'parent').preset.fields[P.addField(p, 'parent').id], undefined); // ids are fresh per call
   assert.equal(P.newField('parent', 'stories').parentType, 'any', 'a story\'s parent can be anything');
   assert.throws(() => P.addField(P.newPreset('x'), 'cast'), /can be added here/);

@@ -28,7 +28,13 @@ export const SECTIONS = [
   // Only while the project's map system is Planetary (see visibleSections).
   // /worldview/<slug> opens a unique location's own map (e.g. Night City's City Map).
   { id: 'worldview', label: 'World View', tabs: [], mapMode: 'planetary', detail: true },
-  { id: 'combat', label: 'Combat', tabs: [] },
+  {
+    id: 'combat',
+    label: 'Combat',
+    // Netrunning has three sub-tabs of its own (app/netrun/view.js): /combat/netrunning/builder,
+    // /cards and /networks; a net card (ncard_…) or a network (net_…) opens by id in the same place.
+    tabs: [{ id: 'netrunning', label: 'Netrunning', detail: true }],
+  },
   // No tabs, but entries: /items lists them, /items/<id> opens one.
   { id: 'items', label: 'Items', tabs: [], detail: true },
   {

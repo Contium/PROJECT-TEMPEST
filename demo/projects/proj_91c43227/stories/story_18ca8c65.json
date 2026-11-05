@@ -1,0 +1,283 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "stories",
+  "id": "story_18ca8c65",
+  "name": "Vulture Season",
+  "category": "event",
+  "presetId": "preset_e8478d5a",
+  "presetName": "Gig / Story",
+  "sheet": {
+    "kind": "stories",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Type",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "event"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Primary Image",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Title",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "start": {
+        "id": "start",
+        "type": "date",
+        "label": "Start",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "end": {
+        "id": "end",
+        "type": "date",
+        "label": "End",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "f_bf5aae98": {
+        "id": "f_bf5aae98",
+        "type": "parent",
+        "label": "Leads to",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "parentType": "story"
+      },
+      "f_5614b4d0": {
+        "id": "f_5614b4d0",
+        "type": "longtext",
+        "label": "The Job",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_01a830e7": {
+        "id": "f_01a830e7",
+        "type": "location",
+        "label": "Where",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "mode": "obscure"
+      },
+      "f_69f9405f": {
+        "id": "f_69f9405f",
+        "type": "cast",
+        "label": "Who's Involved",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "mode": "involved",
+        "sides": [
+          "Side A",
+          "Side B"
+        ]
+      },
+      "f_18599300": {
+        "id": "f_18599300",
+        "type": "stat",
+        "label": "Payout (eb)",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "stat": "fixed",
+        "rarities": [
+          {
+            "id": "common",
+            "name": "Common",
+            "color": "#a9b1bb",
+            "style": "plain"
+          },
+          {
+            "id": "uncommon",
+            "name": "Uncommon",
+            "color": "#3fbf7f",
+            "style": "outline"
+          },
+          {
+            "id": "rare",
+            "name": "Rare",
+            "color": "#4f8cff",
+            "style": "outline"
+          },
+          {
+            "id": "epic",
+            "name": "Epic",
+            "color": "#a259ff",
+            "style": "glow"
+          },
+          {
+            "id": "legendary",
+            "name": "Legendary",
+            "color": "#f5b041",
+            "style": "shimmer"
+          }
+        ],
+        "default": {
+          "value": 0
+        }
+      },
+      "f_1b88e90a": {
+        "id": "f_1b88e90a",
+        "type": "longtext",
+        "label": "Complications",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "f_ebdb6fa6": {
+        "id": "f_ebdb6fa6",
+        "type": "longtext",
+        "label": "What's Really Going On",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": true,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [
+        "f_bf5aae98",
+        "f_5614b4d0",
+        "f_01a830e7",
+        "f_69f9405f",
+        "f_18599300"
+      ],
+      "sections": [
+        {
+          "id": "s_2d4be0b4",
+          "title": "GM Notes",
+          "layout": "columns",
+          "columns": [
+            [
+              "f_1b88e90a"
+            ],
+            [
+              "f_ebdb6fa6"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "values": {
+    "category": "event",
+    "name": "Vulture Season",
+    "start": {
+      "y": 2045,
+      "m": 3,
+      "d": 2
+    },
+    "end": {
+      "y": 2045,
+      "m": 3,
+      "d": 9
+    },
+    "summary": "The Chrome Vultures go to war over Santo Domingo's salvage yards.",
+    "f_5614b4d0": "Not a job, a hazard: anyone crossing Santo Domingo this week does it under fire.",
+    "f_01a830e7": {
+      "text": "Santo Domingo, mostly around the old salvage yards"
+    },
+    "f_69f9405f": {
+      "people": [
+        {
+          "id": "char_5a7754ea",
+          "note": "Leading the Vultures"
+        },
+        {
+          "id": "char_b91339e6",
+          "note": "NCPD task force, waiting for both sides to bleed"
+        }
+      ]
+    },
+    "f_18599300": {
+      "value": 0
+    },
+    "f_1b88e90a": "Roadblocks on every main street. Vultures stripping cars, and drivers, for parts.",
+    "f_ebdb6fa6": "Halcyon is paying both sides through Doc Haas, so the \"salvage\" keeps flowing."
+  },
+  "shown": {},
+  "refs": {},
+  "createdAt": "2026-11-04T21:37:38.571Z",
+  "updatedAt": "2026-11-04T21:37:38.571Z"
+}

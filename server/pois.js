@@ -45,6 +45,16 @@ const SCREAMSHEETS = {
   },
 };
 
+// NET architectures (Combat › Netrunning › Networks) too.
+const NETWORKS = {
+  prefix: 'net',
+  noun: 'network',
+  load: async () => {
+    const m = await modelOf('netrun/network-model.js')();
+    return { ID: m.NET_ID, normalize: m.normalizeNetwork, Error: m.NetworkError, forPlayers: m.forPlayers };
+  },
+};
+
 function createPoiStore(dir, kind = GLOBE) {
   const loadModel = kind.load;
   const missing = `No such ${kind.noun ?? 'point of interest'}`;
@@ -137,4 +147,4 @@ async function handlePois(store, req, res, rest, params, { readJson, sendJson })
   }
 }
 
-module.exports = { createPoiStore, handlePois, GLOBE, CITY, SCREAMSHEETS };
+module.exports = { createPoiStore, handlePois, GLOBE, CITY, SCREAMSHEETS, NETWORKS };

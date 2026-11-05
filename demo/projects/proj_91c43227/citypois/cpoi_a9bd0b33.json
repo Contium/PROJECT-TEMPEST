@@ -1,0 +1,24 @@
+{
+  "id": "cpoi_a9bd0b33",
+  "city": "nightcity",
+  "name": "Test",
+  "icon": "pin",
+  "x": 0.48036,
+  "y": 0.55308,
+  "district": "the-glen",
+  "description": "",
+  "revealed": true,
+  "refs": [],
+  "maps": [
+    {
+      "image": "img_21ffa27c70a12b942a6a2f97",
+      "caption": "floor-1"
+    },
+    {
+      "image": "img_2be432e579ab53f6694da1a4",
+      "caption": "floor-2"
+    }
+  ],
+  "createdAt": "2026-11-04T02:20:57.563Z",
+  "updatedAt": "2026-11-04T02:20:57.563Z"
+}

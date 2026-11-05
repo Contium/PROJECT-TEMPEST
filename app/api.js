@@ -89,6 +89,15 @@ export const display = {
   push: (request) => api('/display', { method: 'PUT', body: request }),
 };
 
+/** NET architectures (Combat › Netrunning): list, get, create, save, remove. */
+export const networks = {
+  list: () => api(scoped('/networks')),
+  get: (id) => api(scoped(`/networks/${encodeURIComponent(id)}`)),
+  create: (net) => api(scoped('/networks'), { method: 'POST', body: net }),
+  save: (net) => api(scoped(`/networks/${encodeURIComponent(net.id)}`), { method: 'PUT', body: net }),
+  remove: (id) => api(scoped(`/networks/${encodeURIComponent(id)}`), { method: 'DELETE' }),
+};
+
 /** Screamsheets (World › Screamsheets): list (newest first), get, create, save, remove. */
 export const screamsheets = {
   list: () => api(scoped('/screamsheets')).then((list) => list.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))),

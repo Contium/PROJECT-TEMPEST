@@ -1,0 +1,20 @@
+{
+  "id": "cpoi_9dd6cd4d",
+  "city": "nightcity",
+  "name": "NCPD Precinct 14",
+  "icon": "police",
+  "x": 0.7545,
+  "y": 0.5625,
+  "district": "north-heywood",
+  "description": "Lt. Reyes's task force works out of the basement.",
+  "revealed": true,
+  "refs": [
+    {
+      "id": "char_b91339e6",
+      "note": "Task force lead"
+    }
+  ],
+  "maps": [],
+  "createdAt": "2026-11-04T21:37:38.642Z",
+  "updatedAt": "2026-11-04T21:37:38.642Z"
+}

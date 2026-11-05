@@ -122,3 +122,50 @@ test('a preset survives a round trip through JSON unchanged', () => {
   const once = M.normalizePreset(p);
   assert.deepEqual(M.normalizePreset(JSON.parse(JSON.stringify(once))), once);
 });
+
+test('a section can be a body diagram, and switching back keeps every field', () => {
+  let p = M.newPreset('Cyborg');
+  const sec = M.addSection(p, 'Cyberware');
+  p = M.setColumns(sec.preset, sec.id, 3);
+  const ids = [0, 1, 2].map((c) => {
+    const r = M.addField(p, 'longtext', { area: 'section', section: sec.id, column: c });
+    p = r.preset;
+    return r.id;
+  });
+  assert.equal(p.layout.sections[0].layout, 'columns');
+
+  p = M.setSectionLayout(p, sec.id, 'body');
+  const body = p.layout.sections[0];
+  assert.equal(body.layout, 'body');
+  assert.equal(body.columns.length, M.BODY_ZONES.length);
+  assert.deepEqual(body.columns, [[], [ids[0]], [ids[1]], [], [ids[2]]], 'columns 1-3 → left, right, beside');
+  assert.equal(M.columnLabel(body, 3), 'Over the hips');
+  assert.equal(M.setColumns(p, sec.id, 1).layout.sections[0].columns.length, 5, 'zones are fixed');
+
+  // Fields dropped in any zone survive a save.
+  p = M.moveField(p, ids[0], { area: 'section', section: sec.id, column: 0 });
+  const saved = M.normalizePreset(JSON.parse(JSON.stringify(p)));
+  assert.deepEqual(saved.layout.sections[0], { id: sec.id, title: 'Cyberware', layout: 'body', columns: [[ids[0]], [], [ids[1]], [], [ids[2]]] });
+
+  const back = M.setSectionLayout(saved, sec.id, 'columns');
+  assert.equal(back.layout.sections[0].layout, 'columns');
+  assert.deepEqual(back.layout.sections[0].columns.flat().sort(), [...ids].sort());
+  assert.ok(back.layout.sections[0].columns.length <= 3);
+});
+
+test('body sections from files are tidied: missing zones added, extra ones dropped', () => {
+  const p = M.newPreset('Odd');
+  p.fields.f_a = { ...M.newField('longtext'), id: 'f_a' };
+  p.fields.f_b = { ...M.newField('longtext'), id: 'f_b' };
+  p.layout.sections = [
+    { id: 's_one', title: 'Short', layout: 'body', columns: [['f_a']] },
+    { id: 's_two', title: 'Long', layout: 'body', columns: [[], [], [], [], [], ['f_b']] },
+    { id: 's_old', title: 'Old', columns: [[]] },
+  ];
+  const clean = M.normalizePreset(p);
+  assert.deepEqual(clean.layout.sections[0].columns, [['f_a'], [], [], [], []]);
+  assert.deepEqual(clean.layout.sections[1].columns, [[], [], [], [], []]);
+  assert.deepEqual(clean.layout.main, ['f_b'], 'a field in a sixth zone is kept, in the main section');
+  assert.equal(clean.layout.sections[2].layout, 'columns', 'sections saved before layouts are columns');
+  assert.equal(M.normalizePreset({ ...p, layout: { main: [], sections: [{ id: 's_x', title: '', layout: 'grid', columns: [[]] }] } }).layout.sections[0].layout, 'columns');
+});

@@ -25,7 +25,7 @@ const summary = (e) => ({
   image: e.values?.image ?? null, summary: e.values?.summary ?? '',
   species: e.values?.species ?? '', size: e.values?.size ?? '',
   start: e.values?.start ?? null, end: e.values?.end ?? null,
-  itemtype: e.values?.itemtype ?? '', rarity: rarityOf(e),
+  itemtype: e.values?.itemtype ?? '', rarity: rarityOf(e), dv: e.values?.dv ?? '',
   presetName: e.presetName ?? '', updatedAt: e.updatedAt,
 });
 

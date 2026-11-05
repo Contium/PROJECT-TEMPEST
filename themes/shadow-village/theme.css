@@ -23,6 +23,11 @@
   --tp-bg-image:
     radial-gradient(90% 70% at 85% -10%, rgba(159, 134, 255, 0.12), transparent 60%),
     radial-gradient(80% 60% at 0% 110%, rgba(142, 111, 134, 0.16), transparent 60%);
+  /* A dark page again: the body diagram's art as it is (undo moontown's ink-on-parchment) */
+  --tp-figure-blend: screen;
+  --tp-figure-filter: none;
+  --tp-figure-opacity: 0.85;
+
   --tp-surface: var(--sv-page);
   --tp-surface-2: #2c2733;
   --tp-surface-3: #362f3e;

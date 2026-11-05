@@ -1,0 +1,24 @@
+{
+  "id": "cpoi_fb40ef10",
+  "city": "nightcity",
+  "name": "Watson Rooftops",
+  "icon": "danger",
+  "x": 0.4415,
+  "y": 0.2735,
+  "district": "watson-development",
+  "description": "Where the Tin Man was last seen. MAX-TAC drones circle at night.",
+  "revealed": false,
+  "refs": [
+    {
+      "id": "char_d692932b",
+      "note": "Last sighting"
+    },
+    {
+      "id": "story_8b6c2aaa",
+      "note": "The rumor"
+    }
+  ],
+  "maps": [],
+  "createdAt": "2026-11-04T21:37:38.645Z",
+  "updatedAt": "2026-11-04T21:37:38.645Z"
+}
