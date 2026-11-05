@@ -17,6 +17,9 @@ import * as entitiesView from './entities/view.js';
 import * as projectsView from './projects/view.js';
 import * as settingsView from './projects/settings.js';
 import * as worldView from './maps/world-view.js';
+import * as planarView from './maps/planar.js';
+import * as cartographerView from './maps/cartographer.js';
+import * as galacticView from './maps/galactic.js';
 import * as screamsheetsView from './screamsheets/view.js';
 import * as netrunView from './netrun/view.js';
 import * as initiativeView from './combat/initiative.js';
@@ -51,6 +54,9 @@ const VIEWS = {
   'forge/items': presetDesigner,
   items: entitiesView, // a section without tabs: keyed by the section alone
   worldview: worldView, // only while the project's map system is Planetary
+  planes: planarView, // …Planar
+  atlas: cartographerView, // …Cartographer
+  starmap: galacticView, // …Galactic
 };
 let current = null; // the mounted view
 let mounting = null; // the view being mounted (mounts are async)

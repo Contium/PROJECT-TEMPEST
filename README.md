@@ -221,7 +221,7 @@ Open them from the **⚙ Settings** button next to the Project button (`#/settin
 - **Switching modes:** each mode keeps its own setup, so switching modes and back loses nothing.
 - **Invalid setups:** an empty name, or a value of 0 or less, shows what's wrong and blocks Save.
 
-**Map system:** **Planar**, **Planetary**, **Cartographer** or **Galactic**, or *Decide later* (the default). **Planetary** is built: choosing it adds the **World View** section. With Planetary or Galactic chosen, a **Unique locations** block switches the built-in **Night City** on or off. The other systems are still to come; choosing one now records how this project's maps will work.
+**Map system:** **Planar**, **Planetary**, **Cartographer** or **Galactic**, or *Decide later* (the default). Each adds a section of its own: [**Planes**](#planes-planar-maps), [**World View**](#world-view-planetary-maps), [**Atlas**](#atlas-cartographer-maps) or [**Star Map**](#star-map-galactic-maps). Each system keeps what you made in it, so switching systems and back loses nothing; the players' Codex shows the places of the system in use. With Planetary or Galactic chosen, a **Unique locations** block switches the built-in **Night City** on or off.
 
 **Player screen on your network:** see [below](#the-player-screen-on-your-network).
 
@@ -233,7 +233,10 @@ The GM window has these sections, shown as tabs across the top bar:
 |---|---|
 | **Characters** | Players · NPCs · Monsters · Creatures |
 | **World** | Events · Stories · Rumors · Screamsheets · Timeline |
+| **Planes** | Only with Planar maps: planes and the ways between them |
 | **World View** | Only with Planetary maps: the 3D globe |
+| **Atlas** | Only with Cartographer maps: your own maps, with fog of war |
+| **Star Map** | Only with Galactic maps: star systems, lanes and sectors |
 | **Combat** | Initiative · Netrunning (Network Builder · Card Forge · Networks) |
 | **Items** | One list, filtered by rarity |
 | **The Forge** | Presets: Characters/Creatures · Stories/Rumors/Events · Items |
@@ -487,11 +490,11 @@ With the project's map system set to **Planetary**, a **World View** section app
 
 #### Night City
 
-Projects using Planetary (or Galactic) maps get **Night City**, a built-in unique city at 35.3658° N, 120.8499° W. It's on and **Revealed** by default, since the city is common knowledge. It can't be moved, renamed or deleted; its panel offers **Hidden / Revealed**, **Fly to** and **Open City Map**. Turn it off in **Project settings › Unique locations**.
+Projects using Planetary (or Galactic) maps get **Night City**, a built-in unique city at 35.3658° N, 120.8499° W. It's on and **Revealed** by default, since the city is common knowledge. On the globe it can't be moved, renamed or deleted; its panel offers **Hidden / Revealed**, **Fly to** and **Open City Map**. (On a [Star Map](#star-map-galactic-maps) it's a unique Settlement you can drag where you like.) Turn it off in **Project settings › Unique locations**.
 
 #### City Map
 
-Night City's map (`#/worldview/nightcity`) is R. Talsorian's free **Night City 2045 Atlas**, with its 25 districts laid over it as outlines.
+Night City's map (`#/worldview/nightcity`, or `#/starmap/nightcity` with Galactic maps) is R. Talsorian's free **Night City 2045 Atlas**, with its 25 districts laid over it as outlines.
 
 - **Hover** a district to light it up and see its name; **click** it to select it. The selected district opens in the side panel with its share of the city, **Zoom to**, **Whole city** and **‹ Prev / Next ›**.
 - **The side panel** lists every district, with a search box.
@@ -511,6 +514,49 @@ The district outlines (`assets/maps/nightcity/districts.json`) were traced from 
 ```bash
 python scripts/extract-districts.py half.bmp assets/maps/nightcity/districts.json preview.bmp
 ```
+
+### Planes, Atlas and Star Map: what they share
+
+The Planar, Cartographer and Galactic map systems work alike:
+
+- **Moving around:** drag to pan, scroll or double-click to zoom, **+ / −** and **Fit**. Arrow keys, + and −, and 0 work when the map has focus.
+- **Hidden until revealed:** everything you add starts **Hidden**. Reveal it in its panel, or with **◉/◌** on its row in the list.
+- **Every place has** a name, a kind, a description (optional) and up to 12 **maps & pictures**, each with a caption.
+- **View as: GM / Players** shows the map exactly as players know it. Click something there to read its players' card.
+- **⇪ Push view** sends what you're looking at to the player screens, with what players know. **⇪ Push** in a panel sends that one place as a card. Pushing something hidden asks to reveal it first.
+- **The players' Codex** gets every revealed place under **Places**, as the same card.
+- **Deleting** a plane, system or chart also deletes its ways, lanes, pins and regions (after asking).
+- **Esc** stops a tool or closes the panel.
+
+### Planes (Planar maps)
+
+With the map system set to **Planar**, a **Planes** section appears (`#/planes`). It's a board of planes and realms, joined by the ways between them.
+
+- **Planes:** **+ Plane** (or **Shift+click**) puts one down where you click. Kinds: Material plane, Elemental plane, Outer plane, Demiplane, Pocket realm or Unknown. **Drag** a plane to move it.
+- **Ways:** **+ Way**, then click two planes. You can also use **+ Way from here** in a plane's panel. Kinds: Portal, Gate, Rift, Path or Ritual, each drawn its own way. A way can be **One way only** (shown with an arrow).
+- **What players see:** revealed planes, and a revealed way only once **both its planes are revealed too**.
+- **Hint at it:** a way marked this way shows players a dashed line and a **?** leading off a plane they know, pointing towards the other end. It never shows where it goes. Once players know the way, the hint gives way to the way itself.
+
+### Atlas (Cartographer maps)
+
+With the map system set to **Cartographer**, an **Atlas** section appears (`#/atlas`). It holds your own maps of lands, regions, cities and dungeons. Each map is a **chart**.
+
+- **+ New chart** uploads a map image (PNG, JPEG, WebP or GIF, up to 10 MB; big ones are scaled to 4096 px). A new chart starts **Hidden**, under fog of war. **Chart details** sets its name, kind (Land, Region, City, Dungeon, Other), description, visibility, fog and pictures, or deletes it.
+- **Pins:** **+ Pin** (or **Shift+click**) marks a place, with one of 13 icons (Point of interest, Landmark, Town, Shop, Tavern, Home, Contact, Camp, Door, Stairs, Treasure, Lair, Danger). Drag a pin to move it. **Leads to** links it to another chart, so you can go from a land map to a city to a dungeon. Players can follow the link once that chart is revealed too.
+- **Regions:** **+ Region**, then click its corners. Click the first corner again, double-click or press **Enter** to close it (**Backspace** removes the last corner). Each region has a colour, and can **lift the fog** inside it once revealed. **Redraw outline** draws it again.
+- **Fog of war:** **Fog brush**, then drag across the map: **Lift fog** shows that part to players, **Lay fog** covers it again. Set the brush **Size**, or use **Clear all** / **Cover all**. You see the fog as a veil over the map; players see only what's lifted. Turn the fog off in **Chart details** to show players the whole map.
+- **What players see:** a revealed chart with its revealed pins and regions. Pins and regions on a hidden chart stay hidden whatever their own setting.
+- **Players never get your map under the fog.** Each time the fog changes, your window draws a players' copy with the fog painted in (the **Fog** readout says when it's ready). Pushes, the Codex and phones on the network only ever get that copy, never the map itself or the brush strokes. While a copy is being drawn, players see the chart as covered.
+
+### Star Map (Galactic maps)
+
+With the map system set to **Galactic**, a **Star Map** section appears (`#/starmap`). It's a top-down map of star systems, the lanes between them and the sectors they lie in.
+
+- **Systems:** **+ System** (or **Shift+click**) places one. Kinds: Star system, Planet, Station, Settlement, Anomaly, Nebula or Unknown. **Drag** a system to move it. The readouts show the cursor's position and the sector under it.
+- **Lanes:** **+ Lane**, then click two systems (or **+ Lane from here** in a system's panel). Kinds: Hyperlane, Jump route or Wormhole, each with an optional **travel time** ("3 days").
+- **Sectors:** **+ Sector**, then click its corners and close it as with Atlas regions. Each sector has one of six colours. A system's panel and the Codex say which revealed sector it's in.
+- **What players see:** revealed systems and sectors, and a revealed lane only once **both its ends are revealed too**.
+- **Night City** is a unique Settlement on the star map, **Revealed** by default. Drag it where your setting puts it (it's kept with the project's settings). Its panel offers **Hidden / Revealed** and **Open City Map** (`#/starmap/nightcity`). It can't be renamed or deleted; turn it off in **Project settings › Unique locations**.
 
 ### Pushing to the player screen
 
@@ -536,6 +582,8 @@ You push what players should see, and every player screen shows it at once, live
 | The City Map | **⇪ Push map** | The city map on the current layer, the selected district lit, with the revealed points |
 | A district | **⇪ Push district** | That district lit and framed |
 | A city point | **⇪ Push** | Its icon, name, district, description and maps |
+| Planes, Atlas chart, Star Map | **⇪ Push view** | What you're looking at, with only what players know (a chart under its fog) |
+| A plane, way, chart, pin, region, system, lane or sector | **⇪ Push** | Its card: kind, name, where it is, description and maps |
 | A network (Combat › Netrunning › Networks) | **⇪ Push network**, or each reveal with *Update the player screen* on | Its revealed nodes as a map, one lit, with that node's card beside it |
 
 **Named screens:**
@@ -561,7 +609,7 @@ You push what players should see, and every player screen shows it at once, live
 
 Every player screen has a **Codex** button (bottom left, or the **C** key). It opens everything the party knows of, so players can browse at their own pace whatever you've pushed. Pushes and the turn bar carry on underneath.
 
-- **What's in it:** the open campaign's (the project you opened last) characters, stories, rumors, events and items that are **in the Codex**, plus revealed screamsheets and revealed places on the globe and the City Maps. They're grouped under Players, NPCs, Monsters, Creatures, World, Items, News and Places, with search. A character whose sheet hides its Category goes under **People**, so the tab never gives away what the sheet keeps hidden.
+- **What's in it:** the open campaign's (the project you opened last) characters, stories, rumors, events and items that are **in the Codex**, plus revealed screamsheets and the revealed places of the project's map system: points on the globe and the City Maps, or planes and ways, charts (as players' copies) with their pins and regions, or star systems, lanes and sectors. They're grouped under Players, NPCs, Monsters, Creatures, World, Items, News and Places, with search. A character whose sheet hides its Category goes under **People**, so the tab never gives away what the sheet keeps hidden.
 - **Putting entries in:** on an entry's page, **○ Not in the Codex** / **◉ In the Codex** puts it in or takes it out. **Pushing an entry puts it in too**, so whatever the players have been shown stays in their Codex. Lists mark entries in the Codex with **◉ Codex**.
 - **As each sheet allows:** a character opens as its Player view shows it (Revealed fields, Shown text, nothing Rumored), a screamsheet opens as printed, and a place opens with its maps. Links to other entries in the Codex open there too.
 - **New:** entries this screen hasn't opened yet are marked **New**, and the Codex button counts them. (Each screen remembers this for itself; everything already known counts as seen on a screen's first visit.)
@@ -624,7 +672,7 @@ TEMPEST's look comes from a hot-swappable theme library. The theme applies to th
 ```text
 app/                The GM window and player screen (one page; #/player is the player screen)
   forge/            Presets, the designer, sheets and entries
-  maps/             World View globe, City Map, points of interest
+  maps/             The four map systems: Planes, World View globe, Atlas, Star Map; City Map; points of interest
   combat/           Combat › Initiative: the tracker, the players' turn bar, the attack scene
   netrun/           Combat › Netrunning: Network Builder, Card Forge, Networks, the architecture map
   push/             Pushing, the player screen, full screen
@@ -668,6 +716,7 @@ npm test
 | Preset templates | `app/forge/templates/` | `test/preset-templates.test.mjs` |
 | Globe and points | `app/maps/globe-math.js`, `app/maps/globe.js`, `app/maps/world-view.js`, `server/pois.js` | `test/globe-math.test.mjs`, `test/pois.test.js` |
 | City Map | `app/maps/city-map.js`, `app/maps/city-map-model.js`, `app/maps/city-poi-model.js` | `test/city-map.test.mjs`, `test/city-pois.test.js` |
+| Planes, Atlas and Star Map | `app/maps/planar*.js`, `app/maps/cartographer.js`, `app/maps/chart-model.js`, `app/maps/fog.js`, `app/maps/galactic*.js`, shared: `app/maps/board.js`, `app/maps/place-*.js`; `server/atlas.js` | `test/atlas.test.js` |
 | Pushing and player screens | `app/push/`, `server/display.js` | `test/push.test.js` |
 | The players' Codex | `app/codex/`, `server/codex.js` | `test/codex.test.js` |
 | Network player screen | `server/lan.js`, `app/projects/network.js` | `test/lan.test.js` |
@@ -702,7 +751,7 @@ TEMPEST is in **alpha** (`1.1.0-alpha`). This is the **v1 rebuild**; version zer
 
 | Built | Still to come |
 |---|---|
-| Projects and settings, The Forge (all three preset kinds), Characters, World (events, stories, rumors, screamsheets), Items, World View, Night City City Map, Combat › Initiative (the tracker and the players' turn bar) and Netrunning (net cards, networks, revealing them to players), pushing, named and networked player screens with the players' Codex, themes | Saved encounters, the Timeline, the Planar, Cartographer and Galactic map systems, Locations and Factions |
+| Projects and settings, The Forge (all three preset kinds), Characters, World (events, stories, rumors, screamsheets), Items, all four map systems (Planes, World View, Atlas, Star Map) and the Night City City Map, Combat › Initiative (the tracker and the players' turn bar) and Netrunning (net cards, networks, revealing them to players), pushing, named and networked player screens with the players' Codex, themes | Saved encounters, the Timeline, Locations and Factions |
 
 ## Third-party content and credits
 

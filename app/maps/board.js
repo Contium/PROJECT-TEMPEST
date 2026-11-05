@@ -10,6 +10,7 @@
 // createBoard(opts) → board
 //   space        { x0, y0, x1, y1 }: the world (the raster layer covers it; panning keeps some of it on screen)
 //   home()       the box "Fit" frames (what's on the board), or null for the whole space
+//   reserve()    screen pixels on the right that a side panel covers (Fit frames the rest)
 //   zoom         [min, max] scale, as multiples of the scale that fits the whole space
 //   interactive  false: no panning or zooming (the player screen); the board keeps `home()` framed
 //   onTap(pt, event)               a click on the board (not on a marker), pt in world units
@@ -87,13 +88,15 @@ export function createBoard(opts) {
   function fit(box = opts.home?.() ?? space, pad = 40) {
     const b = box && widthOf(box) > 1e-6 ? box : space;
     // A single point (or a tiny box) gets some room around it.
-    const min = widthOf(space) / 12;
+    const min = widthOf(space) / 200;
     const grown = widthOf(b) < min && heightOf(b) < min
       ? { x0: (b.x0 + b.x1) / 2 - min / 2, x1: (b.x0 + b.x1) / 2 + min / 2, y0: (b.y0 + b.y1) / 2 - min / 2, y1: (b.y0 + b.y1) / 2 + min / 2 }
       : b;
-    const v = fitBox(grown, viewport(), pad);
+    // The part of the stage a side panel doesn't cover (on wide screens).
+    const { width: full, height } = viewport();
+    const width = full > 760 ? full - Math.min(opts.reserve?.() ?? 0, full / 2) : full;
+    const v = fitBox(grown, { width, height }, pad);
     const scale = clampScale(v.scale);
-    const { width, height } = viewport();
     view = { scale, x: width / 2 - ((grown.x0 + grown.x1) / 2) * scale, y: height / 2 - ((grown.y0 + grown.y1) / 2) * scale };
     apply();
   }
@@ -236,6 +239,8 @@ export function createBoard(opts) {
     stage, raster, svg, markers,
     get view() { return view; },
     fit, home, zoomBy, center, toWorld, visibleBox, setMarkers, showTip,
+    /** The zoom as a multiple of the scale that fits the whole space (a chart: the whole map). */
+    zoomLevel: () => (view ? view.scale / fitScale() : 1),
     /** Keep a view the GM chose: the next resizes keep it rather than re-framing. */
     touch: () => (touched = true),
     setSpace(next) {

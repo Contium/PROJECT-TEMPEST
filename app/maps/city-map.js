@@ -1,5 +1,5 @@
-// City Map (#/worldview/<slug>): the map of a unique location, opened from its
-// POI on the World View globe. Night City is the first: the 2045 atlas, with its
+// City Map (#/worldview/<slug>, or #/starmap/<slug> on a Galactic project): the map
+// of a unique location, opened from its POI on the World View globe or the star map. Night City is the first: the 2045 atlas, with its
 // districts traced (scripts/extract-districts.py) into outlines laid over it.
 //
 // Drag to pan, scroll to zoom. Hovering a district lights it up; clicking selects
@@ -46,12 +46,12 @@ async function loadDistricts(map) {
   return prepareDistricts(districtCache.get(map.slug), map);
 }
 
-export async function mount(root, { slug, project }) {
+export async function mount(root, { slug, project, back: from = { href: '#/worldview', label: 'World View' } }) {
   const base = UNIQUE_POIS.find((u) => u.slug === slug);
   // Is it on this project's map? (Switched on, and a map system that carries it.)
   const live = base ? (await globeApi.list().catch(() => [])).find((p) => p.id === base.id) : null;
   const map = CITY_MAPS[slug];
-  const back = el('a', { class: 'app-link', href: '#/worldview' }, '← World View');
+  const back = el('a', { class: 'app-link', href: from.href }, `← ${from.label}`);
 
   if (!live || !map) {
     root.replaceChildren(el('article', { class: 'tp-frame tp-panel app-placeholder' },

@@ -20,6 +20,11 @@ import { typeOf } from '../maps/poi-model.js';
 import { iconOf } from '../maps/city-poi-model.js';
 import { CITY_MAPS, prepareDistricts, pathOf, fitBox } from '../maps/city-map-model.js';
 import { mapsGallery } from '../maps/attached-maps.js';
+import { createBoard } from '../maps/board.js';
+import { placeCardView } from '../maps/place-card.js';
+import { drawPlanar, planesBox } from '../maps/planar.js';
+import { drawStarmap, starmapBox } from '../maps/galactic.js';
+import { drawChart } from '../maps/cartographer.js';
 import { openImage } from '../image-viewer.js';
 import { pushKind, displayLabel, PUSH_MODES } from './push-model.js';
 import { fullscreenControl } from './fullscreen.js';
@@ -129,6 +134,12 @@ export function mount(root, { engine }) {
         return globe(d);
       case 'citymap':
         return cityMap(d);
+      case 'place':
+        return placeCardView(d.place, { url });
+      case 'planes':
+      case 'starmap':
+      case 'chart':
+        return atlasMap(d, url);
       case 'network': {
         const out = playerNetworkView(d.network, { url, fit: true, openImage: (items, i) => openImage(items.map((x) => ({ ...x, src: url(x.image) })), i) });
         cleanup = out.cleanup;
@@ -167,6 +178,35 @@ export function mount(root, { engine }) {
       cleanup = () => g.destroy();
     });
     return node;
+  }
+
+  /** The Planar board, the star map or a chart, framed on what the GM pushed. */
+  function atlasMap(d, url) {
+    let board;
+    let label = d.title;
+    if (d.mode === 'chart') {
+      const c = d.chart;
+      const space = { x0: 0, y0: 0, x1: c.width, y1: c.height };
+      const box = d.box ? { x0: d.box.x0 * c.width, y0: d.box.y0 * c.height, x1: d.box.x1 * c.width, y1: d.box.y1 * c.height } : space;
+      board = createBoard({ space, interactive: false, zoom: [0.2, 40], frame: () => box, label: c.name, className: 'scr-atlas' });
+      if (c.image) board.raster.append(el('img', { class: 'cm-img', src: url(c.image), alt: c.name, style: `width:${c.width}px;height:${c.height}px` }));
+      drawChart(board, { width: c.width, height: c.height, pins: c.pins, regions: c.regions }, { selected: d.focus, named: true });
+      const focus = [...c.pins, ...c.regions].find((x) => x.id === d.focus);
+      if (focus) label = `${c.name} · ${focus.name}`;
+      if (c.covered) board.stage.append(el('p', { class: 'ct-covered tp-label' }, 'This map is still under fog'));
+    } else if (d.mode === 'planes') {
+      board = createBoard({ space: { x0: -10000, y0: -10000, x1: 10000, y1: 10000 }, interactive: false, zoom: [0.2, 400], frame: () => d.box ?? planesBox(d.graph.planes), label: 'The planes', className: 'pl-stage scr-atlas' });
+      drawPlanar(board, d.graph, { selected: d.focus });
+      const focus = d.graph.planes.find((p) => p.id === d.focus);
+      if (focus) label = focus.name;
+    } else {
+      board = createBoard({ space: { x0: -10000, y0: -10000, x1: 10000, y1: 10000 }, interactive: false, zoom: [0.2, 600], frame: () => d.box ?? starmapBox(d.map), label: 'The star map', className: 'gx-stage scr-atlas' });
+      drawStarmap(board, d.map, { selected: d.focus });
+      const focus = [...d.map.stars, ...d.map.sectors].find((x) => x.id === d.focus);
+      if (focus) label = focus.name;
+    }
+    cleanup = () => board.destroy();
+    return el('section', { class: 'scr-city' }, board.stage, el('p', { class: 'tp-label scr-globe__focus' }, label));
   }
 
   async function cityMap(d) {

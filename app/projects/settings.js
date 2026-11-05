@@ -120,7 +120,7 @@ export async function mount(root, { project, saved: onSaved }) {
         return el('label', { class: `st-card st-unique ${on ? 'is-on' : ''}` },
           el('input', { type: 'checkbox', checked: on, onChange: (e) => { draft.maps[u.key] = { ...draft.maps[u.key], enabled: e.target.checked }; render(); } }),
           el('span', { class: 'st-card__label' }, u.name, el('span', { class: 'tp-badge tp-badge--interactive st-soon' }, 'Unique'), el('span', { class: 'tp-mono tp-dim st-unique__where' }, formatLonLat(u))),
-          el('span', { class: 'tp-dim st-card__hint' }, `${u.description} Shows on the map as a unique City with its own City Map${on ? '' : ' (off)'}.`));
+          el('span', { class: 'tp-dim st-card__hint' }, `${u.description} Shows on the ${draft.maps.mode === 'galactic' ? 'star map as a unique Settlement (drag it where you like)' : 'map as a unique City'} with its own City Map${on ? '' : ' (off)'}.`));
       }));
   }
 
@@ -170,7 +170,7 @@ export async function mount(root, { project, saved: onSaved }) {
           el('header', { class: 'tp-panel__head' }, el('h2', { class: 'tp-panel__title' }, 'Map system'), el('span', { class: 'tp-dim' }, 'How this project\'s world will be mapped')),
           el('div', { class: 'tp-panel__body' },
             cards('maps', [...MAP_MODES, { id: null, label: 'Decide later', hint: 'No map system yet' }], draft.maps.mode, (m) => (draft.maps.mode = m), { soon: true }),
-            el('p', { class: 'tp-dim st-note' }, 'Planetary is ready: choosing it adds a World View section with a 3D globe. The other map systems are on the way.'),
+            el('p', { class: 'tp-dim st-note' }, 'Each map system adds a section of its own: Planes, World View, Atlas or Star Map. Switching systems keeps what you made in each, ready for when you switch back.'),
             UNIQUE_POI_MODES.includes(draft.maps.mode) ? uniques() : null)),
         foot,
         network),

@@ -13,6 +13,7 @@ import { renderArticle } from '../screamsheets/article.js';
 import { typeOf } from '../maps/poi-model.js';
 import { iconOf } from '../maps/city-poi-model.js';
 import { mapsGallery } from '../maps/attached-maps.js';
+import { placeCardView } from '../maps/place-card.js';
 import { openImage } from '../image-viewer.js';
 
 const GLYPH = { players: '◉', npcs: '◐', monsters: '✸', creatures: '❂', people: '◌', world: '✦', items: '◆', news: '▤', places: '⌖' };
@@ -186,6 +187,11 @@ export function codex() {
 
   function content(d) {
     if (d.type === 'article') return el('div', { class: 'cx-detail__article' }, renderArticle(d.article));
+    if (d.type === 'place') {
+      const node = placeCardView(d.place, { url });
+      node.classList.add('cx-detail__panel');
+      return node;
+    }
     if (d.type === 'poi' || d.type === 'citypoi') {
       const line = d.type === 'poi'
         ? [el('span', { class: 'wv-glyph', 'aria-hidden': 'true' }, typeOf(d.poi.type).glyph), typeOf(d.poi.type).label]
