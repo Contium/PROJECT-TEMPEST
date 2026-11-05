@@ -295,6 +295,7 @@ Under the preset toolbar, three tabs split the page, and the last one used is re
   - **Shown:** players read text you write for them instead of the real contents.
   - **Rumored:** players see the field's name, with the contents obscured as redacted bars, static, encrypted cipher text or your own text.
   - **Hidden:** players get nothing of the field, not even its name. A section whose fields are all hidden loses its heading too.
+  - An entry keeps its *Players read* text and its obscure style while a field is set to something else, so switching the field back finds them again. Players only ever get the text while the field is **Shown**.
 - **References:** GM only. Marks the field as carrying links to other entries for quick access.
 
 The sheet (on the **Create New** and **Preview** tabs) is drawn as the GM sees it (Shown and Rumored fields marked) or as players will: switch with **GM view** / **Player view**.
@@ -337,8 +338,9 @@ A character keeps a **snapshot** of the preset it came from, so editing or delet
 ### Characters
 
 - **Tabs:** Players, NPCs, Monsters and Creatures each list their characters as cards (portrait, name, species and size, short description, source preset). An empty tab points to The Forge.
+- **⊘ Hide all / ◉ Reveal all** (top of each tab) set *every field* of *every character on that tab* to Hidden or Revealed in one go. Each asks first and says how many it will change. Hide all leaves the players nothing, not even names; Reveal all lets them read everything, secrets included. Obscure styles and *Players read* text are kept, and the notice that follows has **Undo**, which puts each field back as it was.
 - **Character pages** (`#/characters/<tab>/<id>`) show the sheet with a **GM view / Player view** switch. Parents and references link to other entries.
-- **What players get, on the spot:** on the GM view every field has a small control (◉ while revealed). Click it to **Reveal**, **Obscure** (Redacted, Static, Encrypted or Custom text…), give **Shown text…** or **Hide** the field, for this entry only, saved at once. Player view, pushes and the players' Codex follow straight away. The same works on stories, rumors, events, items and net cards.
+- **What players get, on the spot:** on the GM view every field has a small control (◉ while revealed). Click it to **Reveal**, **Obscure** (Redacted, Static, Encrypted or Custom text…), give **Shown text…** or **Hide** the field, for this entry only, saved at once. Player view, pushes and the players' Codex follow straight away. The same works on stories, rumors, events, items and net cards. A hidden or obscured **Name** (or Handle) works like any other field: its control sits beside the faded name, and **Edit** still changes it.
 - **Edit** reuses the Create New form, with the sheet updating live. Changing Category moves the character to the matching tab. **Delete** asks first.
 - **Images** are stored in the project's `assets\` folder, named by their content, so a picture used twice is stored once. Uploads must really be PNG, JPEG, GIF or WebP (checked by their bytes), and 10 MB at most.
 
@@ -409,7 +411,7 @@ The third kind of preset, made in **The Forge › Items**.
 | Fabled | `#A259FF` violet | Shimmer |
 | Mythic | `#FF4D4D` red | Shimmer |
 
-The **Items** section is a single list of everything you've made (`#/items`), as cards with the item type and a rarity badge. When more than one rarity is in use, chips across the top filter by rarity. Each item has its own page at `#/items/<id>`.
+The **Items** section is a single list of everything you've made (`#/items`), as cards with the item type and a rarity badge. When more than one rarity is in use, chips across the top filter by rarity. Each item has its own page at `#/items/<id>`, with the same per-field visibility controls as characters. **⊘ Hide all / ◉ Reveal all** work as on the [Characters](#characters) tabs, for the items listed (with a rarity filter on, only the items it shows).
 
 ### Stat Blocks
 

@@ -36,7 +36,7 @@ test('forging a character snapshots the preset and checks its values', async () 
   preset = P.updateField(preset, 'category', { default: 'monster' });
 
   const values = { ...C.defaultValues(preset), name: '  Rook ', [hp]: { value: 50, max: 30 }, image: 'not-an-asset', [gallery]: [{ image: 'img_' + 'a'.repeat(24), label: 'Den' }, { image: 'bad' }] };
-  const c = C.forge(preset, { values, shown: { species: 'A tall stranger', name: 'ignored: not a Shown field' }, refs: { species: ['char_00000001', 'char_00000001', 'nope', 'story_00000003'], name: ['char_00000002'] } });
+  const c = C.forge(preset, { values, shown: { species: 'A tall stranger', name: 'kept for later: not Shown yet', nope: 'no such field' }, refs: { species: ['char_00000001', 'char_00000001', 'nope', 'story_00000003'], name: ['char_00000002'] } });
 
   assert.match(c.id, C.idPattern('characters'));
   assert.equal(c.kind, 'characters');
@@ -45,7 +45,7 @@ test('forging a character snapshots the preset and checks its values', async () 
   assert.deepEqual(c.values[hp], { value: 30, max: 30 }, 'a pool is clamped to its limit');
   assert.equal(c.values.image, undefined, 'only stored images are accepted');
   assert.deepEqual(c.values[gallery], [{ image: 'img_' + 'a'.repeat(24), label: 'Den' }]);
-  assert.deepEqual(c.shown, { species: 'A tall stranger' });
+  assert.deepEqual(c.shown, { species: 'A tall stranger', name: 'kept for later: not Shown yet' }, 'Shown text is kept while its field is set otherwise (only for fields the sheet has)');
   assert.deepEqual(c.refs, { species: ['char_00000001', 'story_00000003'] }, 'references (to any kind) only on fields that allow them, deduplicated');
   assert.deepEqual(Object.keys(c.sheet.fields).sort(), Object.keys(preset.fields).sort());
 

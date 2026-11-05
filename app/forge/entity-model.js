@@ -94,10 +94,13 @@ export function normalizeEntity(input, { kind: expected } = {}) {
   values.name = (values.name ?? '').trim();
   if (!values.name) problems.push(`A ${kindOf(kind).entity} needs a ${sheet.fields.name.label.toLowerCase()}`);
 
+  // Shown text is kept even while its field is Revealed, Obscured or Hidden, so switching the
+  // field back to Shown (or undoing a Hide all) finds the GM's words again. Players only ever
+  // get it through playerEntity(), and only for fields that are Shown.
   const shown = {};
   for (const f of fields) {
     const text = input.shown?.[f.id];
-    if (f.visibility === 'shown' && typeof text === 'string') shown[f.id] = text.slice(0, 4000);
+    if (typeof text === 'string' && text) shown[f.id] = text.slice(0, 4000);
   }
   const refs = {};
   for (const f of fields) {
@@ -123,6 +126,24 @@ export function normalizeEntity(input, { kind: expected } = {}) {
     updatedAt: typeof input.updatedAt === 'string' ? input.updatedAt : now,
   };
 }
+
+/** What Hide all / Reveal all can set every field to. */
+export const ALL_FIELDS_VISIBILITY = ['revealed', 'hidden'];
+
+/**
+ * An entry with every field of its sheet set to one visibility ('revealed' or 'hidden'):
+ * a tab's Hide all / Reveal all. Each field's Obscure style and custom text, and the
+ * entry's Shown text, stay as they were, so the GM can switch a field back later.
+ */
+export function withAllFields(entity, visibility) {
+  if (!ALL_FIELDS_VISIBILITY.includes(visibility)) throw new PresetError([`Can't set every field to "${visibility}"`]);
+  const sheet = structuredClone(entity.sheet);
+  for (const f of Object.values(sheet.fields ?? {})) f.visibility = visibility;
+  return { ...entity, sheet };
+}
+
+/** How many of an entry's fields aren't already `visibility` (0: Hide all / Reveal all changes nothing). */
+export const fieldsNotAt = (entity, visibility) => Object.values(entity.sheet?.fields ?? {}).filter((f) => f.visibility !== visibility).length;
 
 /** Asset ids an entity uses (for clean-up and export later). */
 export function assetsOf(entity) {

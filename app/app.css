@@ -416,7 +416,9 @@ body.is-player .app-main { padding: 0; overflow: hidden; }
 
 .sheet__field { position: relative; display: flex; flex-direction: column; gap: var(--tp-space-1); min-width: 0; }
 .sheet__label { display: flex; align-items: center; gap: var(--tp-space-2); }
-.sheet__label--float { position: absolute; right: 0; top: 0; }
+/* Above the field's contents: a Hidden or Rumored name/category is drawn faded (opacity makes
+   it its own layer), and it must never cover its own visibility control. */
+.sheet__label--float { position: absolute; right: 0; top: 0; z-index: 1; }
 .sheet__mark { padding: 0 0.3rem; font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.08em; border: 1px solid currentColor; }
 .sheet__mark--shown { color: var(--tp-info); }
 .sheet__mark--rumored { color: var(--tp-warning); }
@@ -564,6 +566,7 @@ body.is-player .app-main { padding: 0; overflow: hidden; }
 .cv { display: flex; flex-direction: column; gap: var(--tp-space-4); }
 .cv-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--tp-space-3); }
 .cv-bar .app-actions { align-items: center; }
+.cv-allvis { display: inline-flex; flex-wrap: wrap; gap: var(--tp-space-2); }
 .cv-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: var(--tp-space-3); }
 .cv-card { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--tp-space-3); padding: var(--tp-space-3); color: inherit; text-decoration: none; height: 100%; transition: transform var(--tp-duration) var(--tp-ease); }
 .cv-card:hover { --_edge: var(--tp-interactive); transform: translateY(-2px); }

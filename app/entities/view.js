@@ -3,7 +3,9 @@
 //   World › Events / Stories / Rumors                     (stories, by Type)
 //   Items                                                 (items: one list, filtered by rarity)
 //
-//   #/<section>/<tab>        cards for every entry in that category (Items: #/items)
+//   #/<section>/<tab>        cards for every entry in that category (Items: #/items). Characters and
+//                            Items tabs also have Hide all / Reveal all: every field of every entry
+//                            listed, after a confirm, with Undo.
 //   #/<section>/<tab>/<id>   one entry: its sheet (GM or player view), Edit, Delete (Items: #/items/<id>).
 //                            On the GM view each field has a control to Reveal, Obscure (redacted,
 //                            static, encrypted, custom text), give Shown text or Hide it, for this entry.
@@ -16,7 +18,7 @@ import { el, toast, toastError, confirmDialog, store } from '../ui.js';
 import { entitiesApi, allEntities, imageUrl, currentProjectId } from '../api.js';
 import { renderSheet, rarityBadge } from '../forge/sheet.js';
 import { valuesForm } from '../forge/values-form.js';
-import { categoryForTab, categoryOf, normalizeEntity, hrefOf, plural } from '../forge/entity-model.js';
+import { categoryForTab, categoryOf, normalizeEntity, hrefOf, plural, withAllFields, fieldsNotAt } from '../forge/entity-model.js';
 import { kindOf, formatDate } from '../forge/preset-model.js';
 import { push, pushButton } from '../push/push.js';
 import { openImage } from '../image-viewer.js';
@@ -55,7 +57,8 @@ export async function mount(root, { section, tab, item }) {
 /** What a list or page is called: "NPCs", "Rumors", "Items". */
 const titleOf = (kind, category) => (category ? plural(category.label) : kindOf(kind).label);
 
-function list(root, { kind, category }, all) {
+function list(root, ctx, all) {
+  const { kind, category } = ctx;
   // Items: filter chips for the rarities in use, remembered per project.
   const filterKey = `tempest.${currentProjectId()}.items.rarity`;
   const rarities = kind === 'items' ? [...new Map(all.filter((e) => e.rarity).map((e) => [e.rarity.id, e.rarity])).values()] : [];
@@ -72,12 +75,17 @@ function list(root, { kind, category }, all) {
       el('div', { class: 'cv-bar' },
         el('span', { class: 'tp-deco' }, `${entries.length} ${category ? (entries.length === 1 ? category.label : plural(category.label)) : entries.length === 1 ? 'item' : 'items'}`),
         el('span', { class: 'app-actions' },
+          ALL_FIELDS_KINDS.includes(kind) && entries.length
+            ? el('span', { class: 'cv-allvis', role: 'group', 'aria-label': `What players get of every ${category ? category.label : 'item'} listed` },
+                el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', title: `Hide every field of every ${category ? category.label : 'item'} listed here from the players (asks first, and you can undo it)`, onClick: (ev) => setAll(ev.currentTarget, ctx, entries, 'hidden') }, '⊘ Hide all'),
+                el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', title: `Reveal every field of every ${category ? category.label : 'item'} listed here to the players (asks first, and you can undo it)`, onClick: (ev) => setAll(ev.currentTarget, ctx, entries, 'revealed') }, '◉ Reveal all'))
+            : null,
           all.length ? pushButton('Push list', () => push({ mode: 'roster', kind, category: category?.id ?? null }), { title: `Show every ${category ? category.label : 'item'} on the player screen (names, pictures and summaries, as each sheet allows)` }) : null,
           forgeLink)),
       rarities.length > 1
         ? el('div', { class: 'cv-filters', role: 'group', 'aria-label': 'Filter by rarity' },
-            el('button', { type: 'button', class: `fd-seg__btn ${only ? '' : 'is-on'}`, 'aria-pressed': String(!only), onClick: () => (store.set(filterKey, ''), list(root, { kind, category }, all)) }, 'All'),
-            rarities.map((r) => el('button', { type: 'button', class: `cv-filter ${only === r.id ? 'is-on' : ''}`, 'aria-pressed': String(only === r.id), onClick: () => (store.set(filterKey, only === r.id ? '' : r.id), list(root, { kind, category }, all)) }, rarityBadge(r))))
+            el('button', { type: 'button', class: `fd-seg__btn ${only ? '' : 'is-on'}`, 'aria-pressed': String(!only), onClick: () => (store.set(filterKey, ''), list(root, ctx, all)) }, 'All'),
+            rarities.map((r) => el('button', { type: 'button', class: `cv-filter ${only === r.id ? 'is-on' : ''}`, 'aria-pressed': String(only === r.id), onClick: () => (store.set(filterKey, only === r.id ? '' : r.id), list(root, ctx, all)) }, rarityBadge(r))))
         : null,
       entries.length
         ? el('ul', { class: 'cv-grid' },
@@ -99,6 +107,84 @@ function list(root, { kind, category }, all) {
                 : `Build an Items preset in The Forge and use Create New at the bottom.`),
               forgeLink.cloneNode(true)))),
   );
+}
+
+// --- Hide all / Reveal all ------------------------------------------------------------------
+
+// Tabs that offer them: Characters (Players, NPCs, Monsters, Creatures) and Items.
+const ALL_FIELDS_KINDS = ['characters', 'items'];
+
+/**
+ * Set every field of every entry listed to Hidden or Revealed, after asking.
+ * Obscure styles and Shown text stay in each entry, and the toast offers Undo,
+ * which puts each field's own setting back.
+ */
+async function setAll(button, { kind, category, api }, entries, visibility) {
+  const hide = visibility === 'hidden';
+  const n = entries.length;
+  const one = category ? category.label : 'item';
+  const many = category ? plural(category.label) : 'items';
+  const these = n === 1 ? `this ${one}` : `these ${n} ${many}`;
+  const ok = await confirmDialog(hide
+    ? {
+        title: n === 1 ? `Hide this ${one} from the players?` : `Hide all ${many} from the players?`,
+        body: `Every field of ${these} will be Hidden: the players get nothing of ${n === 1 ? 'it' : 'them'}, not even ${n === 1 ? 'its name' : 'their names'}, on the player screen or in their Codex. Obscure styles and Shown text are kept, ready if you switch a field back. You can undo this straight after.`,
+        confirmLabel: 'Hide all',
+      }
+    : {
+        title: n === 1 ? `Reveal this ${one} to the players?` : `Reveal all ${many} to the players?`,
+        body: `Every field of ${these} will be Revealed, secrets and notes included: the players can read all of it whenever ${n === 1 ? 'it is' : 'one is'} pushed or in their Codex. Fields you obscured, hid or gave Shown text lose that setting (you can undo this straight after).`,
+        confirmLabel: 'Reveal all',
+        danger: true,
+      });
+  if (!ok) return;
+
+  button.disabled = true;
+  const before = []; // { id, vis: { [fieldId]: visibility } } for Undo
+  let failed = 0;
+  try {
+    await Promise.all(entries.map(async ({ id }) => {
+      try {
+        const e = await api.get(id);
+        if (!fieldsNotAt(e, visibility)) return;
+        await api.save(withAllFields(e, visibility));
+        before.push({ id, vis: Object.fromEntries(Object.values(e.sheet.fields).map((f) => [f.id, f.visibility])) });
+      } catch {
+        failed++;
+      }
+    }));
+  } finally {
+    button.disabled = false;
+  }
+
+  if (failed) toast(`${failed} of ${n} couldn't be changed`, { tone: 'danger', details: ['Try again, or open them one by one.'], timeout: 9000 });
+  if (!before.length) {
+    if (!failed) toast(hide ? `Already hidden: the players get nothing of ${these}` : `Already revealed: the players can read all of ${these}`);
+    return;
+  }
+  const changed = before.length === 1 ? `1 ${one}` : `${before.length} ${many}`;
+  toast(hide ? `Hidden: every field of ${changed}` : `Revealed: every field of ${changed}`, {
+    tone: 'success',
+    timeout: 12000,
+    action: {
+      label: 'Undo',
+      run: async () => {
+        let lost = 0;
+        await Promise.all(before.map(async ({ id, vis }) => {
+          try {
+            const e = await api.get(id);
+            const sheet = structuredClone(e.sheet);
+            for (const f of Object.values(sheet.fields)) if (vis[f.id]) f.visibility = vis[f.id];
+            await api.save({ ...e, sheet });
+          } catch {
+            lost++;
+          }
+        }));
+        if (lost) toast(`${lost} couldn't be put back`, { tone: 'danger', timeout: 9000 });
+        else toast(`Undone: ${changed} back as before`, { tone: 'success' });
+      },
+    },
+  });
 }
 
 // --- one entry ------------------------------------------------------------------------------
