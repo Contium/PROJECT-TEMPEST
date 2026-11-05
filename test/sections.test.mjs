@@ -12,7 +12,10 @@ test('the sections and their tabs', () => {
     ['Characters', ['Players', 'NPCs', 'Monsters', 'Creatures']],
     ['World', ['Events', 'Stories', 'Rumors', 'Screamsheets', 'Timeline']],
     ['World View', []],
-    ['Combat', ['Netrunning']],
+    ['Planes', []],
+    ['Atlas', []],
+    ['Star Map', []],
+    ['Combat', ['Initiative', 'Netrunning']],
     ['Items', []],
     ['The Forge', ['Characters/Creatures', 'Stories/Rumors/Events', 'Items']],
   ]);
@@ -32,7 +35,8 @@ test('hash paths resolve to sections and tabs', () => {
   assert.equal(at('#/world/stories/'), 'world/stories');
   assert.equal(at('/world/timeline'), 'world/timeline');
   assert.equal(resolve('/world/screamsheets/new').item, 'new', 'the generator');
-  assert.equal(at('/combat'), '→ /combat/netrunning');
+  assert.equal(at('/combat'), '→ /combat/initiative');
+  assert.equal(at('/combat/initiative'), 'combat/initiative');
   assert.equal(at('/combat/netrunning'), 'combat/netrunning');
   assert.equal(resolve('/combat/netrunning/builder').item, 'builder', 'a Netrunning sub-tab');
   assert.equal(resolve('/combat/netrunning/net_0a1b2c3d').item, 'net_0a1b2c3d', '…or a network by id');
@@ -58,7 +62,7 @@ test('anything else redirects somewhere sensible', () => {
   assert.equal(at('/characters', { lastTab: () => 'monsters' }), '→ /characters/monsters', '…or the tab you were last on');
   assert.equal(at('/characters', { lastTab: () => 'gone' }), '→ /characters/players');
   assert.equal(at('/characters/dragons'), '→ /characters/players');
-  assert.equal(at('/combat/round-1'), '→ /combat/netrunning', 'an unknown tab falls back to the first');
+  assert.equal(at('/combat/round-1'), '→ /combat/initiative', 'an unknown tab falls back to the first');
   assert.equal(at('/items/item_0a1b2c3d/x'), '→ /characters/players', 'sections without tabs take one id at most');
   assert.equal(resolve('/items/item_0a1b2c3d').item, 'item_0a1b2c3d', '…but Items opens entries by id');
   assert.equal(at('/items/a/b'), '→ /characters/players');

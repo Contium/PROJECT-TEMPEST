@@ -26,7 +26,7 @@ const summary = (e) => ({
   species: e.values?.species ?? '', size: e.values?.size ?? '',
   start: e.values?.start ?? null, end: e.values?.end ?? null,
   itemtype: e.values?.itemtype ?? '', rarity: rarityOf(e), dv: e.values?.dv ?? '',
-  presetName: e.presetName ?? '', updatedAt: e.updatedAt,
+  presetName: e.presetName ?? '', known: e.known === true, updatedAt: e.updatedAt,
 });
 
 /** An item's rarity as lists show it: { id, name, color, style } from its own sheet, or null. */

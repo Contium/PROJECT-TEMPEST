@@ -750,6 +750,7 @@
         {
           "id": "s_518a8a07",
           "title": "Stats",
+          "layout": "columns",
           "columns": [
             [
               "f_c46c35bc",
@@ -772,6 +773,7 @@
         {
           "id": "s_67cd07af",
           "title": "Condition",
+          "layout": "columns",
           "columns": [
             [
               "f_012cc8c7"
@@ -784,6 +786,7 @@
         {
           "id": "s_c98ed3df",
           "title": "Loadout",
+          "layout": "columns",
           "columns": [
             [
               "f_e269ce5c"
@@ -799,6 +802,7 @@
         {
           "id": "s_d814dc31",
           "title": "Notes",
+          "layout": "columns",
           "columns": [
             [
               "f_5ba6d046"
@@ -864,6 +868,7 @@
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T02:55:40.435Z",
   "updatedAt": "2026-11-04T02:55:40.435Z"
 }

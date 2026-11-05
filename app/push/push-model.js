@@ -6,7 +6,8 @@
 // to show. The server turns it into the *display*, the players' copy, built
 // here (playerEntity, rosterEntry) so nothing GM-only can reach a player window:
 // only Revealed fields keep their contents, Shown fields carry their
-// players-read text, Rumored fields carry nothing, references are dropped.
+// players-read text, Rumored fields carry nothing, Hidden fields are left out
+// altogether (not even their labels), references are dropped.
 //
 // Modes
 //   ambient   nothing pushed: the screen stands by
@@ -20,10 +21,17 @@
 //   citypoi   { project, city, id }                        one City Map POI (revealed only)
 //   article   { project, id }                              a screamsheet (revealed only), as printed
 //   network   { project, id, focus }                       a NET architecture: its revealed nodes, one lit
+//   planes    { project, box, focus }                      the Planar board: revealed planes and ways, one lit
+//   starmap   { project, box, focus }                      the star map: revealed systems, lanes, sectors
+//   chart     { project, id, box, focus }                  a Cartographer chart (revealed), fog baked in
+//   place     { project, id }                              one place of those three systems (revealed only)
+// box is the part of the map to show ({ x0, y0, x1, y1 }: board units, or 0..1 of a chart), or
+// null for all of it; focus lights one thing on it.
 
 import { ENTITY_ID, ASSET_ID, KINDS, fieldsInOrder } from '../forge/preset-model.js';
+import { cleanBox } from '../maps/place-model.js';
 
-export const PUSH_MODES = ['ambient', 'message', 'entity', 'roster', 'handout', 'globe', 'poi', 'citymap', 'citypoi', 'article', 'network'];
+export const PUSH_MODES = ['ambient', 'message', 'entity', 'roster', 'handout', 'globe', 'poi', 'citymap', 'citypoi', 'article', 'network', 'planes', 'starmap', 'chart', 'place'];
 export const TONES = [
   { id: 'info', label: 'Info' },
   { id: 'success', label: 'Good news' },
@@ -38,9 +46,14 @@ const CITY_POI = /^cpoi_[0-9a-f]{8}$/;
 const SCREAMSHEET = /^ss_[0-9a-f]{8}$/;
 const NETWORK = /^net_[0-9a-f]{8}$/;
 const NET_NODE = /^n[0-9a-f]{6}$/;
+const PLANE = /^plane_[0-9a-f]{8}$/;
+const STAR = /^(star_[0-9a-f]{8}|sector_[0-9a-f]{8}|unique_[a-z0-9_]+)$/;
+const CHART = /^chart_[0-9a-f]{8}$/;
+const CHART_PART = /^(pin|region)_[0-9a-f]{8}$/;
+const PLACE = /^((plane|way|chart|pin|region|star|lane|sector)_[0-9a-f]{8}|unique_[a-z0-9_]+)$/;
 
 /** The animation family the themes key on (data-push-kind on the player screen). */
-export const pushKind = (mode) => ({ entity: 'entity', poi: 'entity', citypoi: 'entity', roster: 'roster', handout: 'handout', message: 'message', globe: 'map', citymap: 'map', network: 'map', article: 'article' })[mode] ?? 'ambient';
+export const pushKind = (mode) => ({ entity: 'entity', poi: 'entity', citypoi: 'entity', place: 'entity', roster: 'roster', handout: 'handout', message: 'message', globe: 'map', citymap: 'map', network: 'map', planes: 'map', starmap: 'map', chart: 'map', article: 'article' })[mode] ?? 'ambient';
 
 export class PushError extends Error {
   constructor(message, status = 400) {
@@ -94,6 +107,16 @@ export function normalizePushRequest(input) {
     case 'poi':
       if (!GLOBE_POI.test(input.id ?? '')) throw new PushError('No such point of interest', 404);
       return { ...out, id: input.id };
+    case 'planes':
+      return { ...out, box: cleanBox(input.box, -20000, 20000), focus: PLANE.test(input.focus ?? '') ? input.focus : null };
+    case 'starmap':
+      return { ...out, box: cleanBox(input.box, -20000, 20000), focus: STAR.test(input.focus ?? '') ? input.focus : null };
+    case 'chart':
+      if (!CHART.test(input.id ?? '')) throw new PushError('No such chart', 404);
+      return { ...out, id: input.id, box: cleanBox(input.box, -1, 2), focus: CHART_PART.test(input.focus ?? '') ? input.focus : null };
+    case 'place':
+      if (!PLACE.test(input.id ?? '')) throw new PushError('No such place', 404);
+      return { ...out, id: input.id };
     case 'citymap':
     case 'citypoi': {
       if (!SLUG.test(input.city ?? '')) throw new PushError('No such city map', 404);
@@ -132,10 +155,24 @@ export function playerEntity(entity, linked = new Map()) {
   const shown = {};
   for (const field of fieldsInOrder(entity.sheet)) {
     const vis = field.visibility;
+    // Hidden: players get nothing of it, not even its label (the sheet draws nothing for a missing field).
+    if (vis === 'hidden') {
+      delete sheet.fields[field.id];
+      continue;
+    }
     if (vis !== 'revealed') delete sheet.fields[field.id].default;
     if (vis === 'revealed' && field.id in (entity.values ?? {})) values[field.id] = structuredClone(entity.values[field.id]);
     if (vis === 'shown') shown[field.id] = text(entity.shown?.[field.id], 4000) || field.shown || '';
   }
+  // Hidden fields leave the layout too, and a section with nothing left loses its heading.
+  const kept = (id) => id in sheet.fields;
+  sheet.layout = {
+    ...sheet.layout,
+    main: (sheet.layout?.main ?? []).filter(kept),
+    sections: (sheet.layout?.sections ?? [])
+      .map((s) => ({ ...s, columns: s.layout === 'body' ? s.columns.map((c) => c.filter(kept)) : s.columns.map((c) => c.filter(kept)).filter((c) => c.length) }))
+      .filter((s) => s.columns.some((c) => c.length)),
+  };
   const links = {};
   for (const id of idsIn(values)) {
     const other = linked.get(id);

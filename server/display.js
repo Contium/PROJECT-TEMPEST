@@ -14,14 +14,21 @@
 // The server builds every display itself from the project's data, so a push can
 // never carry GM-only contents: entries go through playerEntity(), lists through
 // rosterEntry(), POIs come from the players' lists (hidden ones are refused),
-// networks through playerNetwork() (revealed nodes only, never the GM's notes).
+// networks through playerNetwork() (revealed nodes only, never the GM's notes), and the
+// Planar, Cartographer and Galactic maps through server/atlas.js (revealed places only; a
+// chart under fog only as its baked players' copy).
 // The displays are kept in <data>/v1/display.json, so a restart keeps them.
+//
+// Beside what's pushed, every display carries `tracker`: the turn order of a fight
+// under way (Combat › Initiative), as playerView() gives it, or null. Player screens
+// draw it as a bar along the top whatever else they show; setTracker() changes it.
 
 const fs = require('node:fs');
 const fsp = require('node:fs/promises');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { StoreError } = require('./presets');
+const { buildDisplay: buildAtlasDisplay } = require('./atlas');
 
 const appModule = (rel) => import(pathToFileURL(path.join(__dirname, '..', 'app', rel)).href);
 const ASSETS = path.join(__dirname, '..', 'assets', 'maps');
@@ -72,6 +79,15 @@ function createDisplay(file, library) {
   } catch {
     /* first run, or unreadable: stand by */
   }
+  // The turn order on every screen while combat is on (Combat › Initiative): { projectId, …playerView } or null.
+  // It rides along with whatever is pushed, so it stays up whatever the screens show.
+  let tracker = null;
+  try {
+    tracker = JSON.parse(fs.readFileSync(file, 'utf8')).tracker ?? null;
+  } catch {
+    /* none */
+  }
+  const out = (d) => ({ ...withBuild(d), tracker });
   let seq = Math.max(state.seq ?? 0, ...[...personal.values()].map((d) => d.seq ?? 0));
   const clients = new Set(); // { res, key|null }
   // Screens seen since the server started: key -> { name, streams, seenAt }.
@@ -104,7 +120,12 @@ function createDisplay(file, library) {
       const { kindOfId } = await appModule('forge/entity-model.js');
       const kind = kindOfId(req.id);
       if (!kind || !stores[kind]) throw new StoreError(404, 'No such entry');
-      const entity = await stores[kind].get(req.id);
+      let entity = await stores[kind].get(req.id);
+      // What the players have been shown, they know of: it joins their Codex (server/codex.js).
+      if (!entity.known && ['characters', 'stories', 'items'].includes(kind)) {
+        entity = await stores[kind].save(entity.id, { ...entity, known: true });
+        req.madeKnown = true;
+      }
       const linked = new Map();
       for (const id of M.idsIn(M.playerEntity(entity).values)) {
         const k = kindOfId(id);
@@ -128,10 +149,10 @@ function createDisplay(file, library) {
       return { project, image: req.image, caption: req.caption, title: req.caption || 'Handout' };
     }
     if (req.mode === 'article') {
-      const { playerCopy } = await appModule('screamsheets/screamsheet-model.js');
+      const { playerCopy, playerTitle } = await appModule('screamsheets/screamsheet-model.js');
       const sheet = await stores.screamsheets.get(req.id);
       if (!sheet.revealed) throw new StoreError(409, 'That screamsheet is hidden from players: reveal it first');
-      return { project, article: playerCopy(sheet), title: sheet.headline };
+      return { project, article: playerCopy(sheet), title: playerTitle(sheet) };
     }
     if (req.mode === 'network') {
       const { playerNetwork } = await appModule('netrun/network-model.js');
@@ -172,6 +193,9 @@ function createDisplay(file, library) {
       }
       return { project, city: req.city, cityName: base.name, poi, districtName: names.get(poi.district) ?? null, title: poi.name };
     }
+    // The Planar, Cartographer and Galactic map systems (server/atlas.js).
+    const atlas = await buildAtlasDisplay(library, req, project);
+    if (atlas) return atlas;
     throw new StoreError(400, 'Unknown push');
   }
 
@@ -203,8 +227,8 @@ function createDisplay(file, library) {
   function broadcast() {
     const screensChunk = event('screens', list());
     for (const c of clients) {
-      if (c.key) c.res.write(event('display', withBuild(showing(c.key))));
-      else c.res.write(event('display', withBuild(state)) + screensChunk);
+      if (c.key) c.res.write(event('display', out(showing(c.key))));
+      else c.res.write(event('display', out(state)) + screensChunk);
     }
   }
   /** Tell the GM's streams the list of screens changed. */
@@ -216,7 +240,7 @@ function createDisplay(file, library) {
   async function save() {
     const tmp = `${file}.${process.pid}.tmp`;
     await fsp.mkdir(path.dirname(file), { recursive: true });
-    await fsp.writeFile(tmp, JSON.stringify({ all: state, personal: Object.fromEntries(personal) }), 'utf8');
+    await fsp.writeFile(tmp, JSON.stringify({ all: state, personal: Object.fromEntries(personal), tracker }), 'utf8');
     await fsp.rename(tmp, file);
   }
 
@@ -224,9 +248,9 @@ function createDisplay(file, library) {
     /** What's on screen: everyone's display, or what the named screen shows. */
     get(name) {
       const n = screenName(name);
-      if (!n) return withBuild(state);
+      if (!n) return out(state);
       const key = seen(n);
-      return withBuild(showing(key));
+      return out(showing(key));
     },
     screens: list,
     /**
@@ -266,14 +290,14 @@ function createDisplay(file, library) {
       }
       await save();
       broadcast();
-      return withBuild({ ...shown, to: names ?? 'all' });
+      return out({ ...shown, to: names ?? 'all', ...(req.madeKnown ? { madeKnown: true } : {}) });
     },
     /** Hold a request open as an event stream; `name` makes it a named player screen. */
     subscribe(req, res, name) {
       const n = screenName(name);
       const key = n ? seen(n, 1) : null;
       res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-store', Connection: 'keep-alive' });
-      res.write(`retry: 2000\n${event('display', withBuild(showing(key)))}${key ? '' : event('screens', list())}`);
+      res.write(`retry: 2000\n${event('display', out(showing(key)))}${key ? '' : event('screens', list())}`);
       const client = { res, key };
       clients.add(client);
       if (key) announce();
@@ -288,8 +312,23 @@ function createDisplay(file, library) {
         }
       });
     },
+    /**
+     * A project's encounter changed (or the project went: null). While its combat is on and
+     * shown, its turn order goes up on every screen; when it ends, it comes down.
+     */
+    async setTracker(projectId, encounter) {
+      const { playerView } = await appModule('combat/initiative-model.js');
+      const view = encounter ? playerView(encounter) : null;
+      let next = tracker;
+      if (view?.active) next = { projectId, ...view };
+      else if (tracker?.projectId === projectId) next = null;
+      if (JSON.stringify(next) === JSON.stringify(tracker)) return;
+      tracker = next;
+      await save();
+      broadcast();
+    },
     /** Every display a screen could be showing now (for which pictures the network may fetch). */
-    current: () => [state, ...personal.values()],
+    current: () => [state, ...personal.values(), ...(tracker ? [tracker] : [])],
   };
 }
 

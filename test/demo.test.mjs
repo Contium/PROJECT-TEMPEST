@@ -11,6 +11,7 @@ import { normalizePoi } from '../app/maps/poi-model.js';
 import { normalizeCityPoi } from '../app/maps/city-poi-model.js';
 import { normalizeScreamsheet } from '../app/screamsheets/screamsheet-model.js';
 import { normalizeNetwork } from '../app/netrun/network-model.js';
+import { normalizeEncounter } from '../app/combat/initiative-model.js';
 
 const require = createRequire(import.meta.url);
 const { installDemos } = require('../server/demo.js');
@@ -35,6 +36,12 @@ test('every file in the shipped demo passes the app\'s own checks', () => {
     for (const f of files(path.join(dir, 'networks'))) {
       const net = json(f);
       assert.deepEqual(normalizeNetwork(net), net, `${f} is exactly as the app would save it`);
+    }
+    // The Initiative Tracker's ready-made fight: as the app would load it, every character in it real.
+    const fight = path.join(dir, 'encounter.json');
+    if (fs.existsSync(fight)) {
+      assert.deepEqual(normalizeEncounter(json(fight)), json(fight), 'encounter.json is exactly as the app would save it');
+      for (const c of json(fight).combatants) if (c.entityId) assert.ok(fs.existsSync(path.join(dir, 'characters', `${c.entityId}.json`)), `${c.name} is a character in the demo`);
     }
 
     // Every image an entry uses ships with it, and every link points at something in the project.
@@ -101,5 +108,43 @@ test('demo projects install once, never overwrite, and stay deleted', () => {
     }
   } finally {
     fs.rmSync(v1, { recursive: true, force: true });
+  }
+});
+
+test('an installed demo follows the shipped one, except where the GM changed it', () => {
+  const { fingerprint } = require('../server/demo.js');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'tempest-demo-up-'));
+  try {
+    // A tiny shipped demo, version 1.
+    const root = path.join(tmp, 'app');
+    const ship = path.join(root, 'demo', 'projects', 'proj_0000beef');
+    const v1 = path.join(tmp, 'data');
+    const put = (dir, rel, text) => (fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true }), fs.writeFileSync(path.join(dir, rel), text));
+    put(ship, 'project.json', '{"id":"proj_0000beef","name":"Demo"}');
+    put(ship, 'characters/a.json', '{"v":1}');
+    put(ship, 'characters/b.json', '{"v":1}');
+    put(ship, 'citypois/test.json', '{"name":"Test"}');
+    put(ship, 'citypois/kept.json', '{"name":"Kept"}');
+    installDemos({ root, v1Dir: v1, log: () => {} });
+    const mine = (rel) => fs.readFileSync(path.join(v1, 'projects', 'proj_0000beef', rel), 'utf8');
+    put(path.join(v1, 'projects', 'proj_0000beef'), 'characters/b.json', '{"v":1,"gm":"my notes"}'); // the GM edits b
+    put(path.join(v1, 'projects', 'proj_0000beef'), 'citypois/kept.json', '{"name":"Kept","gm":true}'); // and this point
+
+    // Version 2: a and b change, test.json and kept.json are dropped; history knows version 1 (with Windows line endings, even).
+    put(ship, 'characters/a.json', '{"v":2}');
+    put(ship, 'characters/b.json', '{"v":2}');
+    fs.rmSync(path.join(ship, 'citypois'), { recursive: true });
+    const history = { proj_0000beef: { 'characters/a.json': [fingerprint('{"v":1}\r\n'.trim()), fingerprint('{"v":1}')], 'characters/b.json': [fingerprint('{"v":1}')], 'citypois/test.json': [fingerprint('{"name":"Test"}')], 'citypois/kept.json': [fingerprint('{"name":"Kept"}')], '../evil.json': [fingerprint('x')] } };
+    fs.writeFileSync(path.join(root, 'demo', 'history.json'), JSON.stringify(history));
+    const said = [];
+    installDemos({ root, v1Dir: v1, log: (m) => said.push(m) });
+    assert.equal(mine('characters/a.json'), '{"v":2}', 'untouched: brought up to date');
+    assert.equal(mine('characters/b.json'), '{"v":1,"gm":"my notes"}', 'changed by the GM: left alone');
+    assert.ok(!fs.existsSync(path.join(v1, 'projects', 'proj_0000beef', 'citypois', 'test.json')), 'dropped from the demo and untouched: removed');
+    assert.ok(fs.existsSync(path.join(v1, 'projects', 'proj_0000beef', 'citypois', 'kept.json')), 'dropped but changed by the GM: kept');
+    assert.match(said.join('\n'), /brought 2 untouched demo files up to date .*\(1 removed\)/);
+    assert.equal(fingerprint('a\r\nb'), fingerprint('a\nb'), 'line endings don\'t count');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
   }
 });

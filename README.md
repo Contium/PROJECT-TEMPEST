@@ -22,7 +22,7 @@ Build your characters, world and loot in one window, then push exactly what the 
 - **Everything runs on your PC.** A small Node server with **zero npm dependencies** serves the app on `127.0.0.1`. No accounts, no cloud, and your campaigns stay in plain JSON files you can copy and back up.
 - **A GM window and player screens.** You prep and run the game in one window. Players see only what you **push**, and the server strips anything they shouldn't see before it leaves your PC.
 - **Player screens on any device.** Turn on network sharing and players scan a QR code to open the player screen on their phone, tablet or TV. Each screen has a name, so you can push to everyone or to one player alone.
-- **Build your own sheets.** The Forge designs templates (presets) for characters, stories and items, with per-field rules for what players see: **Revealed**, **Shown** (your own player-facing text) or **Rumored** (redacted).
+- **Build your own sheets.** The Forge designs templates (presets) for characters, stories and items, with per-field rules for what players see: **Revealed**, **Shown** (your own player-facing text), **Rumored** (redacted, static or encrypted) or **Hidden**. Change any of them on the spot, field by field, from an entry's page.
 - **Maps.** An interactive holographic 3D globe with points of interest, and a district-aware city map of Night City.
 - **Themes that match the game.** Hot-swappable themes restyle the whole tool, player screens included: Cyberpunk RED, Moontown (storybook fantasy), Land of Sand (retro sci-fi), and variants.
 
@@ -51,12 +51,21 @@ Build your characters, world and loot in one window, then push exactly what the 
 
 ### Standalone download (no Node.js needed)
 
-Download the archive for your system from the [Releases](https://github.com/Contium/PROJECT-TEMPEST/releases) page and unpack it anywhere:
+Download from the [Releases](https://github.com/Contium/PROJECT-TEMPEST/releases) page:
 
-| System | Archive | Start it with |
+| System | Download | Start it with |
 |---|---|---|
-| Windows 10 / 11 (x64) | `tempest-<version>-win-x64.zip` | Double-click `tempest.exe`. Run `tempest.exe setup` once to add Start Menu shortcuts. |
-| Linux (x64) | `tempest-<version>-linux-x64.tar.gz` | `./tempest` |
+| Windows 10 / 11 (x64), installer | `TEMPEST-Setup-<version>.exe` | Run it, choose **Install**, then use the Start Menu or desktop shortcut |
+| Windows 10 / 11 (x64), portable | `tempest-<version>-win-x64.zip` | Unpack it anywhere and double-click `tempest.exe`. Run `tempest.exe setup` once to add Start Menu shortcuts. |
+| Linux (x64) | `tempest-<version>-linux-x64.tar.gz` | Unpack it anywhere and run `./tempest` |
+
+**The Windows installer:**
+- **Per user, no admin:** installs into `%LOCALAPPDATA%\Programs\TEMPEST` (or a folder you choose) with no administrator rights.
+- **Shortcuts:** adds TEMPEST, Quit TEMPEST and Uninstall TEMPEST to the Start Menu. A desktop shortcut and starting at sign-in are optional.
+- **Uninstalling:** TEMPEST appears under **Settings › Apps** to uninstall.
+- **Updating:** run a newer installer and it updates in place, closing TEMPEST first.
+- **Your projects:** installing, updating and uninstalling never touch them in `%LOCALAPPDATA%\TEMPEST`.
+- **Silent installs:** `TEMPEST-Setup-<version>.exe /S [/D=<folder>] [/desktop] [/autostart] [/nolaunch]`. Silent uninstall: `uninstall.exe /uninstall /S` in the install folder.
 
 The binary starts the server in the background and opens the GM window, exactly like the Start Menu shortcut below. Keep it in its folder: the app's files sit next to it. The same commands work from a terminal:
 
@@ -70,7 +79,7 @@ The binary starts the server in the background and opens the GM window, exactly 
 | `tempest --version` | Prints the TEMPEST and Node.js versions |
 
 > [!NOTE]
-> On Linux the GM window opens in Chrome, Chromium, Edge or Brave as an app window if one is installed, otherwise in your default browser. There is no tray icon on Linux, and the binaries are unsigned, so Windows SmartScreen may ask before the first run (**More info → Run anyway**).
+> On Linux the GM window opens in Chrome, Chromium, Edge or Brave as an app window if one is installed, otherwise in your default browser. There is no tray icon on Linux. The binaries and the installer are unsigned, so Windows SmartScreen may ask before the first run (**More info → Run anyway**).
 
 ### From source
 
@@ -165,11 +174,16 @@ TEMPEST ships with a demo campaign, **Cyberpunk (Sample)**, in `demo/projects/`.
 - **World:** linked gigs, an event and a rumor, with who's involved, payouts and the GM-only truth. Two screamsheets.
 - **Items:** gear from Very Common to Legendary.
 - **Maps:** places on the World View globe (one hidden from players), and pins across Night City's districts on the City Map, linked to the people and stories there.
+- **Secrets kept:** the Tin Man is known only by rumor (his stats in static, his secret encrypted, his Humanity hidden), Hammerhead's secret is hidden, Celeste Ward's encrypted, and the //FEED leak is anonymous with a scrambled date line. Every story leads to the next, in a March arc and a November one.
+- **Codex:** the crew, the people they've met (Doc Haas, Mama Ndiaye, Razor, Celeste Ward, Rusty), the jobs and rumors going round and their gear are already in the players' Codex.
+- **Initiative:** a fight ready to start: the Static Saints, initiative already rolled, against the Tin Man, Rusty the cyberhound and two Junkyard Scavs, one of them hidden. Press **Start combat** to put the turn order on the player screens.
 - **Netrunning:** the **Steeltooth Bar** NET architecture, ready to run, and a deck of net cards to build more from: Password, File, Control Node, six Black ICE (Skunk, Liche, Raven, Hellhound, Wisp, Sabertooth) and an Imp Demon, on the three *Cyberpunk RED* net card templates.
 
 The demo installs **once**. Edit it freely: a later start never overwrites it, and if you delete it, it stays deleted. When an update ships more in the demo (like the Netrunning cards), an installed demo gets each new file once, never over one of yours, and never again after you delete it. `<data>\v1\demo.json` records what was installed and offered. To get the whole demo back, delete that file and the project, then restart. Set `TEMPEST_NO_DEMO=1` to skip it. The standalone binaries include it too.
 
-**Rebuilding the demo:** `scripts/build-demo.mjs` seeds a project through a running server's API, skipping anything that already exists by name. Copy the result into `demo/projects/<id>/` (leave out any `*.tmp` files). `scripts/build-netrun-demo.mjs` writes the Netrunning part (presets, cards and the Steeltooth Bar) straight into the demo folder. `test/demo.test.mjs` checks every shipped file against the app's rules and checks that every link and image resolves.
+**Rebuilding the demo:** `scripts/build-demo.mjs` seeds a project through a running server's API, skipping anything that already exists by name. Copy the result into `demo/projects/<id>/` (leave out any `*.tmp` files). `scripts/build-netrun-demo.mjs` writes the Netrunning part (presets, cards and the Steeltooth Bar) straight into the demo folder; `scripts/build-initiative-demo.mjs`, `build-codex-demo.mjs` and `build-demo-polish.mjs` add the ready fight, what's in the players' Codex, and the finishing touches.
+
+**Updating installed demos:** a new TEMPEST brings an installed demo up to date: new files arrive once, and files the GM never touched are replaced with the new version (or removed, if the demo dropped them). A file the GM changed, or deleted, stays as the GM left it. This works because `demo/history.json` lists every version of every demo file ever shipped; after changing the demo, run `node scripts/build-demo-history.mjs` (with `GIT` pointing at git if it isn't on the PATH) before shipping. `test/demo.test.mjs` checks every shipped file against the app's rules and checks that every link and image resolves.
 
 > [!WARNING]
 > **Projects missing?** On Windows, an app installed as a package (MSIX) gets a private copy of `AppData`. A TEMPEST server *started by* such an app, for example a coding assistant's desktop app or its terminal, saves into `%LOCALAPPDATA%\Packages\<that app>\LocalCache\Local\TEMPEST` instead of `%LOCALAPPDATA%\TEMPEST`. The TEMPEST you start yourself can't see that copy. Start TEMPEST from its Start Menu shortcut or your own terminal. To rescue projects saved there, copy their folders from `…\LocalCache\Local\TEMPEST\v1\projects\` into `%LOCALAPPDATA%\TEMPEST\v1\projects\` with File Explorer.
@@ -220,7 +234,7 @@ The GM window has these sections, shown as tabs across the top bar:
 | **Characters** | Players · NPCs · Monsters · Creatures |
 | **World** | Events · Stories · Rumors · Screamsheets · Timeline |
 | **World View** | Only with Planetary maps: the 3D globe |
-| **Combat** | Netrunning (Network Builder · Card Forge · Networks) |
+| **Combat** | Initiative · Netrunning (Network Builder · Card Forge · Networks) |
 | **Items** | One list, filtered by rarity |
 | **The Forge** | Presets: Characters/Creatures · Stories/Rumors/Events · Items |
 
@@ -276,7 +290,8 @@ Under the preset toolbar, three tabs split the page, and the last one used is re
 - **What players see:**
   - **Revealed:** everything.
   - **Shown:** players read text you write for them instead of the real contents.
-  - **Rumored:** players see the field's name, with the contents obscured as redacted bars, static or your own text.
+  - **Rumored:** players see the field's name, with the contents obscured as redacted bars, static, encrypted cipher text or your own text.
+  - **Hidden:** players get nothing of the field, not even its name. A section whose fields are all hidden loses its heading too.
 - **References:** GM only. Marks the field as carrying links to other entries for quick access.
 
 The sheet (on the **Create New** and **Preview** tabs) is drawn as the GM sees it (Shown and Rumored fields marked) or as players will: switch with **GM view** / **Player view**.
@@ -320,6 +335,7 @@ A character keeps a **snapshot** of the preset it came from, so editing or delet
 
 - **Tabs:** Players, NPCs, Monsters and Creatures each list their characters as cards (portrait, name, species and size, short description, source preset). An empty tab points to The Forge.
 - **Character pages** (`#/characters/<tab>/<id>`) show the sheet with a **GM view / Player view** switch. Parents and references link to other entries.
+- **What players get, on the spot:** on the GM view every field has a small control (◉ while revealed). Click it to **Reveal**, **Obscure** (Redacted, Static, Encrypted or Custom text…), give **Shown text…** or **Hide** the field, for this entry only, saved at once. Player view, pushes and the players' Codex follow straight away. The same works on stories, rumors, events, items and net cards.
 - **Edit** reuses the Create New form, with the sheet updating live. Changing Category moves the character to the matching tab. **Delete** asks first.
 - **Images** are stored in the project's `assets\` folder, named by their content, so a picture used twice is stored once. Uploads must really be PNG, JPEG, GIF or WebP (checked by their bytes), and 10 MB at most.
 
@@ -360,7 +376,8 @@ In-world news articles, made with the **Screamsheet Generator** and kept under *
   3. **Headline:** one of those the conclusion suggests.
   4. **Fill in the details:** every [blank] gets a box. People suggest your project's characters; places suggest Night City's districts and your points of interest. **⚄ Fill blanks from the project** fills every empty one it can.
   5. **Polish & publish:** outlet, byline, date line, layout (**Broadsheet**, **Terminal** or **Plain**) and **Hidden/Revealed**. You can also edit the text by hand. **⇪ Save & push to players** saves it revealed and puts it on the player screens.
-- **Players** only ever get revealed screamsheets, as printed: never the generator's picks or which entries it mentions.
+- **Parts on the spot:** a screamsheet's page has **GM view / Player view**. On the GM view the outlet, date line, headline, byline and article each have the same control: **Reveal**, **Obscure** (Redacted, Static, Encrypted or Custom text…) or **Hide**. With an obscured headline, the player screens' title just says *Screamsheet*.
+- **Players** only ever get revealed screamsheets, as printed (obscured parts as such, hidden ones not at all): never the generator's picks or which entries it mentions.
 
 > [!IMPORTANT]
 > **Import the tables once before first use.** The generator's tables are R. Talsorian Games' text, so TEMPEST reads them from the free *Screamsheet Generator* PDF (a copy is in `assets/cyberpunkRED/`) instead of storing them in its code. Until you import them, the generator offers to. Importing needs Python 3 with `pypdf`:
@@ -398,6 +415,20 @@ A field type for characters, items and net cards: a row of named stats read toge
 - **In the designer:** add **Stat Block**, then name its stats (1 to 12), reorder them with ← →, and give any of them a default.
 - **Values** are short text (up to 12 characters), so `4`, `3d6` and `—` all fit.
 - **On the sheet** it's a small table: the names across the top, the values beneath.
+
+### Initiative (Combat)
+
+**Combat › Initiative** (`#/combat/initiative`) is the turn tracker. While a fight is on, its turn order runs across the top of **every player screen**, whatever else you push to them.
+
+- **Adding:** pick a character (players, NPCs, monsters, creatures), how many copies and their side; copies are numbered (*Junkyard Scav #1, #2*). **All PCs** adds every player character. A **one-off** needs just a name, HP, armor and initiative bonus.
+- **From the sheet:** a character joins with the first Stat fields labelled *Hit Points*/*HP*, *Initiative* (or *REF*, for Cyberpunk RED) and *Armor*/*AC*/*SP*. Anything missing can be typed into their row.
+- **Rolling:** choose the die (**1d10 + bonus** in a Cyberpunk RED project, **1d20 + bonus** otherwise). **Start combat** rolls everyone you control who has no initiative yet; type the players' own rolls into their rows. Reorder ties with ▲ ▼.
+- **Turns:** **Next turn** (N) and **Back** (P). Rounds count themselves, and conditions with a duration tick down as their bearer's turn starts.
+- **Each row:** HP with **Dmg**, **Heal** (or type `+5`) and **Temp** (temporary HP soaks damage first), armor, slot pools (`4 3 2` or `Ki 5, Rage 3`; click a pip to spend or restore it) and conditions. **Hide** keeps a foe off the player screens (an ambusher); **Down** takes them out of the order. Foes at 0 HP drop out by themselves; player characters stay.
+- **Attack:** pick attacker, target and damage, then **Hit**, **Crit** or **Miss**. The damage lands, and every player screen plays the attack for a few seconds: the strike, the damage and the target's health draining.
+- **What players see:** the turn bar, with whoever is acting first and larger. When the turn passes, cards slide along and the one that just acted wraps round to the end. Player characters show their HP, armor and (on their turn) slots. Everyone else shows only a band (*Unhurt*, *Wounded*, *Bloodied*, *Critical*), never numbers. Hidden and defeated foes aren't shown at all.
+- **Show on player screens** takes the bar down (or puts it back) without ending the fight.
+- **End combat:** foes leave and player characters stay, with their wounds, slots and conditions. Tick *Write the player characters' Hit Points to their sheets* to save their HP to their sheets. **Full rest** heals the PCs and clears their slots and conditions. **Clear** empties the tracker.
 
 ### Netrunning (Combat)
 
@@ -516,7 +547,7 @@ You push what players should see, and every player screen shows it at once, live
 - Each GM window starts on **All screens**, and remembers your pick only while it's open.
 
 **What players get:**
-- **The server builds it.** A push only names what to show; the server reads it from the project and keeps what players may see: Revealed fields, Shown fields' player text, nothing of Rumored fields, and never references. Linked entries show by name only if their own Name field is Revealed.
+- **The server builds it.** A push only names what to show; the server reads it from the project and keeps what players may see: Revealed fields, Shown fields' player text, nothing of Rumored fields, nothing at all of Hidden ones (not even their names), and never references. Linked entries show by name only if their own Name field is Revealed.
 - **Hidden things stay hidden.** Pushing a hidden point or screamsheet asks to reveal it first; the server refuses a hidden one otherwise.
 - A push shows what's saved, so save edits before pushing.
 
@@ -526,6 +557,16 @@ You push what players should see, and every player screen shows it at once, live
 
 **Updates:** after you update TEMPEST, open player screens reload themselves on your next push, keeping their names.
 
+### The players' Codex
+
+Every player screen has a **Codex** button (bottom left, or the **C** key). It opens everything the party knows of, so players can browse at their own pace whatever you've pushed. Pushes and the turn bar carry on underneath.
+
+- **What's in it:** the open campaign's (the project you opened last) characters, stories, rumors, events and items that are **in the Codex**, plus revealed screamsheets and revealed places on the globe and the City Maps. They're grouped under Players, NPCs, Monsters, Creatures, World, Items, News and Places, with search. A character whose sheet hides its Category goes under **People**, so the tab never gives away what the sheet keeps hidden.
+- **Putting entries in:** on an entry's page, **○ Not in the Codex** / **◉ In the Codex** puts it in or takes it out. **Pushing an entry puts it in too**, so whatever the players have been shown stays in their Codex. Lists mark entries in the Codex with **◉ Codex**.
+- **As each sheet allows:** a character opens as its Player view shows it (Revealed fields, Shown text, nothing Rumored), a screamsheet opens as printed, and a place opens with its maps. Links to other entries in the Codex open there too.
+- **New:** entries this screen hasn't opened yet are marked **New**, and the Codex button counts them. (Each screen remembers this for itself; everything already known counts as seen on a screen's first visit.)
+- **While it's open,** a new push shows *On screen now: …* with **Look** to go back to the screen.
+- On the network player screen, phones can open only the pictures of what's in the Codex or on screen.
 ### The player screen on your network
 
 Players can open the player screen in any browser on the same network: phones, tablets, laptops, smart TVs. Turn it on in **Project settings › Player screen on your network**:
@@ -584,8 +625,10 @@ TEMPEST's look comes from a hot-swappable theme library. The theme applies to th
 app/                The GM window and player screen (one page; #/player is the player screen)
   forge/            Presets, the designer, sheets and entries
   maps/             World View globe, City Map, points of interest
+  combat/           Combat › Initiative: the tracker, the players' turn bar, the attack scene
   netrun/           Combat › Netrunning: Network Builder, Card Forge, Networks, the architecture map
   push/             Pushing, the player screen, full screen
+  codex/            The players' Codex on the player screen
   screamsheets/     The screamsheet generator and articles
   projects/         Project picker, settings, network sharing card
   vendor/           Third-party files kept in the repository, with sources and licences
@@ -626,10 +669,12 @@ npm test
 | Globe and points | `app/maps/globe-math.js`, `app/maps/globe.js`, `app/maps/world-view.js`, `server/pois.js` | `test/globe-math.test.mjs`, `test/pois.test.js` |
 | City Map | `app/maps/city-map.js`, `app/maps/city-map-model.js`, `app/maps/city-poi-model.js` | `test/city-map.test.mjs`, `test/city-pois.test.js` |
 | Pushing and player screens | `app/push/`, `server/display.js` | `test/push.test.js` |
+| The players' Codex | `app/codex/`, `server/codex.js` | `test/codex.test.js` |
 | Network player screen | `server/lan.js`, `app/projects/network.js` | `test/lan.test.js` |
 | Screamsheets | `app/screamsheets/`, `server/packs.js` | `test/screamsheets.test.js` |
 | Netrunning (net cards, Stat Blocks, networks) | `app/netrun/`, `app/forge/templates/cyberpunk-red-net.js`, `server/pois.js` (store) | `test/netrun.test.js` |
-| Demo project | `server/demo.js`, `demo/`, `scripts/build-demo.mjs`, `scripts/build-netrun-demo.mjs` | `test/demo.test.mjs` |
+| Initiative tracker | `app/combat/`, `server/encounter.js`, `server/display.js` (the turn bar) | `test/initiative.test.js` |
+| Demo project | `server/demo.js`, `demo/`, `scripts/build-demo.mjs`, `scripts/build-netrun-demo.mjs`, `scripts/build-initiative-demo.mjs`, `scripts/build-codex-demo.mjs` | `test/demo.test.mjs` |
 | Sections and routing | `app/sections.js`, `app/main.js` | `test/sections.test.mjs` |
 
 ### Building the binaries
@@ -638,22 +683,26 @@ npm test
 npm run build
 ```
 
-This makes `dist/tempest-<version>-win-x64.zip` and `dist/tempest-<version>-linux-x64.tar.gz` (add `--targets=linux-arm64`, or any comma-separated list of `win-x64`, `linux-x64` and `linux-arm64`, after `npm run build --` for others). Each holds a `tempest` binary and the app's files beside it.
+This makes `dist/tempest-<version>-win-x64.zip`, `dist/TEMPEST-Setup-<version>.exe` (when built on Windows) and `dist/tempest-<version>-linux-x64.tar.gz` (add `--targets=linux-arm64`, or any comma-separated list of `win-x64`, `linux-x64` and `linux-arm64`, after `npm run build --` for others). Each holds a `tempest` binary and the app's files beside it.
 
 - **How it works:** the binary is the official Node.js runtime, the same version as the Node that runs the build, downloaded from nodejs.org and checked against its published SHA-256 list. `launcher/binary.js` is injected into it as a Node [single executable application](https://nodejs.org/api/single-executable-applications.html). It loads the server and launcher from the folder next to the binary, so they run exactly as they do from a checkout.
 - **What ships:** `app/`, `server/`, `src/`, `themes/`, `launcher/`, the map images and icons, the screamsheet importer, `LICENSE` and this README. The Atlas, the rulebook PDFs, tests, docs and `Archived/` stay out.
 - **Build tools:** the one tool, [postject](https://github.com/nodejs/postject) (from the Node.js project), is installed into `.build-cache/` on the first build. On Windows, `scripts/set-exe-icon.ps1` gives `tempest.exe` the TEMPEST icon using Windows' own resource API, and the exe is marked as a windowed app so starting it never flashes a console.
 - Both platforms build from either Windows or Linux. Only a Windows build sets the exe's icon.
+- **The Windows installer:** built on Windows, the build also makes `dist/TEMPEST-Setup-<version>.exe` (skip it with `--no-installer`).
+  - **How it's made:** `scripts/build-installer.ps1` packs the win-x64 folder into a zip and compiles `scripts/installer/Setup.cs` around it with the C# compiler that ships with Windows (.NET Framework 4.x). There's nothing extra to download.
+  - **Manifest:** `scripts/installer/setup.manifest` keeps it from asking for administrator rights and keeps it sharp on high-DPI screens.
+  - **Testing a build:** `/S /D=<a test folder> /noshortcuts /nolaunch` installs without shortcuts or an Apps entry, and `<folder>\uninstall.exe /uninstall /S /noshortcuts` removes it again.
 
 **Contributing:** issues and pull requests are welcome. Please run `npm test` before opening a pull request, keep the server free of npm dependencies, and include tests for new rules.
 
 ## Project status
 
-TEMPEST is in **alpha** (`1.0.0-alpha`). This is the **v1 rebuild**; version zero is kept, untouched, in `Archived/v0`.
+TEMPEST is in **alpha** (`1.1.0-alpha`). This is the **v1 rebuild**; version zero is kept, untouched, in `Archived/v0`.
 
 | Built | Still to come |
 |---|---|
-| Projects and settings, The Forge (all three preset kinds), Characters, World (events, stories, rumors, screamsheets), Items, World View, Night City City Map, Combat › Netrunning (net cards, networks, revealing them to players), pushing, named and networked player screens, themes | The rest of Combat (initiative, encounters), the Timeline, the Planar, Cartographer and Galactic map systems, Locations and Factions |
+| Projects and settings, The Forge (all three preset kinds), Characters, World (events, stories, rumors, screamsheets), Items, World View, Night City City Map, Combat › Initiative (the tracker and the players' turn bar) and Netrunning (net cards, networks, revealing them to players), pushing, named and networked player screens with the players' Codex, themes | Saved encounters, the Timeline, the Planar, Cartographer and Galactic map systems, Locations and Factions |
 
 ## Third-party content and credits
 

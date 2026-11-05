@@ -5012,8 +5012,8 @@
       "value": 46,
       "max": 50
     },
-    "cpr_critical_injuries": "",
-    "cpr_addictions": "",
+    "cpr_critical_injuries": "None",
+    "cpr_addictions": "None, unless you count speed.",
     "cpr_sk_concentration": {
       "value": 2
     },
@@ -5214,8 +5214,8 @@
     },
     "cpr_weapons": "Weapon · DMG · Ammo · ROF · Notes\nShotgun · 5d6 · 4 · 1 · Slugs or shells\nHeavy Pistol · 3d6 · 8 · 2",
     "cpr_armor": "Head: Leathers, SP 4\nBody: Light Armorjack, SP 11\nShield: HP —\nPenalty (applies to REF, DEX & MOVE): none",
-    "cpr_cw_audio": "",
-    "cpr_cw_eye_r": "",
+    "cpr_cw_audio": "Cyberaudio Suite\n· Radio Link (convoy band)",
+    "cpr_cw_eye_r": "Cybereye\n· Low Light/Infrared/UV\n· TeleOptics",
     "cpr_cw_arm_r": "",
     "cpr_cw_leg_r": "",
     "cpr_cw_eye_l": "",
@@ -5249,10 +5249,11 @@
     "cpr_lp_love": "Sabine. It ended well, mostly.",
     "cpr_lp_goals": "Clear the family debt and bring the pack back to the High Roads.",
     "cpr_lp_role": "What family? The Kowal-Redwater pack (Aldecaldo-affiliated)\nYour pack's specialty? Smuggling and long-haul transport",
-    "cpr_notes": ""
+    "cpr_notes": "The Kowal-Redwater pack still expects her back for the spring run. The crew's van is registered to a man who died in 2031."
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T21:37:38.513Z",
   "updatedAt": "2026-11-04T21:37:38.513Z"
 }

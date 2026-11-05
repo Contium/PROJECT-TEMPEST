@@ -380,7 +380,7 @@ export function valuesForm({ sheet, state, candidates = [], selfId = null, onCha
 
   function row(f) {
     if (!f) return null;
-    const vis = f.visibility !== 'revealed' ? el('span', { class: `fd-chip__vis fd-chip__vis--${f.visibility}` }, f.visibility === 'shown' ? 'Shown' : 'Rumored') : null;
+    const vis = f.visibility !== 'revealed' ? el('span', { class: `fd-chip__vis fd-chip__vis--${f.visibility}` }, ({ shown: 'Shown', hidden: 'Hidden' })[f.visibility] ?? 'Rumored') : null;
     const ed = editor(f);
     return el('div', { class: `vf-row vf-row--${f.type}` },
       el('div', { class: 'vf-row__label' }, el('span', { class: 'tp-label' }, f.label, f.id === 'name' ? ' *' : ''), vis),

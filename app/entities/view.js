@@ -4,7 +4,9 @@
 //   Items                                                 (items: one list, filtered by rarity)
 //
 //   #/<section>/<tab>        cards for every entry in that category (Items: #/items)
-//   #/<section>/<tab>/<id>   one entry: its sheet (GM or player view), Edit, Delete (Items: #/items/<id>)
+//   #/<section>/<tab>/<id>   one entry: its sheet (GM or player view), Edit, Delete (Items: #/items/<id>).
+//                            On the GM view each field has a control to Reveal, Obscure (redacted,
+//                            static, encrypted, custom text), give Shown text or Hide it, for this entry.
 //
 // An entry's sheet is the snapshot of the preset it was forged from, so it keeps
 // its shape even if that preset changes later. Editing reuses the Forge's values
@@ -18,7 +20,10 @@ import { categoryForTab, categoryOf, normalizeEntity, hrefOf, plural } from '../
 import { kindOf, formatDate } from '../forge/preset-model.js';
 import { push, pushButton } from '../push/push.js';
 import { openImage } from '../image-viewer.js';
+import { visibilityControl } from '../forge/visibility-menu.js';
 
+// Kinds the players' Codex can hold (net cards reach players through their networks).
+const CODEX_KINDS = ['characters', 'stories', 'items'];
 const initials = (name) => name.split(/\s+/).filter((w) => /\w/.test(w)).slice(0, 2).map((w) => w.replace(/\W/g, '')[0]).join('').toUpperCase() || '·';
 
 /** The line under a card's name: Species · Size, or Start – End. */
@@ -79,6 +84,7 @@ function list(root, { kind, category }, all) {
             entries.map((e) =>
               el('li', {},
                 el('a', { class: 'tp-frame tp-panel cv-card', href: hrefOf(e) },
+                  e.known ? el('span', { class: 'cv-card__known', title: 'In the players\' Codex' }, '◉ Codex') : null,
                   e.image ? el('img', { class: 'cv-card__image', src: imageUrl(e.image), alt: '', loading: 'lazy' }) : el('span', { class: 'cv-card__image cv-card__sigil', 'aria-hidden': 'true' }, initials(e.name)),
                   el('span', { class: 'cv-card__text' },
                     el('span', { class: 'cv-card__name' }, e.name),
@@ -131,9 +137,25 @@ async function detail(root, id, { kind, category, everyone, lookup, api, back: b
   let view = 'gm';
   let editing = null; // { state, form, onChange } while editing
 
+  // On the GM view, every field has its Reveal / Obscure / Hide control, saved straight away (this entry only).
+  const fieldControl = (field) => visibilityControl({
+    name: field.label,
+    state: { visibility: field.visibility, style: field.rumor?.style, text: field.rumor?.text, shown: e.shown?.[field.id] ?? field.shown },
+    onPick: async (next) => {
+      const sheet = structuredClone(e.sheet);
+      const f = sheet.fields[field.id];
+      f.visibility = next.visibility;
+      if (next.style) f.rumor = { ...f.rumor, style: next.style, ...(next.text != null ? { text: next.text } : {}) };
+      const shown = next.shown != null ? { ...e.shown, [field.id]: next.shown } : e.shown;
+      e = await api.save({ ...e, sheet, shown });
+      render();
+    },
+  });
+
   const sheetOf = (values = e.values, shown = e.shown, refs = e.refs) =>
     renderSheet(e.sheet, {
       view, values, shown, refs, lookup, imageUrl,
+      fieldControl: view === 'gm' && !editing ? fieldControl : null,
       pushImage: (image, caption) => push({ mode: 'handout', image, caption }),
       openImage: (items, index) => openImage(items.map((x) => ({ ...x, src: imageUrl(x.image) })), index, { push: (x) => push({ mode: 'handout', image: x.image, caption: x.caption }) }),
     });
@@ -149,7 +171,15 @@ async function detail(root, id, { kind, category, everyone, lookup, api, back: b
           el('a', { class: 'app-link', href: back }, `← ${allLabel}`),
           el('span', { class: 'app-actions' },
             seg,
-            editing ? null : pushButton('Push', () => push({ mode: 'entity', id: e.id }), { title: 'Show this entry on the player screen, as the Player view shows it' }),
+            editing || !CODEX_KINDS.includes(kind) ? null : el('button', {
+              type: 'button', class: `tp-frame tp-btn tp-btn--sm cv-known ${e.known ? 'is-known tp-btn--interactive' : 'tp-btn--ghost'}`, 'aria-pressed': String(Boolean(e.known)),
+              title: e.known ? 'The players know of this: it\'s in their Codex on the player screens, as the Player view shows it. Click to take it out.' : 'Only you know of this. Click to put it in the players\' Codex, as the Player view shows it (pushing it does this too).',
+              onClick: toggleKnown,
+            }, e.known ? '◉ In the Codex' : '○ Not in the Codex'),
+            editing ? null : pushButton('Push', async () => {
+              const shown = await push({ mode: 'entity', id: e.id });
+              if (shown?.madeKnown) ((e = { ...e, known: true }), render());
+            }, { title: 'Show this entry on the player screen, as the Player view shows it (it joins the players\' Codex)' }),
             editing ? null : el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--interactive', onClick: startEdit }, 'Edit'),
             editing ? null : el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', onClick: remove }, 'Delete'))),
         editing
@@ -187,6 +217,16 @@ async function detail(root, id, { kind, category, everyone, lookup, api, back: b
         location.hash = hrefOf(e);
         return;
       }
+      render();
+    } catch (err) {
+      toastError(err);
+    }
+  }
+
+  async function toggleKnown() {
+    try {
+      e = await api.save({ ...e, known: !e.known });
+      toast(e.known ? `"${e.name}" is in the players' Codex` : `"${e.name}" is out of the players' Codex`, { tone: e.known ? 'success' : 'info' });
       render();
     } catch (err) {
       toastError(err);

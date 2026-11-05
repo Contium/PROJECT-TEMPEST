@@ -5,7 +5,8 @@
 // Settings {
 //   money: { mode: 'dnd' | 'single' | 'custom', single: { name, symbol, position }, custom: [Currency…] },
 //   maps:  { mode: null | 'planar' | 'planetary' | 'cartographer' | 'galactic',
-//            nightCity: { enabled, revealed } }   the unique Night City POI (Planetary/Galactic only)
+//            nightCity: { enabled, revealed, galactic?: { x, y } } }   the unique Night City POI
+//                       (Planetary/Galactic only; galactic: where it sits on the star map)
 // }
 // Currency { id, name, symbol, value }: value is how many of the base currency
 // (the first one, value 1) it's worth. Amounts are stored in base units, so
@@ -28,10 +29,10 @@ export const DND_COINS = [
 ];
 
 export const MAP_MODES = [
-  { id: 'planar', label: 'Planar', hint: 'Planes and realms, and the ways between them' },
+  { id: 'planar', label: 'Planar', hint: 'Planes and realms, and the ways between them; adds the Planes section', ready: true },
   { id: 'planetary', label: 'Planetary', hint: 'Whole worlds on a 3D globe; adds the World View section', ready: true },
-  { id: 'cartographer', label: 'Cartographer', hint: 'Hand-drawn maps of lands, cities and dungeons' },
-  { id: 'galactic', label: 'Galactic', hint: 'Star systems, sectors and the lanes between them' },
+  { id: 'cartographer', label: 'Cartographer', hint: 'Your own maps of lands, cities and dungeons, with fog of war; adds the Atlas section', ready: true },
+  { id: 'galactic', label: 'Galactic', hint: 'Star systems, sectors and the lanes between them; adds the Star Map section', ready: true },
 ];
 
 /** Map systems that can carry the unique Night City POI. */
@@ -62,6 +63,11 @@ export class SettingsError extends Error {
 const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const text = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 const oneOf = (v, list, fallback) => (list.some((x) => x.id === v) ? v : fallback);
+/** A spot on the star map { x, y } (±10000), or null. */
+const spot = (g) => {
+  const [x, y] = [Number(g?.x), Number(g?.y)];
+  return g && typeof g === 'object' && [x, y].every((n) => Number.isFinite(n) && Math.abs(n) <= 10000) ? { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 } : null;
+};
 
 /** Check and tidy settings; anything missing takes its default. Throws SettingsError for what can't be repaired. */
 export function normalizeSettings(input) {
@@ -109,6 +115,8 @@ export function normalizeSettings(input) {
       nightCity: {
         enabled: input.maps?.nightCity?.enabled !== false,
         revealed: input.maps?.nightCity?.revealed !== false,
+        // Where it sits on a Galactic star map (it can be moved there; on the globe it can't).
+        ...(spot(input.maps?.nightCity?.galactic) ? { galactic: spot(input.maps.nightCity.galactic) } : {}),
       },
     },
   };

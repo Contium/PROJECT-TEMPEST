@@ -227,6 +227,7 @@
         {
           "id": "s_2d4be0b4",
           "title": "GM Notes",
+          "layout": "columns",
           "columns": [
             [
               "f_1b88e90a"
@@ -256,6 +257,9 @@
       "time": "23:00"
     },
     "summary": "The grid drops across Kabuki for ninety minutes, and the night market turns into a free-for-all.",
+    "f_bf5aae98": {
+      "id": "story_dfc2b605"
+    },
     "f_5614b4d0": "Every stall goes dark at once. Vendors with generators become kings, looters work the edges, and the Tyger Claws move in to \"keep order\" for a fee.",
     "f_01a830e7": {
       "text": "Kabuki night market, Watson"
@@ -280,6 +284,7 @@
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T02:55:40.464Z",
   "updatedAt": "2026-11-04T02:58:44.721Z"
 }

@@ -5012,8 +5012,8 @@
       "value": 62,
       "max": 70
     },
-    "cpr_critical_injuries": "",
-    "cpr_addictions": "",
+    "cpr_critical_injuries": "None",
+    "cpr_addictions": "Caffeine, heroically.",
     "cpr_sk_concentration": {
       "value": 2
     },
@@ -5214,12 +5214,12 @@
     },
     "cpr_weapons": "Weapon · DMG · Ammo · ROF · Notes\nHeavy Pistol · 3d6 · 8 · 2 · Smartgun-linked\nKnife · 1d6 · — · 2 · Scalpel-sharp, for emergencies",
     "cpr_armor": "Head: Light Armorjack, SP 11\nBody: Light Armorjack, SP 11\nShield: HP —\nPenalty (applies to REF, DEX & MOVE): none",
-    "cpr_cw_audio": "",
+    "cpr_cw_audio": "Cyberaudio Suite\n· Voice Stress Analyzer",
     "cpr_cw_eye_r": "Cybereye\n· MicroOptics (medical scan overlay)",
     "cpr_cw_arm_r": "",
     "cpr_cw_leg_r": "",
     "cpr_cw_eye_l": "",
-    "cpr_cw_arm_l": "",
+    "cpr_cw_arm_l": "Cyberarm (Standard Hand)\n· Medscanner",
     "cpr_cw_leg_l": "",
     "cpr_cw_neural": "Neural Link\n· Interface Plugs\n· Chipware Socket: Pharmaceutical Recall chip",
     "cpr_cw_internal": "Nasal Filters",
@@ -5249,10 +5249,11 @@
     "cpr_lp_love": "None, yet. Too busy.",
     "cpr_lp_goals": "Open a free clinic in The Glen that no Corp can buy.",
     "cpr_lp_role": "What kind of Medtech? Street medic\nWho are your main clients? Edgerunners and the people who can't pay",
-    "cpr_notes": ""
+    "cpr_notes": "Trained under Doc Haas and left on bad terms. Recognised the stitching on the Watson bodies: surgical, not street."
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T21:37:38.477Z",
   "updatedAt": "2026-11-04T21:37:38.477Z"
 }

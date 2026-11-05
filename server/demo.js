@@ -12,13 +12,23 @@
 // name, and never again after the GM deletes it. (For demos installed before that
 // list existed, the files in folders that already hold files count as offered.)
 //
+// Shipped files also change between versions (new text, links, what players may see).
+// demo/history.json lists every version of every demo file TEMPEST has shipped, so an
+// installed file that still matches one of them was never touched by the GM: it is brought
+// up to date (or removed, when the demo dropped it). A file the GM changed is never touched.
+//
 // TEMPEST_NO_DEMO=1 skips this. scripts/build-demo.mjs rebuilds the shipped demo,
-// and scripts/build-netrun-demo.mjs its Netrunning part.
+// and scripts/build-netrun-demo.mjs its Netrunning part; scripts/build-demo-history.mjs
+// records the shipped versions.
 
 const fs = require('node:fs');
+const crypto = require('node:crypto');
 const path = require('node:path');
 
 const PROJECT_ID = /^proj_[0-9a-f]{8}$/;
+
+/** A file's fingerprint: its text with Windows line endings evened out, hashed. */
+const fingerprint = (content) => crypto.createHash('sha256').update(Buffer.from(content).toString('utf8').replace(/\r\n/g, '\n')).digest('hex').slice(0, 24);
 
 /** Every file under `dir`, as forward-slash paths relative to it. */
 function filesOf(dir) {
@@ -44,6 +54,13 @@ function installDemos({ root, v1Dir, log = console.log }) {
     marker = { installed: Array.isArray(saved.installed) ? saved.installed : [], offered: saved.offered && typeof saved.offered === 'object' ? saved.offered : {} };
   } catch {
     /* first run, or an unreadable marker: start a new one */
+  }
+
+  let history = {};
+  try {
+    history = JSON.parse(fs.readFileSync(path.join(root, 'demo', 'history.json'), 'utf8'));
+  } catch {
+    /* none shipped: new files only */
   }
 
   const installed = [];
@@ -98,8 +115,39 @@ function installDemos({ root, v1Dir, log = console.log }) {
         log(`[demo] could not add ${f} to ${id}: ${err.message}`);
       }
     }
+    // Files the GM never touched (they match a version TEMPEST shipped) follow the demo.
+    let updated = 0;
+    let removed = 0;
+    const shipped = new Set(files);
+    for (const [f, versions] of Object.entries(history[id] ?? {})) {
+      if (!Array.isArray(versions) || f.split('/').includes('..')) continue;
+      const dest = path.join(target, ...f.split('/'));
+      let mine;
+      try {
+        mine = fingerprint(fs.readFileSync(dest));
+      } catch {
+        continue; // not there (never offered, or deleted by the GM): leave it be
+      }
+      const fresh = shipped.has(f) ? fs.readFileSync(path.join(from, ...f.split('/'))) : null;
+      if (fresh && fingerprint(fresh) === mine) continue; // up to date
+      if (!versions.includes(mine)) continue; // changed by the GM: theirs
+      try {
+        if (fresh) {
+          const tmp = `${dest}.${process.pid}.tmp`;
+          fs.writeFileSync(tmp, fresh);
+          fs.renameSync(tmp, dest);
+          updated += 1;
+        } else {
+          fs.rmSync(dest);
+          removed += 1;
+        }
+      } catch (err) {
+        log(`[demo] could not update ${f} in ${id}: ${err.message}`);
+      }
+    }
     marker.offered[id] = offered;
     if (added) log(`[demo] added ${added} new demo file${added === 1 ? '' : 's'} to ${id}`);
+    if (updated || removed) log(`[demo] brought ${updated + removed} untouched demo file${updated + removed === 1 ? '' : 's'} up to date in ${id}${removed ? ` (${removed} removed)` : ''}`);
   }
   if (ids.some((id) => marker.installed.includes(id))) {
     fs.mkdirSync(v1Dir, { recursive: true });
@@ -108,4 +156,4 @@ function installDemos({ root, v1Dir, log = console.log }) {
   return installed;
 }
 
-module.exports = { installDemos };
+module.exports = { installDemos, fingerprint };

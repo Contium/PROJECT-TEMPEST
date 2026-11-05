@@ -46,7 +46,7 @@ export async function push(request, { to = target, quiet = false } = {}) {
     const scoped = request.mode === 'message' || request.mode === 'ambient' ? request : { project: currentProjectId(), ...request };
     const shown = await display.push({ ...scoped, theme: theme(), to });
     const who = to === 'all' ? '' : ` for ${targetLabel(to)}`;
-    if (shown.mode !== 'ambient' && !quiet) toast(`On screen${who}: ${shown.title}`, { tone: 'success', action: { label: 'Clear', run: () => clear({ to }) } });
+    if (shown.mode !== 'ambient' && !quiet) toast(`On screen${who}: ${shown.title}${shown.madeKnown ? ' · now in the players\' Codex' : ''}`, { tone: 'success', action: { label: 'Clear', run: () => clear({ to }) } });
     return shown;
   } catch (err) {
     toastError(err);

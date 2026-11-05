@@ -7,7 +7,11 @@
 //   <data>/v1/projects/<id>/items/…          its items
 //   <data>/v1/projects/<id>/netcards/…       its net cards (Combat › Netrunning › Card Forge)
 //   <data>/v1/projects/<id>/networks/…       its NET architectures (Combat › Netrunning)
+//   <data>/v1/projects/<id>/encounter.json   its Initiative Tracker (Combat › Initiative; server/encounter.js)
 //   <data>/v1/projects/<id>/pois/…           its points of interest on the World View globe
+//   <data>/v1/projects/<id>/planes/… ways/…  its Planar board (app/maps/planar-model.js)
+//   <data>/v1/projects/<id>/charts/… pins/… regions/…   its Cartographer charts (app/maps/chart-model.js)
+//   <data>/v1/projects/<id>/stars/… lanes/… sectors/…   its Galactic star map (app/maps/galactic-model.js)
 //   <data>/v1/projects/<id>/assets/…         its images       (server/assets.js)
 //
 // so copying, backing up or sharing a project is copying one folder. Deleting a
@@ -31,8 +35,27 @@ const { createEntityStore, handleEntities } = require('./entities');
 // The entity kinds a project stores (folder = route = kind).
 const ENTITY_KINDS = ['characters', 'stories', 'items', 'netcards'];
 const { createAssetStore, handleAssets } = require('./assets');
-const { createPoiStore, handlePois, CITY, SCREAMSHEETS, NETWORKS } = require('./pois');
-const SUBS = 'presets|characters|stories|items|netcards|networks|entities|pois|citypois|screamsheets|assets';
+const { createPoiStore, handlePois, CITY, SCREAMSHEETS, NETWORKS, PLACES } = require('./pois');
+const { createEncounterStore, handleEncounter } = require('./encounter');
+// The Planar, Cartographer and Galactic places: planes, ways, charts, pins, regions, stars, lanes, sectors.
+const PLACE_KINDS = Object.keys(PLACES);
+const SUBS = `presets|characters|stories|items|netcards|networks|encounter|entities|pois|citypois|screamsheets|${PLACE_KINDS.join('|')}|assets`;
+
+// Deleting a place takes what hangs off it along: a plane's ways, a system's lanes, a chart's pins
+// and regions (and pins elsewhere stop leading to it).
+const CASCADE = {
+  planes: [['ways', (id) => (w) => w.from === id || w.to === id]],
+  stars: [['lanes', (id) => (l) => l.from === id || l.to === id]],
+  charts: [['pins', (id) => (p) => p.chart === id], ['regions', (id) => (r) => r.chart === id]],
+};
+async function cascade(stores, kind, id) {
+  for (const [other, match] of CASCADE[kind] ?? []) {
+    for (const x of (await stores[other].list()).filter(match(id))) await stores[other].remove(x.id).catch(() => null);
+  }
+  if (kind === 'charts') {
+    for (const p of (await stores.pins.list()).filter((x) => x.link === id)) await stores.pins.save(p.id, { ...p, link: null }).catch(() => null);
+  }
+}
 
 const PROJECT_ID = /^proj_[0-9a-f]{8}$/;
 const THEME_ID = /^[a-z0-9][a-z0-9_-]{0,63}$/;
@@ -40,7 +63,8 @@ const newProjectId = () => `proj_${crypto.randomBytes(4).toString('hex')}`;
 
 // Project settings (money, maps) are checked with the page's own rules.
 const loadPoiModel = () => import(require('node:url').pathToFileURL(path.join(__dirname, '..', 'app', 'maps', 'poi-model.js')).href);
-const loadSettingsModel = () => import(require('node:url').pathToFileURL(path.join(__dirname, '..', 'app', 'projects', 'settings-model.js')).href);
+const loadGalacticModel = () => import(require('node:url').pathToFileURL(path.join(__dirname, '..', 'app', 'maps', 'galactic-model.js')).href);
+const loadSettingsModel =() => import(require('node:url').pathToFileURL(path.join(__dirname, '..', 'app', 'projects', 'settings-model.js')).href);
 async function cleanSettings(input) {
   const { normalizeSettings, SettingsError } = await loadSettingsModel();
   try {
@@ -104,6 +128,11 @@ function createProjectLibrary(v1Dir) {
           citypois: createPoiStore(path.join(dir, 'citypois'), CITY),
           screamsheets: createPoiStore(path.join(dir, 'screamsheets'), SCREAMSHEETS),
           networks: createPoiStore(path.join(dir, 'networks'), NETWORKS),
+          ...Object.fromEntries(PLACE_KINDS.map((k) => [k, createPoiStore(path.join(dir, k), PLACES[k])])),
+          // Cyberpunk RED rolls initiative on a d10 (1d10 + REF); everything else starts on a d20.
+          encounter: createEncounterStore(path.join(dir, 'encounter.json'), {
+            defaults: async () => ({ die: (await readMeta(id).catch(() => null))?.theme === 'cyberpunk-red' ? 'd10' : 'd20' }),
+          }),
         });
       }
       return stores.get(id);
@@ -184,6 +213,31 @@ function createProjectLibrary(v1Dir) {
       if (!poi) throw new StoreError(409, `${u.name} isn't on this project's map (check Project settings)`);
       return poi;
     },
+    /** Every system on the project's star map: its unique places (from settings) first, then those placed. */
+    async listStars(id, { view = 'gm' } = {}) {
+      const stores = await library.open(id);
+      const meta = await readMeta(id);
+      const { uniqueStars } = await loadGalacticModel();
+      const all = [...uniqueStars(meta.settings), ...(await stores.stars.list())];
+      return view === 'player' ? all.filter((p) => p.revealed) : all;
+    },
+    /** Reveal, hide or move a unique place on the star map; kept in the project's settings. */
+    async setUniqueStar(id, poiId, patch = {}) {
+      const { UNIQUE_POIS } = await loadPoiModel();
+      const { uniqueStars } = await loadGalacticModel();
+      const u = UNIQUE_POIS.find((x) => x.id === poiId);
+      if (!u) throw new StoreError(404, 'No such star system');
+      const meta = await readMeta(id);
+      const settings = structuredClone(meta.settings);
+      const next = { ...settings.maps[u.key] };
+      if ('revealed' in patch) next.revealed = patch.revealed === true;
+      if (Number.isFinite(Number(patch.x)) && Number.isFinite(Number(patch.y))) next.galactic = { x: Number(patch.x), y: Number(patch.y) };
+      settings.maps[u.key] = next;
+      const saved = await library.update(id, { settings });
+      const star = uniqueStars(saved.settings).find((x) => x.id === poiId);
+      if (!star) throw new StoreError(409, `${u.name} isn't on this project's star map (check Project settings)`);
+      return star;
+    },
     /** Move the project's folder to the trash (recoverable by moving it back). */
     async remove(id) {
       const meta = await readMeta(id);
@@ -191,6 +245,7 @@ function createProjectLibrary(v1Dir) {
       const stamp = new Date().toISOString().replace(/[:.]/g, '-');
       await fsp.rename(dirOf(id), path.join(trashDir, `${id}-${stamp}`));
       stores.delete(id);
+      await library.onEncounter?.(id, null); // its turn order leaves the player screens
       return { ok: true, name: meta.name };
     },
   };
@@ -247,8 +302,39 @@ async function handleProjects(library, req, res, rest, params, helpers) {
         return handlePois(stores.pois, req, res, inner, params, helpers);
       }
       if (kind === 'citypois') return handlePois(stores.citypois, req, res, inner, params, helpers);
+      if (kind === 'stars') {
+        // The list includes the unique places (Night City), which live in the project's settings.
+        if (req.method === 'GET' && !inner) return helpers.sendJson(res, 200, await library.listStars(id, { view: params.get('view') === 'player' ? 'player' : 'gm' })), true;
+        const unique = inner.match(/^\/(unique_[a-z0-9_]+)$/);
+        if (unique && req.method === 'PUT') return helpers.sendJson(res, 200, await library.setUniqueStar(id, unique[1], await readJson(req))), true;
+        if (unique) throw new StoreError(400, 'Built-in places can only be moved, revealed or hidden here; turn them off in Project settings');
+      }
+      if (PLACE_KINDS.includes(kind)) {
+        const one = inner.match(/^\/([a-z]+_[0-9a-f]{8})$/);
+        if (req.method === 'DELETE' && one) {
+          await stores[kind].remove(one[1]);
+          await cascade(stores, kind, one[1]);
+          return helpers.sendJson(res, 200, { ok: true }), true;
+        }
+        return handlePois(stores[kind], req, res, inner, params, helpers);
+      }
       if (kind === 'screamsheets') return handlePois(stores.screamsheets, req, res, inner, params, helpers);
       if (kind === 'networks') return handlePois(stores.networks, req, res, inner, params, helpers);
+      if (kind === 'encounter') {
+        return await handleEncounter(stores.encounter, req, res, inner, helpers, {
+          lookup: (entityId) => stores.characters.get(entityId),
+          // Ending combat with "keep wounds": each player character's sheet gets the tracker's hit points.
+          saveSheets: async (updates) => {
+            for (const u of updates) {
+              const entity = await stores.characters.get(u.entityId).catch(() => null);
+              const v = entity?.values?.[u.hpField];
+              if (!v || v.value === u.hp) continue;
+              await stores.characters.save(entity.id, { ...entity, values: { ...entity.values, [u.hpField]: { ...v, value: u.hp } } });
+            }
+          },
+          changed: (state) => library.onEncounter?.(id, state),
+        });
+      }
       if (kind === 'entities') {
         if (req.method !== 'GET' || inner) return false;
         const all = (await Promise.all(ENTITY_KINDS.map((k) => stores[k].list()))).flat();

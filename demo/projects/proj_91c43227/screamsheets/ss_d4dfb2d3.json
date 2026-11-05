@@ -7,6 +7,16 @@
   "dateline": "03.04.45 // 02:17",
   "layout": "crt",
   "revealed": true,
+  "parts": {
+    "dateline": {
+      "visibility": "rumored",
+      "style": "encrypted",
+      "text": ""
+    },
+    "byline": {
+      "visibility": "hidden"
+    }
+  },
   "selection": null,
   "values": {},
   "edited": true,

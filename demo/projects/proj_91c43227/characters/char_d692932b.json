@@ -102,10 +102,10 @@
         "id": "f_c46c35bc",
         "type": "stat",
         "label": "INT",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "static",
           "text": ""
         },
         "references": false,
@@ -150,10 +150,10 @@
         "id": "f_d056c40a",
         "type": "stat",
         "label": "REF",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "static",
           "text": ""
         },
         "references": false,
@@ -198,10 +198,10 @@
         "id": "f_680ac7c5",
         "type": "stat",
         "label": "DEX",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "static",
           "text": ""
         },
         "references": false,
@@ -246,10 +246,10 @@
         "id": "f_ea8d4bcc",
         "type": "stat",
         "label": "TECH",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "static",
           "text": ""
         },
         "references": false,
@@ -294,10 +294,10 @@
         "id": "f_e7ae30fc",
         "type": "stat",
         "label": "COOL",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "static",
           "text": ""
         },
         "references": false,
@@ -342,10 +342,10 @@
         "id": "f_38973e6f",
         "type": "stat",
         "label": "WILL",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "static",
           "text": ""
         },
         "references": false,
@@ -390,10 +390,10 @@
         "id": "f_dfe343d9",
         "type": "stat",
         "label": "LUCK",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "static",
           "text": ""
         },
         "references": false,
@@ -438,10 +438,10 @@
         "id": "f_fec0ed33",
         "type": "stat",
         "label": "MOVE",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "static",
           "text": ""
         },
         "references": false,
@@ -486,10 +486,10 @@
         "id": "f_35508685",
         "type": "stat",
         "label": "BODY",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "static",
           "text": ""
         },
         "references": false,
@@ -534,10 +534,10 @@
         "id": "f_c423747b",
         "type": "stat",
         "label": "EMP",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "static",
           "text": ""
         },
         "references": false,
@@ -582,11 +582,11 @@
         "id": "f_012cc8c7",
         "type": "stat",
         "label": "Hit Points",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
-          "text": ""
+          "style": "text",
+          "text": "Three people have tried to find out."
         },
         "references": false,
         "stat": "pool",
@@ -631,7 +631,7 @@
         "id": "f_bcb11b58",
         "type": "stat",
         "label": "Humanity",
-        "visibility": "revealed",
+        "visibility": "hidden",
         "shown": "",
         "rumor": {
           "style": "redacted",
@@ -693,11 +693,11 @@
         "id": "f_0c24089e",
         "type": "longtext",
         "label": "Armor",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
-          "text": ""
+          "style": "text",
+          "text": "More metal than man."
         },
         "references": false,
         "default": ""
@@ -706,7 +706,7 @@
         "id": "f_4f726d8c",
         "type": "longtext",
         "label": "Cyberware",
-        "visibility": "revealed",
+        "visibility": "rumored",
         "shown": "",
         "rumor": {
           "style": "redacted",
@@ -735,7 +735,7 @@
         "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "encrypted",
           "text": ""
         },
         "references": true,
@@ -868,6 +868,7 @@
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T21:37:38.542Z",
   "updatedAt": "2026-11-04T21:37:38.542Z"
 }

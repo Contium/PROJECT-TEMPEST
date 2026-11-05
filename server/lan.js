@@ -23,6 +23,7 @@ const fs = require('node:fs');
 const fsp = require('node:fs/promises');
 const crypto = require('node:crypto');
 const path = require('node:path');
+const { handleCodex } = require('./codex');
 
 const COOKIE = 'tempest_player';
 const KEY = /^[A-Za-z0-9_-]{16,64}$/;
@@ -65,9 +66,10 @@ const page = (title, text) => `<!doctype html><html lang="en"><head><meta charse
  *   listThemes()                     installed themes
  *   display                          server/display.js (get, subscribe)
  *   library                          projects (for reading on-screen pictures)
+ *   codex                            server/codex.js (what the players know; read only)
  *   host                             where to listen: every interface by default (tests use 127.0.0.1)
  */
-function createLan({ file, port, serveStatic, listThemes, display, library, host = '0.0.0.0' }) {
+function createLan({ file, port, serveStatic, listThemes, display, library, codex = null, host = '0.0.0.0' }) {
   let settings = { enabled: false, key: newKey(), port };
   try {
     const saved = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -114,10 +116,16 @@ function createLan({ file, port, serveStatic, listThemes, display, library, host
     if (pathname === '/api/themes') return json(res, 200, await listThemes());
     if (pathname === '/api/display') return json(res, 200, display.get(searchParams.get('screen')));
     if (pathname === '/api/display/stream') return display.subscribe(req, res, searchParams.get('screen'));
+    if (codex && (pathname === '/api/codex' || pathname.startsWith('/api/codex/'))) {
+      if (await handleCodex(codex, req, res, pathname, { sendJson: json })) return;
+      return json(res, 404, { error: 'Not found' });
+    }
     const asset = pathname.match(/^\/api\/projects\/(proj_[0-9a-f]{8})\/assets\/(img_[0-9a-f]{24})$/);
     if (asset) {
       // Only pictures that are part of what's on a screen now (everyone's, or one screen's own).
-      const ok = display.current().some((now) => now.projectId === asset[1] && (JSON.stringify(now).match(ASSET_IN_DISPLAY) ?? []).includes(asset[2]));
+      // …or in the players' Codex.
+      const ok = display.current().some((now) => now.projectId === asset[1] && (JSON.stringify(now).match(ASSET_IN_DISPLAY) ?? []).includes(asset[2]))
+        || (codex ? await codex.allows(asset[1], asset[2]) : false);
       if (!ok) return json(res, 404, { error: 'Not found' });
       const { mime, data } = await (await library.open(asset[1])).assets.get(asset[2]);
       return send(res, 200, data, mime, { 'Cache-Control': 'private, max-age=3600' });

@@ -105,7 +105,7 @@
         "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "encrypted",
           "text": ""
         },
         "references": false,
@@ -126,7 +126,11 @@
     "name": "Wakako Okada",
     "species": "Human",
     "size": "Medium",
-    "f_b26f7553": ""
+    "summary": "Night City Today's Watson stringer. Writes the stories the corps pay to bury, under her own name.",
+    "f_b26f7553": "Meets sources at Mama Ndiaye's noodle bar, back booth, never twice in a row. Has three dead witnesses' statements on the Tin Man that NCPD never asked for.",
+    "f_453991ea": {
+      "id": "char_a14f1dad"
+    }
   },
   "shown": {},
   "refs": {},

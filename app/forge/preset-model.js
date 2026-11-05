@@ -20,9 +20,11 @@
 // categories: it decides which tab an entity forged from the preset lands in.
 //
 // Field (every type):
-//   { id, type, label, visibility: revealed|shown|rumored, shown, rumor: { style, text }, references, default? }
+//   { id, type, label, visibility: revealed|shown|rumored|hidden, shown, rumor: { style, text }, references, default? }
 //     shown       what players read instead of the contents when visibility is 'shown'
-//     rumor       how the contents are obscured when 'rumored' (players still see the label)
+//     rumor       how the contents are obscured when 'rumored' (players still see the label):
+//                 redacted bars, static, encrypted (scrambled code) or custom text
+//     hidden      players get nothing of the field, not even its label
 //     references  the field carries GM-only links to other entities
 // Type-specific settings: parent.parentType, gallery.{mode, autoplay, interval, cols, rows},
 // stat.{stat, rarities}, rarity.{rarities} (items' fixed Rarity field), cast.{mode, sides}, location.{mode}.
@@ -77,11 +79,13 @@ export const VISIBILITY = [
   { id: 'revealed', label: 'Revealed', hint: 'Players can read everything.' },
   { id: 'shown', label: 'Shown', hint: 'Players read what you write for them; the real contents stay hidden.' },
   { id: 'rumored', label: 'Rumored', hint: 'Players see the field name, but its contents are obscured.' },
+  { id: 'hidden', label: 'Hidden', hint: 'Players don\'t see this field at all, not even its name.' },
 ];
 
 export const OBSCURITY = [
   { id: 'redacted', label: 'Redacted bars' },
   { id: 'static', label: 'Static' },
+  { id: 'encrypted', label: 'Encrypted' },
   { id: 'text', label: 'Custom text' },
 ];
 

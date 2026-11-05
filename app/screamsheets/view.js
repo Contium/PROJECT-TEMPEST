@@ -1,7 +1,8 @@
 // World › Screamsheets: in-world news.
 //   #/world/screamsheets          every screamsheet in the project, newest first
 //   #/world/screamsheets/new      the Screamsheet Generator
-//   #/world/screamsheets/<id>     one screamsheet: read it, push it, reveal it, edit it
+//   #/world/screamsheets/<id>     one screamsheet: read it, push it, reveal it, edit it; on the GM view each part
+//                                 (outlet, date line, headline, byline, article) can be obscured or hidden
 //
 // The generator follows the five steps of R. Talsorian's Screamsheet Generator
 // (type, content, headline, fill-ins, polish), with a live preview. Its tables
@@ -13,7 +14,8 @@ import { el, toast, toastError, confirmDialog } from '../ui.js';
 import { screamsheets as api, packs as packsApi, allEntities, pois as globePois, cityPois } from '../api.js';
 import { push, revealAndPush, pushButton } from '../push/push.js';
 import { renderArticle } from './article.js';
-import { LAYOUTS } from './screamsheet-model.js';
+import { LAYOUTS, PARTS as SHEET_PARTS, playerCopy } from './screamsheet-model.js';
+import { visibilityControl } from '../forge/visibility-menu.js';
 import { generate, compose, fieldsIn, fill, fieldKind, memberSuggestions, headlineOptions, partText, roll } from './generator.js';
 import { UNIQUE_POI_MODES } from '../projects/settings-model.js';
 
@@ -93,12 +95,32 @@ async function list(root) {
 // --- one screamsheet -----------------------------------------------------------------------------
 
 function detail(root, sheet, ctx) {
+  let view = 'gm';
+  // Each part's Reveal / Obscure / Hide control, saved straight away.
+  const control = (part) => {
+    const p = sheet.parts?.[part] ?? { visibility: 'revealed' };
+    return visibilityControl({
+      name: SHEET_PARTS.find((x) => x.id === part).label, shown: false,
+      state: { visibility: p.visibility, style: p.style, text: p.text },
+      onPick: async (next) => {
+        const parts = { ...(sheet.parts ?? {}) };
+        if (next.visibility === 'revealed') delete parts[part];
+        else parts[part] = { visibility: next.visibility, style: next.style ?? p.style ?? 'redacted', text: next.text ?? p.text ?? '' };
+        sheet = await api.save({ ...sheet, parts });
+        draw();
+      },
+    });
+  };
   const draw = () => {
+    const seg = el('span', { class: 'fd-seg', role: 'group', 'aria-label': 'View as' },
+      [['gm', 'GM view'], ['player', 'Player view']].map(([v, label]) =>
+        el('button', { type: 'button', class: `fd-seg__btn ${view === v ? 'is-on' : ''}`, 'aria-pressed': String(view === v), onClick: () => ((view = v), draw()) }, label)));
     root.replaceChildren(
       el('div', { class: 'cv' },
         el('div', { class: 'cv-bar' },
           el('a', { class: 'app-link', href: BASE }, '← All screamsheets'),
           el('span', { class: 'app-actions' },
+            seg,
             visBadge(sheet.revealed),
             pushButton('Push', async () => ((sheet = await pushSheet(sheet)), draw()), { title: 'Show this screamsheet on the player screen' }),
             el('button', {
@@ -126,7 +148,7 @@ function detail(root, sheet, ctx) {
                 }
               },
             }, 'Delete'))),
-        el('div', { class: 'ss-read' }, renderArticle(sheet)),
+        el('div', { class: 'ss-read' }, view === 'gm' ? renderArticle(sheet, { control }) : renderArticle(playerCopy(sheet))),
         el('p', { class: 'tp-dim cv-foot' }, `${sheet.edited ? 'Edited by hand' : 'Generated'} · updated ${new Date(sheet.updatedAt).toLocaleString()}`)));
     document.title = `TEMPEST · ${sheet.headline}`;
   };

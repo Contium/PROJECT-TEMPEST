@@ -7,11 +7,14 @@
 // Player view, per field visibility:
 //   revealed  the contents
 //   shown     the GM's player-facing text instead of the contents
-//   rumored   the label, with the contents obscured (redacted bars, static, or custom text)
-// GM view shows everything, marks Shown/Rumored fields, and lists GM-only references.
+//   rumored   the label, with the contents obscured (redacted bars, static, encrypted, or custom text)
+//   hidden    nothing at all
+// GM view shows everything, marks Shown/Rumored/Hidden fields, and lists GM-only references.
+// With fieldControl (an entry's page), each field carries the GM's Reveal/Obscure/Hide control instead of its mark.
 
 import { el } from '../ui.js';
 import { PARENT_TYPES, STAT_KINDS, BODY_ZONES, categoriesOf, kindOf, formatDate } from './preset-model.js';
+import { obscured as obscuredNode } from './obscure.js';
 
 /**
  * renderSheet(sheet, { view: 'gm' | 'player', values?, shown?, refs?, lookup?, imageUrl?, pushImage?, preview? })
@@ -25,6 +28,7 @@ import { PARENT_TYPES, STAT_KINDS, BODY_ZONES, categoriesOf, kindOf, formatDate 
  *   openImage ([{ image, caption }], index) → void: pictures open full size when clicked (a gallery
  *             passes all its images, so the viewer can step through them)
  *   preview   draw placeholder art in empty image slots (the designer's preview)
+ *   fieldControl (field) → node: GM view only; a control drawn beside each field (its visibility menu)
  */
 export function renderSheet(preset, opts = {}) {
   const view = opts.view === 'player' ? 'player' : 'gm';
@@ -79,6 +83,7 @@ function block(field, ctx, { bare = false, as } = {}) {
   if (!field) return null;
   const gm = ctx.view === 'gm';
   const vis = field.visibility;
+  if (!gm && vis === 'hidden') return null;
   const shownText = ctx.shown?.[field.id] ?? field.shown;
   let body;
   if (gm || vis === 'revealed') body = contents(field, valueOf(field, ctx), ctx, as);
@@ -87,14 +92,15 @@ function block(field, ctx, { bare = false, as } = {}) {
 
   const marks = gm
     ? [
-        vis !== 'revealed' ? el('span', { class: `sheet__mark sheet__mark--${vis}`, title: vis === 'shown' ? `Players read: ${shownText || '(nothing written yet)'}` : 'Players see only that something is here' }, vis === 'shown' ? 'Shown' : 'Rumored') : null,
+        ctx.fieldControl ? ctx.fieldControl(field)
+          : vis !== 'revealed' ? el('span', { class: `sheet__mark sheet__mark--${vis}`, title: vis === 'shown' ? `Players read: ${shownText || '(nothing written yet)'}` : vis === 'hidden' ? 'Players don\'t see this at all' : 'Players see only that something is here' }, vis === 'shown' ? 'Shown' : vis === 'hidden' ? 'Hidden' : 'Rumored') : null,
         field.references ? el('span', { class: 'sheet__mark sheet__mark--refs', title: 'GM-only links to other entities' }, 'Refs') : null,
       ]
     : [];
   const label = as === 'name' || as === 'category' || (bare && !marks.some(Boolean))
     ? null
     : el('span', { class: 'sheet__label' }, el('span', { class: 'tp-label' }, bare ? '' : field.label), marks);
-  return el('div', { class: `sheet__field sheet__field--${field.type} ${as === 'name' ? 'sheet__field--name' : ''}`, 'data-field': field.id },
+  return el('div', { class: `sheet__field sheet__field--${field.type} ${as === 'name' ? 'sheet__field--name' : ''} ${gm && vis !== 'revealed' ? `is-${vis}` : ''}`, 'data-field': field.id },
     label,
     (as === 'name' || as === 'category') && marks.some(Boolean) ? el('span', { class: 'sheet__label sheet__label--float' }, marks) : null,
     body,
@@ -113,12 +119,8 @@ function references(ids, ctx) {
 
 /** Rumored contents: the players know something is there, not what. */
 function obscured(field, as) {
-  const style = field.rumor?.style ?? 'redacted';
-  if (style === 'text') return el('p', { class: 'sheet__rumor-text' }, field.rumor.text || '???');
-  if (style === 'static') return el('span', { class: `sheet__static ${as === 'name' ? 'sheet__static--name' : ''}`, role: 'img', 'aria-label': 'Unknown' });
-  const bars = as === 'name' ? [70] : as === 'category' ? [18] : field.type === 'longtext' ? [92, 100, 64] : [field.type === 'stat' ? 45 : 60];
-  return el('span', { class: `sheet__redacted ${as === 'name' ? 'sheet__redacted--name' : ''}`, role: 'img', 'aria-label': 'Redacted' },
-    bars.map((w) => el('i', { style: `width:${w}%` })));
+  const lines = as === 'name' ? [70] : as === 'category' ? [18] : field.type === 'longtext' ? [92, 100, 64] : [field.type === 'stat' ? 45 : 60];
+  return obscuredNode(field.rumor?.style ?? 'redacted', { as, lines, text: field.rumor?.text, seed: field.id });
 }
 
 function contents(field, value, ctx, as) {

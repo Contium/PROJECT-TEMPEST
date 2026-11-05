@@ -4,6 +4,13 @@
 // server built; see push-model.js) into one viewport. Each new push enters with
 // the theme's push animation: the viewport carries data-push-kind and
 // --push-depth, and is-entering while it plays (themes/*/theme.css).
+//
+// While a fight is on (Combat › Initiative), every display also carries the turn
+// order (d.tracker): it runs across the top of the screen whatever is pushed, the
+// view below makes room for it, and attacks play over everything (attack-scene.js).
+//
+// The Codex button (bottom left, or the C key) opens the players' Codex over the view:
+// everything the party knows of, to browse at their own pace (app/codex/codex.js).
 
 import { el } from '../ui.js';
 import { renderSheet } from '../forge/sheet.js';
@@ -18,6 +25,9 @@ import { pushKind, displayLabel, PUSH_MODES } from './push-model.js';
 import { fullscreenControl } from './fullscreen.js';
 import { renderArticle } from '../screamsheets/article.js';
 import { playerNetworkView } from '../netrun/player-view.js';
+import { turnBar } from '../combat/turn-bar.js';
+import { attackScene } from '../combat/attack-scene.js';
+import { codex as createCodex } from '../codex/codex.js';
 
 const SVG = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs = {}) => {
@@ -35,8 +45,23 @@ const initials = (name) => (name ?? '?').split(/\s+/).filter((w) => /\w/.test(w)
 export function mount(root, { engine }) {
   const view = el('div', { class: 'scr__view' });
   const tag = el('p', { class: 'scr__tag tp-label' });
-  const frame = el('div', { class: 'scr' }, view, tag);
+  const bar = turnBar({ t: (k, f) => engine?.t?.(k, f) ?? f });
+  const scene = attackScene();
+  const book = createCodex();
+  const frame = el('div', { class: 'scr' }, view, tag, bar.node, book.node, scene.node);
   root.replaceChildren(frame);
+  // The view starts below the turn bar while it's up (--scr-top), so nothing hides behind it.
+  const sizeBar = new ResizeObserver(() => frame.style.setProperty('--scr-top', `${bar.node.hidden ? 0 : bar.node.offsetHeight}px`));
+  sizeBar.observe(bar.node);
+  /** The fight's turn order and its latest attack, from any display. */
+  function combat(d) {
+    const tracker = d.tracker?.active ? d.tracker : null;
+    bar.update(tracker);
+    frame.classList.toggle('has-turns', Boolean(tracker));
+    frame.style.setProperty('--scr-top', `${tracker ? bar.node.offsetHeight : 0}px`);
+    if (tracker?.attack) scene.show(tracker.attack, tracker.projectId);
+    else if (!tracker) scene.clear();
+  }
   const dropFullscreen = fullscreenControl(frame);
   let seq = null;
   let cleanup = null; // the current view's teardown (globe, resize observers)
@@ -176,7 +201,7 @@ export function mount(root, { engine }) {
 
   const lost = el('p', { class: 'scr__lost tp-label', hidden: true, role: 'status' }, 'Connection lost · reconnecting…');
   const who = el('button', { type: 'button', class: 'scr__who tp-label', title: 'Change the name this screen goes by', hidden: true });
-  frame.append(lost, who);
+  frame.append(lost, el('div', { class: 'scr__dock' }, book.button, who));
 
   // TEMPEST updated since this page loaded (a new build), or a push this page doesn't know:
   // reload to pick up the new code. At most once per push, so it can never loop. The reload
@@ -199,7 +224,7 @@ export function mount(root, { engine }) {
     location.reload();
     return true;
   };
-  const take = (d) => (outdated(d) ? null : show(d).catch((err) => view.replaceChildren(el('p', { class: 'app-error' }, `Couldn't draw this push: ${err.message}`))));
+  const take = (d) => (outdated(d) ? null : (combat(d), book.update(d), show(d)).catch((err) => view.replaceChildren(el('p', { class: 'app-error' }, `Couldn't draw this push: ${err.message}`))));
 
   /** Follow the display under a screen name; returns the way to stop. */
   function connect(as) {
@@ -288,6 +313,9 @@ export function mount(root, { engine }) {
   return {
     unmount() {
       dropFullscreen();
+      sizeBar.disconnect();
+      book.destroy();
+      scene.clear();
       disconnect?.();
       cleanup?.();
     },

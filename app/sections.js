@@ -25,15 +25,24 @@ export const SECTIONS = [
       { id: 'timeline', label: 'Timeline' },
     ],
   },
-  // Only while the project's map system is Planetary (see visibleSections).
+  // Map-system sections show only while the project uses that system (see visibleSections).
+  // World View is Planetary's.
   // /worldview/<slug> opens a unique location's own map (e.g. Night City's City Map).
   { id: 'worldview', label: 'World View', tabs: [], mapMode: 'planetary', detail: true },
+  // The other map systems, each only while chosen. Planes: the board of planes and ways.
+  { id: 'planes', label: 'Planes', tabs: [], mapMode: 'planar' },
+  // Atlas: the chart gallery; /atlas/<chart id> opens one chart.
+  { id: 'atlas', label: 'Atlas', tabs: [], mapMode: 'cartographer', detail: true },
+  // Star Map: /starmap/<slug> opens a unique location's own map (Night City's City Map).
+  { id: 'starmap', label: 'Star Map', tabs: [], mapMode: 'galactic', detail: true },
   {
     id: 'combat',
     label: 'Combat',
+    // Initiative is the tracker (app/combat/initiative.js); while a fight is on, its turn order
+    // shows across the top of every player screen.
     // Netrunning has three sub-tabs of its own (app/netrun/view.js): /combat/netrunning/builder,
     // /cards and /networks; a net card (ncard_…) or a network (net_…) opens by id in the same place.
-    tabs: [{ id: 'netrunning', label: 'Netrunning', detail: true }],
+    tabs: [{ id: 'initiative', label: 'Initiative' }, { id: 'netrunning', label: 'Netrunning', detail: true }],
   },
   // No tabs, but entries: /items lists them, /items/<id> opens one.
   { id: 'items', label: 'Items', tabs: [], detail: true },

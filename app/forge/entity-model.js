@@ -10,6 +10,8 @@
 //   values: { [fieldId]: value },         what was filled in (shapes: see preset-model.js)
 //   shown:  { [fieldId]: text },          per-entity "players read" text for Shown fields
 //   refs:   { [fieldId]: [entityId] },    GM-only references, on fields that allow them
+//   known:  true when the players know of it: it's in their Codex on the player screens
+//           (as its sheet allows). Pushing an entry makes it known.
 //   createdAt, updatedAt
 // }
 // name and category mirror values.name / values.category, for listing; the
@@ -116,6 +118,7 @@ export function normalizeEntity(input, { kind: expected } = {}) {
     presetName: typeof input.presetName === 'string' ? input.presetName.slice(0, 80) : '',
     sheet: { kind, fields: sheet.fields, layout: sheet.layout },
     values, shown, refs,
+    ...(input.known === true ? { known: true } : {}),
     createdAt: typeof input.createdAt === 'string' ? input.createdAt : now,
     updatedAt: typeof input.updatedAt === 'string' ? input.updatedAt : now,
   };

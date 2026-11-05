@@ -12,6 +12,7 @@ const { createDisplay, handleDisplay } = require('./display');
 const { createLan, handleLan } = require('./lan');
 const { handlePacks } = require('./packs');
 const { installDemos } = require('./demo');
+const { createCodex, handleCodex } = require('./codex');
 
 const { ROOT, PORT, HOST } = P;
 const THEMES_DIR = path.join(ROOT, 'themes');
@@ -24,8 +25,12 @@ installDemos({ root: ROOT, v1Dir: path.join(P.DATA_DIR, 'v1') });
 const projects = createProjectLibrary(path.join(P.DATA_DIR, 'v1'));
 // What the player screen shows: the GM's last push (server/display.js).
 const display = createDisplay(path.join(P.DATA_DIR, 'v1', 'display.json'), projects);
+// A fight under way puts its turn order on every player screen (Combat › Initiative).
+projects.onEncounter = (id, encounter) => display.setTracker(id, encounter);
+// What the players know, which each player screen browses on its own (server/codex.js).
+const codex = createCodex(projects);
 // The player screen on the local network, when the GM shares it (server/lan.js).
-const lan = createLan({ file: path.join(P.DATA_DIR, 'v1', 'lan.json'), port: P.LAN_PORT, host: process.env.TEMPEST_LAN_HOST || '0.0.0.0', serveStatic: (req, res, p) => serveStatic(req, res, p), listThemes: () => listThemes(), display, library: projects });
+const lan = createLan({ file: path.join(P.DATA_DIR, 'v1', 'lan.json'), port: P.LAN_PORT, host: process.env.TEMPEST_LAN_HOST || '0.0.0.0', serveStatic: (req, res, p) => serveStatic(req, res, p), listThemes: () => listThemes(), display, library: projects, codex });
 // Folders in the project that are never served (old versions, reference PDFs, built
 // binaries, the demo campaign's GM-only files), and the standalone binary itself
 // when TEMPEST runs from one.
@@ -190,6 +195,10 @@ const server = http.createServer(async (req, res) => {
     if (pathname === '/api/display' || pathname.startsWith('/api/display/')) {
       if (req.method !== 'GET' && !isTrustedMutation(req)) return send(res, 403, 'Forbidden');
       if (await handleDisplay(display, req, res, pathname, { readJson, sendJson })) return;
+      return sendJson(res, 404, { error: 'Not found' });
+    }
+    if (pathname === '/api/codex' || pathname.startsWith('/api/codex/')) {
+      if (await handleCodex(codex, req, res, pathname, { sendJson })) return;
       return sendJson(res, 404, { error: 'Not found' });
     }
     if (pathname.startsWith('/api/')) return sendJson(res, 404, { error: 'Not found' });

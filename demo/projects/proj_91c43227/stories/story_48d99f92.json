@@ -227,6 +227,7 @@
         {
           "id": "s_2d4be0b4",
           "title": "GM Notes",
+          "layout": "columns",
           "columns": [
             [
               "f_1b88e90a"
@@ -271,6 +272,7 @@
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T02:55:40.451Z",
   "updatedAt": "2026-11-04T02:55:40.451Z"
 }

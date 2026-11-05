@@ -208,7 +208,7 @@
         "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "encrypted",
           "text": ""
         },
         "references": true,
@@ -249,6 +249,9 @@
       "d": 5
     },
     "summary": "Three dead in Watson, all torn open by blades. People say the Tin Man is back.",
+    "f_bf5aae98": {
+      "id": "story_c18274f7"
+    },
     "f_5614b4d0": "Rumor heard at Mama Ndiaye's: \"MAX-TAC lost him on the Watson rooftops. He was carrying a Halcyon badge.\"",
     "f_01a830e7": {
       "text": "Watson Development rooftops"
@@ -269,6 +272,7 @@
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T21:37:38.574Z",
   "updatedAt": "2026-11-04T21:37:38.574Z"
 }

@@ -735,7 +735,7 @@
         "visibility": "rumored",
         "shown": "",
         "rumor": {
-          "style": "redacted",
+          "style": "encrypted",
           "text": ""
         },
         "references": true,
@@ -868,6 +868,7 @@
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T21:37:38.532Z",
   "updatedAt": "2026-11-04T21:37:38.532Z"
 }

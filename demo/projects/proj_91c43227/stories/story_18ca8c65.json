@@ -254,6 +254,9 @@
       "d": 9
     },
     "summary": "The Chrome Vultures go to war over Santo Domingo's salvage yards.",
+    "f_bf5aae98": {
+      "id": "story_8b6c2aaa"
+    },
     "f_5614b4d0": "Not a job, a hazard: anyone crossing Santo Domingo this week does it under fire.",
     "f_01a830e7": {
       "text": "Santo Domingo, mostly around the old salvage yards"
@@ -278,6 +281,7 @@
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T21:37:38.571Z",
   "updatedAt": "2026-11-04T21:37:38.571Z"
 }

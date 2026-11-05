@@ -5012,8 +5012,8 @@
       "value": 31,
       "max": 40
     },
-    "cpr_critical_injuries": "",
-    "cpr_addictions": "",
+    "cpr_critical_injuries": "Old: Broken Ribs. Healed crooked; they ache before rain.",
+    "cpr_addictions": "None",
     "cpr_sk_concentration": {
       "value": 2
     },
@@ -5214,14 +5214,14 @@
     },
     "cpr_weapons": "Weapon · DMG · Ammo · ROF · Notes\nAssault Rifle · 5d6 · 25 · 1 · Autofire (4)\nVery Heavy Pistol · 4d6 · 8 · 1 · Backup\nHeavy Melee Weapon · 3d6 · — · 2 · An old riot baton",
     "cpr_armor": "Head: Medium Armorjack, SP 12\nBody: Medium Armorjack, SP 12\nShield: HP —\nPenalty (applies to REF, DEX & MOVE): -2",
-    "cpr_cw_audio": "",
+    "cpr_cw_audio": "Cyberaudio Suite\n· Amplified Hearing\n· Radio Link (crew channel)",
     "cpr_cw_eye_r": "Cybereye\n· Targeting Scope",
     "cpr_cw_arm_r": "Cyberarm (Standard Hand)\n· Popup Grenade Launcher\n· Subdermal Grip",
     "cpr_cw_leg_r": "",
     "cpr_cw_eye_l": "",
     "cpr_cw_arm_l": "",
     "cpr_cw_leg_l": "",
-    "cpr_cw_neural": "",
+    "cpr_cw_neural": "Neural Link\n· Sandevistan Speedware",
     "cpr_cw_internal": "Toxin Binders",
     "cpr_cw_external": "",
     "cpr_cw_fashion": "",
@@ -5249,10 +5249,11 @@
     "cpr_lp_love": "None he'll talk about.",
     "cpr_lp_goals": "Get his family out of the Rancho Coronado detention camp.",
     "cpr_lp_role": "What kind of Solo? Bodyguard turned freelancer\nWho's gunning for you? The NCPD, quietly",
-    "cpr_notes": ""
+    "cpr_notes": "Owes Mama Ndiaye one favour, no questions asked. Keeps a photo of the Rancho Coronado gate in his jacket."
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T21:37:38.502Z",
   "updatedAt": "2026-11-04T21:37:38.502Z"
 }

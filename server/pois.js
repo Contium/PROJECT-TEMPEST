@@ -55,6 +55,28 @@ const NETWORKS = {
   },
 };
 
+// The Planar, Cartographer and Galactic map systems' places (app/maps/*-model.js): one
+// store each, the folder and route named after the key (planes, ways, charts…).
+// The players' copies are built elsewhere (server/atlas.js); their "player" list is just the revealed ones.
+const place = (file, prefix, noun, fn, idName) => ({
+  prefix,
+  noun,
+  load: async () => {
+    const m = await modelOf(`maps/${file}`)();
+    return { ID: m[idName], normalize: m[fn], Error: (await modelOf('maps/place-model.js')()).PlaceError, forPlayers: (list) => list.filter((x) => x.revealed) };
+  },
+});
+const PLACES = {
+  planes: place('planar-model.js', 'plane', 'plane', 'normalizePlane', 'PLANE_ID'),
+  ways: place('planar-model.js', 'way', 'way', 'normalizeWay', 'WAY_ID'),
+  charts: place('chart-model.js', 'chart', 'chart', 'normalizeChart', 'CHART_ID'),
+  pins: place('chart-model.js', 'pin', 'pin', 'normalizePin', 'PIN_ID'),
+  regions: place('chart-model.js', 'region', 'region', 'normalizeRegion', 'REGION_ID'),
+  stars: place('galactic-model.js', 'star', 'star system', 'normalizeStar', 'STAR_ID'),
+  lanes: place('galactic-model.js', 'lane', 'lane', 'normalizeLane', 'LANE_ID'),
+  sectors: place('galactic-model.js', 'sector', 'sector', 'normalizeSector', 'SECTOR_ID'),
+};
+
 function createPoiStore(dir, kind = GLOBE) {
   const loadModel = kind.load;
   const missing = `No such ${kind.noun ?? 'point of interest'}`;
@@ -83,14 +105,14 @@ function createPoiStore(dir, kind = GLOBE) {
   };
 
   return {
-    async list({ view = 'gm', city = null } = {}) {
+    async list({ view = 'gm', city = null, chart = null } = {}) {
       await ready;
       const out = [];
       for (const name of await fsp.readdir(dir)) {
         if (!name.endsWith('.json')) continue;
         try {
           const poi = JSON.parse(await fsp.readFile(path.join(dir, name), 'utf8'));
-          if (!city || poi.city === city) out.push(poi);
+          if ((!city || poi.city === city) && (!chart || poi.chart === chart)) out.push(poi);
         } catch {
           /* unreadable file: skip it */
         }
@@ -135,7 +157,7 @@ async function handlePois(store, req, res, rest, params, { readJson, sendJson })
   const id = m[1] ? decodeURIComponent(m[1]) : null;
   try {
     const route = `${req.method} ${id ? 'one' : 'all'}`;
-    if (route === 'GET all') return sendJson(res, 200, await store.list({ view: params.get('view') === 'player' ? 'player' : 'gm', city: params.get('city') || null })), true;
+    if (route === 'GET all') return sendJson(res, 200, await store.list({ view: params.get('view') === 'player' ? 'player' : 'gm', city: params.get('city') || null, chart: params.get('chart') || null })), true;
     if (route === 'GET one') return sendJson(res, 200, await store.get(id)), true;
     if (route === 'POST all') return sendJson(res, 201, await store.create(await readJson(req))), true;
     if (route === 'PUT one') return sendJson(res, 200, await store.save(id, await readJson(req))), true;
@@ -147,4 +169,4 @@ async function handlePois(store, req, res, rest, params, { readJson, sendJson })
   }
 }
 
-module.exports = { createPoiStore, handlePois, GLOBE, CITY, SCREAMSHEETS, NETWORKS };
+module.exports = { createPoiStore, handlePois, GLOBE, CITY, SCREAMSHEETS, NETWORKS, PLACES };

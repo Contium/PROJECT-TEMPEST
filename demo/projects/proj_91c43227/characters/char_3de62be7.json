@@ -5012,8 +5012,8 @@
       "value": 52,
       "max": 60
     },
-    "cpr_critical_injuries": "",
-    "cpr_addictions": "",
+    "cpr_critical_injuries": "None",
+    "cpr_addictions": "Synthcoke. Two weeks clean and counting out loud.",
     "cpr_sk_concentration": {
       "value": 2
     },
@@ -5214,7 +5214,7 @@
     },
     "cpr_weapons": "Weapon · DMG · Ammo · ROF · Notes\nMedium Pistol · 2d6 · 12 · 2 · Chrome-plated, a gift",
     "cpr_armor": "Head: Kevlar®, SP 7\nBody: Kevlar®, SP 7\nShield: HP —\nPenalty (applies to REF, DEX & MOVE): none",
-    "cpr_cw_audio": "",
+    "cpr_cw_audio": "Cyberaudio Suite\n· Radio Scanner/Music Player",
     "cpr_cw_eye_r": "",
     "cpr_cw_arm_r": "",
     "cpr_cw_leg_r": "",
@@ -5249,10 +5249,11 @@
     "cpr_lp_love": "A netrunner who called herself Moth. She flatlined in the Old NET's ruins.",
     "cpr_lp_goals": "Find out what happened to his parents' last job.",
     "cpr_lp_role": "Are you independent or part of a team? Part of the Static Saints\nWhat kind of runner? Data thief, for a good cause (usually)",
-    "cpr_notes": ""
+    "cpr_notes": "Ran into a Hellhound in the Steeltooth Bar and still flinches at dogs. Wants the \"Hush\" prototype deck more than he lets on."
   },
   "shown": {},
   "refs": {},
+  "known": true,
   "createdAt": "2026-11-04T21:37:38.491Z",
   "updatedAt": "2026-11-04T21:37:38.491Z"
 }

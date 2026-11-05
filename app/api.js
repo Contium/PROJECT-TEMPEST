@@ -83,6 +83,22 @@ export const cityPois = {
   remove: (id) => api(scoped(`/citypois/${encodeURIComponent(id)}`), { method: 'DELETE' }),
 };
 
+/**
+ * Places of the Planar, Cartographer and Galactic map systems, by kind: 'planes', 'ways',
+ * 'charts', 'pins', 'regions', 'stars', 'lanes', 'sectors'. list({ chart }) narrows pins and
+ * regions to one chart. Deleting a plane, system or chart takes its ways, lanes, pins and regions too.
+ * The star map's list includes its unique places (Night City); saving one moves or reveals it.
+ */
+export function placesApi(kind) {
+  const base = () => scoped(`/${kind}`);
+  return {
+    list: ({ chart } = {}) => api(`${base()}${chart ? `?chart=${encodeURIComponent(chart)}` : ''}`),
+    create: (x) => api(base(), { method: 'POST', body: x }),
+    save: (x) => api(`${base()}/${encodeURIComponent(x.id)}`, { method: 'PUT', body: x }),
+    remove: (id) => api(`${base()}/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+  };
+}
+
 /** The player screen: what's on it, and pushing to it (see app/push/push-model.js). */
 export const display = {
   get: () => api('/display'),
@@ -96,6 +112,12 @@ export const networks = {
   create: (net) => api(scoped('/networks'), { method: 'POST', body: net }),
   save: (net) => api(scoped(`/networks/${encodeURIComponent(net.id)}`), { method: 'PUT', body: net }),
   remove: (id) => api(scoped(`/networks/${encodeURIComponent(id)}`), { method: 'DELETE' }),
+};
+
+/** The Initiative Tracker's encounter (Combat › Initiative): get it, or apply an action ({ action, … }). */
+export const encounter = {
+  get: () => api(scoped('/encounter')),
+  act: (action) => api(scoped('/encounter'), { method: 'POST', body: action }),
 };
 
 /** Screamsheets (World › Screamsheets): list (newest first), get, create, save, remove. */
@@ -127,15 +149,15 @@ const MAX_EDGE = 1600;
 
 /**
  * Upload an image File/Blob; resolves to { id, mime, size }. Large photos are
- * scaled to 1600px on their long edge and re-encoded as WebP first; GIFs (which
- * may be animated) and small images go up untouched.
+ * scaled to 1600px on their long edge (or `maxEdge`: maps keep more detail) and
+ * re-encoded as WebP first; GIFs (which may be animated) and small images go up untouched.
  */
-export async function uploadImage(file) {
+export async function uploadImage(file, { maxEdge = MAX_EDGE } = {}) {
   let blob = file;
   if (file.type !== 'image/gif') {
     try {
       const bitmap = await createImageBitmap(file);
-      const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
+      const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
       if (scale < 1 || file.size > 1.5 * 1024 * 1024) {
         const canvas = document.createElement('canvas');
         canvas.width = Math.round(bitmap.width * scale);

@@ -332,7 +332,7 @@ export async function mount(root, { tab, kind, onCreated = null } = {}) {
     const fixed = M.defaultIdsOf(KIND).includes(id);
     const at = M.locate(s.preset, id);
     const listLength = fixed ? 0 : at.area === 'main' ? s.preset.layout.main.length : s.preset.layout.sections.find((x) => x.id === at.section).columns[at.column].length;
-    const vis = f.visibility !== 'revealed' ? el('span', { class: `fd-chip__vis fd-chip__vis--${f.visibility}` }, f.visibility === 'shown' ? 'Shown' : 'Rumored') : null;
+    const vis = f.visibility !== 'revealed' ? el('span', { class: `fd-chip__vis fd-chip__vis--${f.visibility}` }, ({ shown: 'Shown', hidden: 'Hidden' })[f.visibility] ?? 'Rumored') : null;
     return el('li', {
       class: `fd-chip ${s.selected === id ? 'is-selected' : ''} ${fixed ? 'is-fixed' : ''} ${s.dragging === id ? 'is-dragging' : ''}`,
       'data-id': id, draggable: fixed ? null : 'true',

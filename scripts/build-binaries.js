@@ -2,6 +2,10 @@
 //
 //   node scripts/build-binaries.js                         Windows x64 + Linux x64
 //   node scripts/build-binaries.js --targets=linux-arm64   any of: win-x64, linux-x64, linux-arm64
+//   node scripts/build-binaries.js --no-installer          skip the Windows installer
+//
+// Built on Windows, win-x64 also gets dist/TEMPEST-Setup-<version>.exe, a per-user
+// installer (scripts/build-installer.ps1, scripts/installer/Setup.cs).
 //
 // Each binary is an official Node.js runtime (the same version as the Node running
 // this script, downloaded from nodejs.org and checked against its SHA-256 list) with
@@ -273,6 +277,15 @@ async function main() {
     if (windows) run('tar', ['-a', '-cf', archive, '-C', DIST, folder]);
     else tarGz(stage, folder, archive, new Set([`${folder}/tempest`]));
     built.push({ archive, exe });
+
+    // On Windows, the Windows folder also becomes an installer (scripts/build-installer.ps1).
+    if (windows && process.platform === 'win32' && !argv.includes('--no-installer')) {
+      console.log('Building the installer …');
+      const setup = path.join(DIST, `TEMPEST-Setup-${PKG.version}.exe`);
+      run('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File',
+        path.join(__dirname, 'build-installer.ps1'), '-Stage', stage, '-Version', PKG.version, '-Out', setup]);
+      built.push({ archive: setup, exe: setup });
+    }
   }
 
   console.log('\nBuilt:');
