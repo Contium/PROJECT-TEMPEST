@@ -3,6 +3,7 @@ assets/GitHubDesktopSetup-x64.exe
 
 # Standalone binaries (npm run build) and the runtimes and tools downloaded to make them
 dist/
+assets/
 .build-cache/
 
 # Scratch data folder used to build demo/ (scripts/build-demo.mjs)
