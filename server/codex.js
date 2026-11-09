@@ -13,6 +13,8 @@
 //   places                 revealed places of the project's map system: points of interest on the
 //                          globe and the City Maps, or planes and ways, charts with their pins and
 //                          regions, star systems, lanes and sectors (server/atlas.js)
+//   handouts               revealed handouts (Sessions › Handouts), obscured text left out
+//   sessions               session recaps the GM shared ("Previously…")
 // Like pushes, every copy is built here, so nothing GM-only reaches a player screen.
 
 const path = require('node:path');
@@ -31,11 +33,14 @@ const GROUPS = [
   { id: 'creatures', label: 'Creatures' },
   { id: 'people', label: 'People' },
   { id: 'world', label: 'World' },
+  { id: 'factions', label: 'Factions' },
   { id: 'items', label: 'Items' },
   { id: 'news', label: 'News' },
   { id: 'places', label: 'Places' },
+  { id: 'handouts', label: 'Handouts' },
+  { id: 'sessions', label: 'Sessions' },
 ];
-const GROUP_OF = { characters: 'people', stories: 'world', items: 'items' };
+const GROUP_OF = { characters: 'people', stories: 'world', items: 'items', factions: 'factions' };
 const ENTITY_KINDS = Object.keys(GROUP_OF);
 const ASSET = /img_[0-9a-f]{24}/g;
 const atlas = require('./atlas');
@@ -86,7 +91,8 @@ function createCodex(library) {
     for (const s of await stores.screamsheets.list()) {
       if (!s.revealed) continue;
       const p = printed(s); // obscured or hidden parts are blank here
-      entries.push({ id: s.id, type: 'article', group: 'news', sub: p.outlet || 'Screamsheet', title: p.headline || null, image: null, summary: String(p.body ?? '').split(/\n\s*\n/)[0].slice(0, 240), at: s.updatedAt ?? s.createdAt });
+      const more = p.items.filter((it) => it.type === 'article').length;
+      entries.push({ id: s.id, type: 'article', group: 'news', sub: `${p.outlet || 'Screamsheet'}${more ? ` · ${more + 1} stories` : ''}`, title: p.headline || null, image: null, summary: String(p.body ?? '').split(/\n\s*\n/)[0].slice(0, 240), at: s.updatedAt ?? s.createdAt });
     }
     // Places come from the map system the project uses now: the globe's (Planetary, or none chosen),
     // or the board, charts or star map of the other three; City Map POIs while Night City is on the map.
@@ -100,6 +106,18 @@ function createCodex(library) {
     for (const p of cityMode(mode) ? await stores.citypois.list({ view: 'player' }) : []) {
       const city = UNIQUE_POIS.find((u) => u.slug === p.city)?.name ?? 'City';
       entries.push({ id: p.id, type: 'citypoi', group: 'places', sub: city, title: p.name, image: p.maps?.[0]?.image ?? null, summary: String(p.description ?? '').slice(0, 240), at: p.updatedAt ?? null });
+    }
+    const S = await appModule('sessions/session-model.js');
+    for (const h of await stores.handouts.list({ view: 'player' })) {
+      const full = await stores.handouts.get(h.id).catch(() => null);
+      entries.push({
+        id: h.id, type: 'handout', group: 'handouts', sub: S.STYLES.find((x) => x.id === h.style)?.label ?? 'Handout', title: h.title, image: h.image,
+        summary: h.obscure ? `${S.OBSCURE_STYLES.find((x) => x.id === h.obscure)?.label ?? 'Unreadable'}` : (S.paragraphs(h.text)[0] ?? h.caption ?? '').slice(0, 240),
+        at: full?.updatedAt ?? null,
+      });
+    }
+    for (const r of await stores.sessions.list({ view: 'player' })) {
+      entries.push({ id: r.id, type: 'recap', group: 'sessions', sub: [`Session ${r.number}`, S.dayOf(r.date)].filter(Boolean).join(' · '), title: r.title || `Session ${r.number}`, image: null, summary: (S.paragraphs(r.recap)[0] ?? '').slice(0, 240), at: null, order: r.number });
     }
     // Every tab shows, even before anything is known in it; People only holds characters whose category is hidden.
     const groups = GROUPS.filter((g) => g.id !== 'people' || entries.some((x) => x.group === g.id));
@@ -115,7 +133,20 @@ function createCodex(library) {
       const sheet = await stores.screamsheets.get(id).catch(() => null);
       if (!sheet?.revealed) throw new StoreError(404, 'Not in the Codex');
       const { playerCopy } = await appModule('screamsheets/screamsheet-model.js');
-      return { ...base, type: 'article', article: playerCopy(sheet) };
+      // Link lines lead to entries in the Codex, and to nothing the players don't know of.
+      const known = new Set((await knownEntities(stores)).map((e) => e.id));
+      return { ...base, type: 'article', article: playerCopy(sheet, { known }), known: [...known] };
+    }
+    if (/^hand_[0-9a-f]{8}$/.test(id) || /^sess_[0-9a-f]{8}$/.test(id)) {
+      const S = await appModule('sessions/session-model.js');
+      if (id.startsWith('hand_')) {
+        const h = await stores.handouts.get(id).catch(() => null);
+        if (!h?.revealed) throw new StoreError(404, 'Not in the Codex');
+        return { ...base, type: 'handout', handout: S.playerHandout(h) };
+      }
+      const s = await stores.sessions.get(id).catch(() => null);
+      if (!s?.recapShared || !s.recap) throw new StoreError(404, 'Not in the Codex');
+      return { ...base, type: 'recap', recap: S.playerRecap(s) };
     }
     const mode = meta.settings?.maps?.mode ?? null;
     if (/^(poi_[0-9a-f]{8}|unique_[a-z0-9_]+)$/.test(id) && globeMode(mode)) {

@@ -60,7 +60,7 @@ export async function mount(root, { engine, project, item }) {
       el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm', 'aria-label': 'Zoom out', onClick: () => globe.zoomBy(0.8) }, '−'),
       spinBtn,
       el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--interactive', onClick: () => globe.reset() }, 'Reset view')),
-    el('div', { class: 'wv-controls' }, el('span', { class: 'tp-label wv-viewas' }, 'View as'), viewSeg),
+    el('div', { class: 'wv-controls' }, viewSeg),
     el('div', { class: 'wv-controls' }, pushButton('Push view', pushView, { title: 'Show the globe on the player screen as you see it now, with the revealed points' })));
   const side = el('aside', { class: 'wv-side', 'aria-label': 'Points of interest' });
   const stage = el('div', { class: 'wv-stage' }, canvas, hud, side,
@@ -315,7 +315,7 @@ export async function mount(root, { engine, project, item }) {
   }
 
   function renderSide() {
-    viewSeg.replaceChildren(...[['gm', 'GM'], ['players', 'Players']].map(([v, label]) =>
+    viewSeg.replaceChildren(...[['gm', 'GM view'], ['players', 'Player view']].map(([v, label]) =>
       el('button', {
         type: 'button', class: `fd-seg__btn ${s.viewAs === v ? 'is-on' : ''}`, 'aria-pressed': String(s.viewAs === v),
         onClick: () => {

@@ -175,13 +175,15 @@ TEMPEST ships with a demo campaign, **Cyberpunk (Sample)**, in `demo/projects/`.
 - **Items:** gear from Very Common to Legendary.
 - **Maps:** places on the World View globe (one hidden from players), and pins across Night City's districts on the City Map, linked to the people and stories there.
 - **Secrets kept:** the Tin Man is known only by rumor (his stats in static, his secret encrypted, his Humanity hidden), Hammerhead's secret is hidden, Celeste Ward's encrypted, and the //FEED leak is anonymous with a scrambled date line. Every story leads to the next, in a March arc and a November one.
+- **Factions:** the Static Saints, the Chrome Vultures, Halcyon Biotics and NCPD Task Force Vulture, tied to each other and to the cast with Relations, plus Site 9, kept from the players. All are on the Timeline with the campaign's stories.
 - **Codex:** the crew, the people they've met (Doc Haas, Mama Ndiaye, Razor, Celeste Ward, Rusty), the jobs and rumors going round and their gear are already in the players' Codex.
 - **Initiative:** a fight ready to start: the Static Saints, initiative already rolled, against the Tin Man, Rusty the cyberhound and two Junkyard Scavs, one of them hidden. Press **Start combat** to put the turn order on the player screens.
+- **Sessions:** three game nights (two played, with recaps in the players' Codex, and *Cold Storage* being planned) and five handouts: Mama Ndiaye's note, a floor plan, a Halcyon memo, Ledger's contract and an encrypted intercept.
 - **Netrunning:** the **Steeltooth Bar** NET architecture, ready to run, and a deck of net cards to build more from: Password, File, Control Node, six Black ICE (Skunk, Liche, Raven, Hellhound, Wisp, Sabertooth) and an Imp Demon, on the three *Cyberpunk RED* net card templates.
 
 The demo installs **once**. Edit it freely: a later start never overwrites it, and if you delete it, it stays deleted. When an update ships more in the demo (like the Netrunning cards), an installed demo gets each new file once, never over one of yours, and never again after you delete it. `<data>\v1\demo.json` records what was installed and offered. To get the whole demo back, delete that file and the project, then restart. Set `TEMPEST_NO_DEMO=1` to skip it. The standalone binaries include it too.
 
-**Rebuilding the demo:** `scripts/build-demo.mjs` seeds a project through a running server's API, skipping anything that already exists by name. Copy the result into `demo/projects/<id>/` (leave out any `*.tmp` files). `scripts/build-netrun-demo.mjs` writes the Netrunning part (presets, cards and the Steeltooth Bar) straight into the demo folder; `scripts/build-initiative-demo.mjs`, `build-codex-demo.mjs` and `build-demo-polish.mjs` add the ready fight, what's in the players' Codex, and the finishing touches.
+**Rebuilding the demo:** `scripts/build-demo.mjs` seeds a project through a running server's API, skipping anything that already exists by name. Copy the result into `demo/projects/<id>/` (leave out any `*.tmp` files). `scripts/build-netrun-demo.mjs` writes the Netrunning part (presets, cards and the Steeltooth Bar) straight into the demo folder; `scripts/build-initiative-demo.mjs`, `build-codex-demo.mjs`, `build-session-demo.mjs` and `build-demo-polish.mjs` add the ready fight, what's in the players' Codex, the sessions and handouts, and the finishing touches.
 
 **Updating installed demos:** a new TEMPEST brings an installed demo up to date: new files arrive once, and files the GM never touched are replaced with the new version (or removed, if the demo dropped them). A file the GM changed, or deleted, stays as the GM left it. This works because `demo/history.json` lists every version of every demo file ever shipped; after changing the demo, run `node scripts/build-demo-history.mjs` (with `GIT` pointing at git if it isn't on the PATH) before shipping. `test/demo.test.mjs` checks every shipped file against the app's rules and checks that every link and image resolves.
 
@@ -200,7 +202,7 @@ Everything you make (presets, characters, stories, items and their images) belon
   - **Open** a project, or **Continue** with the one already open. Projects are listed most recently opened first, with their character and preset counts.
   - **Rename** changes a project's name, description and theme.
   - **Delete** asks first, then moves the project's folder to `%LOCALAPPDATA%\TEMPEST\v1\trash\` rather than erasing it. To bring one back, move its folder into `v1\projects\` and remove the date from the end of its name.
-- **Themes:** each project remembers its theme. Changing the theme in the top bar saves it to the open project, and switching projects switches the look.
+- **Themes:** each project remembers its theme. Changing the theme in the top bar's **◐ Theme** menu saves it to the open project, and switching projects switches the look.
 - **Per-project memory:** the designer's draft, the last preset opened and each section's last tab are remembered separately for each project.
 - **Storage:** a project is one folder, `%LOCALAPPDATA%\TEMPEST\v1\projects\<id>\`, holding `project.json` and folders for its presets, entries and images. Back one up, or move it to another PC, by copying that folder.
 
@@ -232,13 +234,14 @@ The GM window has these sections, shown as tabs across the top bar:
 | Section | Tabs |
 |---|---|
 | **Characters** | Players · NPCs · Monsters · Creatures |
-| **World** | Events · Stories · Rumors · Screamsheets · Timeline |
+| **World** | Events · Stories · Rumors · Screamsheets · Factions · Timeline |
 | **Planes** | Only with Planar maps: planes and the ways between them |
 | **World View** | Only with Planetary maps: the 3D globe |
 | **Atlas** | Only with Cartographer maps: your own maps, with fog of war |
 | **Star Map** | Only with Galactic maps: star systems, lanes and sectors |
 | **Combat** | Initiative · Netrunning (Network Builder · Card Forge · Networks) |
 | **Items** | One list, filtered by rarity |
+| **Sessions** | Session log · Handouts |
 | **The Forge** | Presets: Characters/Creatures · Stories/Rumors/Events · Items |
 
 - **The Forge** is where new things are made from presets. It opens on a chooser with one card per preset type.
@@ -302,7 +305,7 @@ The sheet (on the **Create New** and **Preview** tabs) is drawn as the GM sees i
 
 #### Templates
 
-**New from template…**, next to **New**, starts an unsaved preset from a ready-made one. Once open it is an ordinary preset: change anything, then **Save** it.
+**New from a template** (in the **Preset ⋯** menu) starts an unsaved preset from a ready-made one. Once open it is an ordinary preset: change anything, then **Save** it.
 
 | Template | What's in it |
 |---|---|
@@ -312,8 +315,8 @@ The sheet (on the **Create New** and **Preview** tabs) is drawn as the GM sees i
 - **Defaults:** every STAT starts at 5 and the derived numbers match that (35 HP, 18, 5, 50 Humanity). Skills start at 0 and are entered as Skill Levels: add the STAT for a check.
 
 **Saving and sharing:**
-- **Save** (or Ctrl+S) stores the preset in the project.
-- **New**, **Duplicate** and **Delete** do what they say. Delete, and switching away from unsaved changes, ask first.
+- **Save** (or Ctrl+S) stores the preset in the project. Everything else about presets is in the **Preset ⋯** menu beside it: **New blank preset**, **New from a template**, **Duplicate**, **Import…**, **Export** and **Delete this preset…**. The preset's name is edited on the **Design** tab.
+- **Delete**, and switching away from unsaved changes, ask first.
 - **Export** saves a `.tempest-preset.json` file to share or back up. **Import** loads one. An imported preset always gets a fresh id, so it never overwrites another, and broken or foreign files are refused with the reason.
 - **Drafts:** unsaved work is kept in the browser as a draft, so reloading or closing the window loses nothing.
 - The server checks every save and import with the same rules the designer uses.
@@ -322,9 +325,9 @@ The sheet (on the **Create New** and **Preview** tabs) is drawn as the GM sees i
 
 The **Create New** tab is a form built from the preset, so making a character takes one page:
 
-1. Build or open a preset.
+1. Build or open a preset. (Or start from a list: **+ New NPC**, **+ New Rumor**, **+ New Item** and so on open this tab with the Category or Type already set.)
 2. On the **Create New** tab, fill in the form. Fields you haven't touched follow the preset's defaults as you change them, and the sheet beside the form shows the character as you go.
-3. Click **Create New**.
+3. Click the button at the bottom. It names what it makes: **Create NPC**, **Create Player**, **Create item**.
 
 The character is saved and filed under **Characters** by its Category. A notice links straight to it, and the form clears for the next one.
 
@@ -337,11 +340,12 @@ A character keeps a **snapshot** of the preset it came from, so editing or delet
 
 ### Characters
 
-- **Tabs:** Players, NPCs, Monsters and Creatures each list their characters as cards (portrait, name, species and size, short description, source preset). An empty tab points to The Forge.
+- **Tabs:** Players, NPCs, Monsters and Creatures each list their characters as cards (portrait, name, species and size, short description, source preset). **+ New NPC** (or Player, Monster, Creature) opens The Forge's Create New with that Category already set.
 - **⊘ Hide all / ◉ Reveal all** (top of each tab) set *every field* of *every character on that tab* to Hidden or Revealed in one go. Each asks first and says how many it will change. Hide all leaves the players nothing, not even names; Reveal all lets them read everything, secrets included. Obscure styles and *Players read* text are kept, and the notice that follows has **Undo**, which puts each field back as it was.
 - **Character pages** (`#/characters/<tab>/<id>`) show the sheet with a **GM view / Player view** switch. Parents and references link to other entries.
 - **What players get, on the spot:** on the GM view every field has a small control (◉ while revealed). Click it to **Reveal**, **Obscure** (Redacted, Static, Encrypted or Custom text…), give **Shown text…** or **Hide** the field, for this entry only, saved at once. Player view, pushes and the players' Codex follow straight away. The same works on stories, rumors, events, items and net cards. A hidden or obscured **Name** (or Handle) works like any other field: its control sits beside the faded name, and **Edit** still changes it.
 - **Edit** reuses the Create New form, with the sheet updating live. Changing Category moves the character to the matching tab. **Delete** asks first.
+- **⚙ Edit fields** changes this one entry's own fields with The Forge's builder: add fields (Parent, Long Description, Image, Gallery, Stat, Stat Block) and sections, drag them into place, rename them, change their options, visibility and references, or remove them, with the entry's own sheet previewed below. Its preset, and everything else made from it, stays as it is. If a change would lose something filled in (a removed field, or a new type the old value can't fit), it names those fields and asks first. The same works on stories, rumors, events, items and net cards.
 - **Images** are stored in the project's `assets\` folder, named by their content, so a picture used twice is stored once. Uploads must really be PNG, JPEG, GIF or WebP (checked by their bytes), and 10 MB at most.
 
 ### Stories, rumors and events
@@ -368,21 +372,49 @@ Dates suit any calendar: years can be negative (before your setting's epoch), mo
 | **Characters** | **Combat:** 1–3 sides of a conflict, each with a faction and its fighters. **Involved:** the characters who take part, each with an optional note. |
 | **Location** | **Indirect:** links any entry that stands for the place. **Obscure:** an empty picture frame and a short description of your own. **Direct:** links a Location entry (once Locations exist). |
 
-**World › Events / Stories / Rumors** list what you've made by Type, as cards in date order showing *start – end* (or *ongoing*). Each entry has its own page at `#/world/<tab>/<id>` with **GM view / Player view**, links, **Edit** and **Delete**.
+**World › Events / Stories / Rumors** list what you've made by Type, as cards in date order showing *start – end* (or *ongoing*), with **+ New Event** (Story, Rumor) and **⊘ Hide all / ◉ Reveal all** like Characters. Each entry has its own page at `#/world/<tab>/<id>` with **GM view / Player view**, links, **Edit** and **Delete**.
+
+### Factions
+
+Corporations, gangs, governments and the rest: the fourth kind of preset, made in **The Forge › Factions/Organizations** and kept under **World › Factions**.
+
+- **Default fields:** Type (Corporation, Gang, Syndicate, Government, Military, Guild, Religion, Movement or Other), Emblem, Name, Leader, Headquarters, Founded (an in-world date, which puts it on the Timeline) and Short Description.
+- **Extra fields:** Parent, Long Description, Image, Gallery, Stat, Stat Block, Characters (members), Location and **Relations**.
+- **The list** shows every faction on one tab, with chips to filter by type, and **Hide all / Reveal all** like Characters and Items. Each faction has its own page with **GM view / Player view**, Edit, **⚙ Edit fields**, the Codex control and **⇪ Push**.
+- **Relations** is a field of its own: ties to factions, people or anything else, each with a stance (Ally, Friendly, Neutral, Wary, Rival, Enemy, Member of, Leads, Part of, Controls) and an optional note. Characters can add it too (it starts as *Affiliations*). Parent fields can now point at a **Faction**.
+- **Players** get factions like any entry: in their Codex (their own **Factions** tab), pushed, and only as each sheet allows.
+
+### Timeline
+
+**World › Timeline** puts everything dated in order: stories, rumors and events from their **Start** to their **End**, and factions at their **Founded** date.
+
+- **Any calendar:** entries are ordered by year, then month, day and time, so negative years and long months work. Each year is a heading, and each entry sits on the spine with its date, type, name and short description, linked to its page.
+- **Stretches of time** (a Start with a later End, or no End yet: still going on) get a coloured rail beside the timeline, running from start to end. Overlapping stretches sit side by side, up to six at once.
+- **Chips** choose what's shown (Events, Stories, Rumors, Factions), remembered per project. Undated entries are counted at the top.
+- **Player view** previews what players get, and **⇪ Push timeline** sends it to the player screens. They see only entries in their Codex whose date they may read, named and pictured as each sheet allows. An End they may not read shows as a single moment.
 
 ### Screamsheets
 
-In-world news articles, made with the **Screamsheet Generator** and kept under **World › Screamsheets**.
+In-world news, kept under **World › Screamsheets**. A screamsheet is an **issue**: a page of the news, like *Night City Today* in the rulebook. A **lead article** comes first, then as many more **articles** and **ads** as you like, each with a byline, **Link** lines and bold-labelled notes (*Disclaimer:*, *Correction:*).
 
-- **The list** shows every screamsheet, newest first, with its outlet, date line, a snippet, Hidden/Revealed and **⇪ Push**. **⚄ New screamsheet** opens the generator.
-- **The generator** follows the five steps of R. Talsorian's free *Screamsheet Generator* for Cyberpunk RED, with a live preview:
+- **The list** shows every screamsheet, newest first, with its outlet, date line, a snippet, how many more pieces are on its page, Hidden/Revealed and **⇪ Push**. **⚄ Generate one** opens the generator; **✎ Write your own** starts one by hand (no tables needed).
+- **The generator** follows the five steps of R. Talsorian's free *Screamsheet Generator* for Cyberpunk RED, with a live preview of the whole page:
   1. **Type of article:** pick one, or roll.
   2. **Content:** pick or reroll the intro, body and conclusion.
   3. **Headline:** one of those the conclusion suggests.
   4. **Fill in the details:** every [blank] gets a box. People suggest your project's characters; places suggest Night City's districts and your points of interest. **⚄ Fill blanks from the project** fills every empty one it can.
-  5. **Polish & publish:** outlet, byline, date line, layout (**Broadsheet**, **Terminal** or **Plain**) and **Hidden/Revealed**. You can also edit the text by hand. **⇪ Save & push to players** saves it revealed and puts it on the player screens.
-- **Parts on the spot:** a screamsheet's page has **GM view / Player view**. On the GM view the outlet, date line, headline, byline and article each have the same control: **Reveal**, **Obscure** (Redacted, Static, Encrypted or Custom text…) or **Hide**. With an obscured headline, the player screens' title just says *Screamsheet*.
-- **Players** only ever get revealed screamsheets, as printed (obscured parts as such, hidden ones not at all): never the generator's picks or which entries it mentions.
+  5. **Polish & publish:** outlet, byline, date line, **section**, look, **Links**, **Notes** and **Hidden/Revealed**. You can also edit the text by hand. **⇪ Save & push to players** saves it revealed and puts it on the player screens.
+- **Looks:**
+  - **News feed** (the default): a news site on a screen, with a status bar showing the date line, a logo made from the outlet's initials (*Night City Today* → **NCT**), and the section tabs (Gossip, Opinion, Weather, Tech, Lifestyle, Local, Business, World) with this issue's section lit. Articles and ads run in two columns, with dashed lines between them.
+  - **Broadsheet**, **Terminal** and **Plain** print the lead article large and the other pieces in two columns below.
+- **Building the page** (on the screamsheet's GM view):
+  - **⚄ Roll an article** adds one from the generator, and **✎ Write an article** adds one you write yourself.
+  - **+ Ad** adds a picture, a tagline and links.
+  - **⚙ Issue** sets the outlet, section, date line and look.
+  - Each piece has **✎** (edit, or reroll in the generator), **🖼** (its picture), **▲ ▼** (move), **◉** (hide or show this piece to players) and **✕** (remove).
+- **Pictures:** any article, the lead included, can have a picture with a caption, placed **before** or **after** its text (**🖼** on the piece, or in **✎ Write an article**).
+- **Links:** one per line, printed as **Link:** … in the feed's blue. A line that names one of your entries exactly links to it. On your page it opens the entry; in the players' Codex it opens there, once they know of it. Otherwise it's just words.
+- **Parts on the spot:** on the GM view, the outlet, date line, and every article's headline, byline, text and picture each have the same control: **Reveal**, **Obscure** (Redacted, Static, Encrypted or Custom text…) or **Hide**. With an obscured lead headline, the player screens' title just says *Screamsheet*.- **Players** only ever get revealed screamsheets, as printed (obscured parts as such, hidden parts and pieces not at all), with links only to entries in their Codex: never the generator's picks or which entries it mentions.
 
 > [!IMPORTANT]
 > **Import the tables once before first use.** The generator's tables are R. Talsorian Games' text, so TEMPEST reads them from the free *Screamsheet Generator* PDF (a copy is in `assets/cyberpunkRED/`) instead of storing them in its code. Until you import them, the generator offers to. Importing needs Python 3 with `pypdf`:
@@ -413,6 +445,35 @@ The third kind of preset, made in **The Forge › Items**.
 
 The **Items** section is a single list of everything you've made (`#/items`), as cards with the item type and a rarity badge. When more than one rarity is in use, chips across the top filter by rarity. Each item has its own page at `#/items/<id>`, with the same per-field visibility controls as characters. **⊘ Hide all / ◉ Reveal all** work as on the [Characters](#characters) tabs, for the items listed (with a rarity filter on, only the items it shows).
 
+### Sessions
+
+Game nights, and the handouts given out at them. **Sessions** has two tabs, and both pages save as you type (the corner says *Saved*).
+
+**Session log** (`#/sessions/log`) lists every session, newest first, with its date, **Planned** or **Played**, how much of its plan is done, its handouts, and the start of its recap. **+ New session** adds the next number. A session's page has:
+
+- **Session, Title, Played on, Status** at the top, and **Delete** (its handouts stay).
+- **Plan:** a checklist of scenes, beats and things to prepare. Type a line and press Enter; tick it off at the table, reorder with ▲ ▼.
+- **Featuring:** the NPCs, places, items, stories and factions it's about, picked from the list. Each opens in one click, and **⇪ Push** shows it on the player screen as its sheet allows.
+- **Handouts:** the session's handouts, each with **⇪ Push**. **+ New handout** makes one for this session; *Add an existing handout…* moves one here.
+- **GM notes:** only you see these.
+- **Recap for the players:** "Previously…", in a few lines. **⇪ Push recap** shows it on the player screen and puts it in the players' Codex (under **Sessions**); **In the players' Codex** shares or unshares it without pushing.
+
+**Handouts** (`#/sessions/handouts`) are props to hand the players, each looking like what it is, whatever the theme:
+
+| Looks like | On screen |
+|---|---|
+| **Letter** | Paper and ink, signed at the bottom |
+| **Scrawled note** | A scrap of yellow paper, handwritten |
+| **Typed document** | A typed report, heading and rule, typewriter text |
+| **Datapad message** | A glowing screen, with the subject and sender |
+| **Picture** | A photo, map or drawing with its caption |
+
+- **A handout has** a title (players see it too), a picture with a caption, the text (a blank line starts a paragraph), a signature or sender, and its session. The preview beside the form shows exactly what players get.
+- **Players can read the text?** *No: redacted / static / encrypted* keeps the words on your side: players see that something is written, about as long as the real thing, but the words never reach their screens. Set it back to *Yes* when they crack it, and the Codex shows the real text from then on.
+- **⇪ Push handout** shows it on the player screen and puts it in the players' Codex (under **Handouts**). **In the Codex** shares it without pushing. Lists mark those in the Codex with **◉ Codex**.
+
+The demo campaign has three sessions (two played, with recaps the players have, and *Cold Storage* being planned) and five handouts, among them Mama Ndiaye's note, a floor plan and an encrypted intercept.
+
 ### Stat Blocks
 
 A field type for characters, items and net cards: a row of named stats read together, as a rulebook prints them (`PER · SPD · ATK · DEF · REZ`, or `STR · DEX · CON …`).
@@ -433,7 +494,7 @@ A field type for characters, items and net cards: a row of named stats read toge
 - **Attack:** pick attacker, target and damage, then **Hit**, **Crit** or **Miss**. The damage lands, and every player screen plays the attack for a few seconds: the strike, the damage and the target's health draining.
 - **What players see:** the turn bar, with whoever is acting first and larger. When the turn passes, cards slide along and the one that just acted wraps round to the end. Player characters show their HP, armor and (on their turn) slots. Everyone else shows only a band (*Unhurt*, *Wounded*, *Bloodied*, *Critical*), never numbers. Hidden and defeated foes aren't shown at all.
 - **Show on player screens** takes the bar down (or puts it back) without ending the fight.
-- **End combat:** foes leave and player characters stay, with their wounds, slots and conditions. Tick *Write the player characters' Hit Points to their sheets* to save their HP to their sheets. **Full rest** heals the PCs and clears their slots and conditions. **Clear** empties the tracker.
+- **End combat:** foes leave and player characters stay, with their wounds, slots and conditions. Tick *Write the player characters' Hit Points to their sheets* to save their HP to their sheets. **Full rest** heals the PCs and clears their slots and conditions. **Clear** empties the tracker. Both ask first.
 
 ### Netrunning (Combat)
 
@@ -458,6 +519,7 @@ A field type for characters, items and net cards: a row of named stats read toge
 - **Rearranging:** move a branch left or right, add an empty slot above or below, remove a node (what hung below it moves up) or a whole branch.
 - **Layout:** the map lays itself out as the rulebook draws architectures: chamfered boxes in rows, a single line straight down, each node centred over its branches, and merged nodes below every branch that leads to them.
 - **Saving:** **Save** (Ctrl+S). Unsaved work is kept as a draft in the browser. Delete removes the selected node and Esc lets go of it.
+- **Your networks:** pick one from **Network**; **+ New** starts an empty one (it asks first if you have unsaved changes), and **Duplicate** copies the open one.
 
 **Networks.** Open a network to run it. You see the whole architecture, with hidden nodes dimmed.
 - **Revealing:** **Reveal next** reveals the next node down the architecture, top to bottom. Click any node to reveal or hide just that one, read its GM note, and see its card's full sheet. **Reveal all** and **Hide all** do every node at once.
@@ -487,7 +549,7 @@ With the project's map system set to **Planetary**, a **World View** section app
 **Working with points:**
 - **Click a marker** (or a name in the list) to fly to it and edit it: rename it, change its type or description, **Hide/Reveal**, **Move** or **Delete** it.
 - **The list** shows every point with its type and visibility. **◉/◌** on each row reveals or hides it at once. Filter by type and by visibility.
-- **View as: GM / Players** shows the globe as players would see it: only revealed points, look-only.
+- **GM view / Player view** shows the globe as players would see it: only revealed points, look-only.
 - **⇪ Push view** and **⇪ Push** send the globe, or one point, to the player screens.
 
 #### Night City
@@ -509,7 +571,7 @@ Night City's map (`#/worldview/nightcity`, or `#/starmap/nightcity` with Galacti
 - **Players:** every point is **Hidden** until you **Reveal** it.
 - **References** (GM only): attach characters, events, stories, rumors and items from the project, each with an optional note.
 - **Maps & pictures:** up to 12 images, such as floor plans, each with a caption.
-- **View as Players** shows only revealed points, and never your references.
+- **Player view** shows only revealed points, and never your references.
 
 The district outlines (`assets/maps/nightcity/districts.json`) were traced from the atlas by `scripts/extract-districts.py` (needs numpy). It finds the red dotted borders, flood-fills each district from its label, and grows the districts back over the borders until neighbours meet. A few borders the dots don't close are drawn in by hand in the script. To redo the tracing from a 3300 × 5100 24-bit BMP of the "w District Names" sheet:
 
@@ -524,7 +586,7 @@ The Planar, Cartographer and Galactic map systems work alike:
 - **Moving around:** drag to pan, scroll or double-click to zoom, **+ / −** and **Fit**. Arrow keys, + and −, and 0 work when the map has focus.
 - **Hidden until revealed:** everything you add starts **Hidden**. Reveal it in its panel, or with **◉/◌** on its row in the list.
 - **Every place has** a name, a kind, a description (optional) and up to 12 **maps & pictures**, each with a caption.
-- **View as: GM / Players** shows the map exactly as players know it. Click something there to read its players' card.
+- **GM view / Player view** shows the map exactly as players know it. Click something there to read its players' card.
 - **⇪ Push view** sends what you're looking at to the player screens, with what players know. **⇪ Push** in a panel sends that one place as a card. Pushing something hidden asks to reveal it first.
 - **The players' Codex** gets every revealed place under **Places**, as the same card.
 - **Deleting** a plane, system or chart also deletes its ways, lanes, pins and regions (after asking).
@@ -587,6 +649,8 @@ You push what players should see, and every player screen shows it at once, live
 | Planes, Atlas chart, Star Map | **⇪ Push view** | What you're looking at, with only what players know (a chart under its fog) |
 | A plane, way, chart, pin, region, system, lane or sector | **⇪ Push** | Its card: kind, name, where it is, description and maps |
 | A network (Combat › Netrunning › Networks) | **⇪ Push network**, or each reveal with *Update the player screen* on | Its revealed nodes as a map, one lit, with that node's card beside it |
+| A handout (Sessions) | **⇪ Push handout**, or **⇪ Push** on its session | The handout as a prop (letter, note, document, datapad, picture), obscured text still obscured; it joins the Codex |
+| A session | **⇪ Push recap** | "Previously…": the session's number, title, date and recap; it joins the Codex |
 
 **Named screens:**
 - Every time a player screen opens (the network link or QR code, a reload, or **Open**), it asks **Who's watching?** The last name used on that device is filled in, so Enter keeps it. Tap the name in the screen's corner to change it.
@@ -609,9 +673,9 @@ You push what players should see, and every player screen shows it at once, live
 
 ### The players' Codex
 
-Every player screen has a **Codex** button (bottom left, or the **C** key). It opens everything the party knows of, so players can browse at their own pace whatever you've pushed. Pushes and the turn bar carry on underneath.
+Every player screen has a **Codex** button (bottom left, or the **C** key). It opens everything the party knows of, so players can browse at their own pace whatever you've pushed. Pushes and the turn bar carry on underneath. While it's open the button steps aside; **✕** or **Esc** closes it.
 
-- **What's in it:** the open campaign's (the project you opened last) characters, stories, rumors, events and items that are **in the Codex**, plus revealed screamsheets and the revealed places of the project's map system: points on the globe and the City Maps, or planes and ways, charts (as players' copies) with their pins and regions, or star systems, lanes and sectors. They're grouped under Players, NPCs, Monsters, Creatures, World, Items, News and Places, with search. A character whose sheet hides its Category goes under **People**, so the tab never gives away what the sheet keeps hidden.
+- **What's in it:** the open campaign's (the project you opened last) characters, stories, rumors, events and items that are **in the Codex**, plus revealed screamsheets and the revealed places of the project's map system: points on the globe and the City Maps, or planes and ways, charts (as players' copies) with their pins and regions, or star systems, lanes and sectors; and the handouts and session recaps you've shared. They're grouped under Players, NPCs, Monsters, Creatures, World, Factions, Items, News, Places, Handouts and Sessions, with search. A character whose sheet hides its Category goes under **People**, so the tab never gives away what the sheet keeps hidden.
 - **Putting entries in:** on an entry's page, **○ Not in the Codex** / **◉ In the Codex** puts it in or takes it out. **Pushing an entry puts it in too**, so whatever the players have been shown stays in their Codex. Lists mark entries in the Codex with **◉ Codex**.
 - **As each sheet allows:** a character opens as its Player view shows it (Revealed fields, Shown text, nothing Rumored), a screamsheet opens as printed, and a place opens with its maps. Links to other entries in the Codex open there too.
 - **New:** entries this screen hasn't opened yet are marked **New**, and the Codex button counts them. (Each screen remembers this for itself; everything already known counts as seen on a screen's first visit.)
@@ -628,12 +692,27 @@ Players can open the player screen in any browser on the same network: phones, t
 - **Several networks:** if the PC is on more than one network (Wi-Fi, a VPN), pick which address the code uses.
 - **Firewall:** the first time sharing starts, Windows may ask whether Node.js can use the network. Allow it on **private** networks, or other devices can't connect.
 - **Fonts:** the themes load fonts from Google Fonts, so a device without internet access shows fallback fonts.
+- **Android app:** the **TEMPEST Companion** app (`android/`) opens the player screen as an app: scan the QR code in it, and it stays full screen, keeps the screen awake and goes straight back to your table next time. It's also the GM's app (see below). See [android/README.md](android/README.md) for building and installing it.
 
 **What the network can reach:**
 - **Only with the link's key.** Opening the address without it shows a page asking for the GM's link.
 - **New link** changes the key and disconnects every device using the old one.
 - **Read-only, and only the player screen:** its page, scripts, themes and built-in maps, what's on screen, and the pictures in what's on a screen now. No projects, entries, presets, settings or other pictures, no list of who else is watching, and no writes.
 - **Turning sharing off** stops the network server. The setting is remembered across restarts.
+
+### GM on your network (tablet or phone)
+
+Run the GM window from a tablet or phone while TEMPEST keeps running on the PC: your campaigns stay on the PC. Turn it on in **Project settings › GM on your network** (it asks you to confirm first):
+
+1. Tick **Let my tablet or phone be the GM window**. A third server starts on port **4079**, with its own key.
+2. On the tablet, scan the QR code with the **TEMPEST Companion** app ([android/README.md](android/README.md)), or open the link in a browser there.
+3. The GM window opens on the tablet; the app goes straight back to it next time.
+
+- **A paired device can do anything this window can,** so only pair your own devices, on networks you trust. It's plain http, like the player screen: fine on home Wi-Fi, not on a public network. Keep the GM code to yourself.
+- **What stays on the PC:** shutting TEMPEST down, autostart, importing the screamsheet PDF from the PC's disk, and both network settings (Settings on the tablet says so).
+- **Signing out:** **New key** signs every paired device out at once. The card lists the addresses that used it in the last 10 minutes.
+- **What else the network can reach:** without the key, nothing. With it, only the GM window's own files (`/app`, `/src`, `/themes`, `/assets`), not the rest of the install folder. Writes must come from the GM window at that same address, and requests naming any other address for the PC are refused (no DNS rebinding).
+- **Layout:** the GM window is laid out for wide screens; use tablets in landscape (the app keeps GM mode in landscape).
 
 ### The image viewer
 
@@ -657,7 +736,7 @@ TEMPEST's look comes from a hot-swappable theme library. The theme applies to th
 | **Land of Sand** | Early-2000s RTS: gunmetal command panels over a starfield, sand-gold titles, steel bevels and cyan selection brackets |
 | **Standard** | A neutral starting point for your own themes |
 
-**Effects** (top bar) set how much each theme animates: **Off**, **Subtle** (default) or **Full**. Every animation respects the system's reduced-motion setting.
+**Effects** (in the top bar's **◐ Theme** menu) set how much each theme animates: **Off**, **Subtle** (default) or **Full**. Every animation respects the system's reduced-motion setting.
 
 ### Making a theme
 
@@ -680,8 +759,10 @@ app/                The GM window and player screen (one page; #/player is the p
   push/             Pushing, the player screen, full screen
   codex/            The players' Codex on the player screen
   screamsheets/     The screamsheet generator and articles
+  sessions/         Sessions: the session log, handouts and recaps
   projects/         Project picker, settings, network sharing card
   vendor/           Third-party files kept in the repository, with sources and licences
+android/            TEMPEST Companion: the Android player-screen app (its own Gradle project)
 server/             The local server (no dependencies): static files, the API, the network player screen
 launcher/           Launcher, Windows tray icon and shortcut installer, the standalone binary's entry point
 scripts/            Binary builder, icon generator, Night City district tracer, screamsheet table importer
@@ -721,6 +802,7 @@ npm test
 | Planes, Atlas and Star Map | `app/maps/planar*.js`, `app/maps/cartographer.js`, `app/maps/chart-model.js`, `app/maps/fog.js`, `app/maps/galactic*.js`, shared: `app/maps/board.js`, `app/maps/place-*.js`; `server/atlas.js` | `test/atlas.test.js` |
 | Pushing and player screens | `app/push/`, `server/display.js` | `test/push.test.js` |
 | The players' Codex | `app/codex/`, `server/codex.js` | `test/codex.test.js` |
+| Sessions and handouts | `app/sessions/`, `server/pois.js` (stores), `server/display.js` and `server/codex.js` (players' copies) | `test/sessions.test.js` |
 | Network player screen | `server/lan.js`, `app/projects/network.js` | `test/lan.test.js` |
 | Screamsheets | `app/screamsheets/`, `server/packs.js` | `test/screamsheets.test.js` |
 | Netrunning (net cards, Stat Blocks, networks) | `app/netrun/`, `app/forge/templates/cyberpunk-red-net.js`, `server/pois.js` (store) | `test/netrun.test.js` |
@@ -753,7 +835,7 @@ TEMPEST is in **alpha** (`1.1.0-alpha`). This is the **v1 rebuild**; version zer
 
 | Built | Still to come |
 |---|---|
-| Projects and settings, The Forge (all three preset kinds), Characters, World (events, stories, rumors, screamsheets), Items, all four map systems (Planes, World View, Atlas, Star Map) and the Night City City Map, Combat › Initiative (the tracker and the players' turn bar) and Netrunning (net cards, networks, revealing them to players), pushing, named and networked player screens with the players' Codex, themes | Saved encounters, the Timeline, Locations and Factions |
+| Projects and settings, The Forge (all four preset kinds), Characters, World (events, stories, rumors, screamsheets, factions, the timeline), Items, all four map systems (Planes, World View, Atlas, Star Map) and the Night City City Map, Combat › Initiative (the tracker and the players' turn bar) and Netrunning (net cards, networks, revealing them to players), pushing, named and networked player screens with the players' Codex, themes | Saved encounters, Locations |
 
 ## Third-party content and credits
 

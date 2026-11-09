@@ -28,11 +28,13 @@ import { drawChart } from '../maps/cartographer.js';
 import { openImage } from '../image-viewer.js';
 import { pushKind, displayLabel, PUSH_MODES } from './push-model.js';
 import { fullscreenControl } from './fullscreen.js';
-import { renderArticle } from '../screamsheets/article.js';
+import { renderIssue } from '../screamsheets/article.js';
+import { renderTimeline } from '../world/timeline-render.js';
 import { playerNetworkView } from '../netrun/player-view.js';
 import { turnBar } from '../combat/turn-bar.js';
 import { attackScene } from '../combat/attack-scene.js';
 import { codex as createCodex } from '../codex/codex.js';
+import { renderHandout, renderRecap } from '../sessions/handout-render.js';
 
 const SVG = 'http://www.w3.org/2000/svg';
 const svg = (tag, attrs = {}) => {
@@ -120,9 +122,16 @@ export function mount(root, { engine }) {
                     el('span', { class: 'scr-card__name' }, x.name ?? 'Unknown'),
                     x.summary ? el('span', { class: 'scr-card__summary' }, x.summary) : null))))
             : el('p', { class: 'tp-muted' }, 'Nothing known yet.'));
+      case 'timeline':
+        return el('section', { class: 'scr-timeline' },
+          el('h1', { class: 'tp-h1 scr-roster__title' }, 'Timeline'),
+          renderTimeline(d.timeline, { imageUrl: url, empty: 'Nothing on the timeline yet.' }));
       case 'article':
-        return renderArticle(d.article);
+        return renderIssue(d.article, { imageUrl: url });
+      case 'recap':
+        return el('div', { class: 'scr-paper' }, renderRecap(d.recap));
       case 'handout':
+        if (d.handout) return el('div', { class: 'scr-paper' }, renderHandout(d.handout, { imageUrl: url, openImage: (items, i) => openImage(items.map((x) => ({ ...x, src: url(x.image) })), i) }));
         return el('figure', { class: 'scr-handout' },
           el('img', { src: url(d.image), alt: d.caption || 'Handout' }),
           d.caption ? el('figcaption', { class: 'tp-label scr-handout__caption' }, d.caption) : null);

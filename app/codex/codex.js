@@ -9,14 +9,15 @@
 
 import { el } from '../ui.js';
 import { renderSheet } from '../forge/sheet.js';
-import { renderArticle } from '../screamsheets/article.js';
+import { renderIssue } from '../screamsheets/article.js';
 import { typeOf } from '../maps/poi-model.js';
 import { iconOf } from '../maps/city-poi-model.js';
 import { mapsGallery } from '../maps/attached-maps.js';
 import { placeCardView } from '../maps/place-card.js';
 import { openImage } from '../image-viewer.js';
+import { renderHandout, renderRecap } from '../sessions/handout-render.js';
 
-const GLYPH = { players: '◉', npcs: '◐', monsters: '✸', creatures: '❂', people: '◌', world: '✦', items: '◆', news: '▤', places: '⌖' };
+const GLYPH = { players: '◉', npcs: '◐', monsters: '✸', creatures: '❂', people: '◌', world: '✦', factions: '⚑', items: '◆', news: '▤', places: '⌖', handouts: '✉', sessions: '❧' };
 const CHARACTER_GROUPS = ['players', 'npcs', 'monsters', 'creatures', 'people'];
 const REFRESH_MS = 30000;
 const initials = (name) => (name ?? '?').split(/\s+/).filter((w) => /\w/.test(w)).slice(0, 2).map((w) => w.replace(/\W/g, '')[0]).join('').toUpperCase() || '?';
@@ -107,7 +108,8 @@ export function codex() {
     return s.data.entries
       .filter((x) => s.group === 'all' || x.group === s.group)
       .filter((x) => !q || `${x.title ?? ''} ${x.sub} ${x.summary}`.toLowerCase().includes(q))
-      .sort((a, b) => Number(isNew(b)) - Number(isNew(a)) || String(a.title ?? '~').localeCompare(String(b.title ?? '~'), undefined, { sensitivity: 'base' }));
+      // Session recaps keep their order (latest first); everything else goes by name.
+      .sort((a, b) => Number(isNew(b)) - Number(isNew(a)) || (a.order != null && b.order != null ? b.order - a.order : 0) || String(a.title ?? '~').localeCompare(String(b.title ?? '~'), undefined, { sensitivity: 'base' }));
   }
 
   function renderTabs() {
@@ -186,7 +188,19 @@ export function codex() {
   const imageOpener = (items, i) => openImage(items.map((x) => ({ ...x, src: url(x.image) })), i);
 
   function content(d) {
-    if (d.type === 'article') return el('div', { class: 'cx-detail__article' }, renderArticle(d.article));
+    if (d.type === 'handout') return el('div', { class: 'cx-detail__paper' }, renderHandout(d.handout, { imageUrl: url, openImage: imageOpener }));
+    if (d.type === 'recap') return el('div', { class: 'cx-detail__paper' }, renderRecap(d.recap));
+    if (d.type === 'article') {
+      // An issue's Link lines lead to the entries the party knows (the server keeps only those).
+      const node = el('div', { class: 'cx-detail__article' }, renderIssue(d.article, { imageUrl: url, linkHref: (ref) => `#cx-${ref}` }));
+      node.addEventListener('click', (ev) => {
+        const a = ev.target.closest?.('a[href^="#cx-"]');
+        if (!a) return;
+        ev.preventDefault();
+        openEntry(a.getAttribute('href').slice(4));
+      });
+      return node;
+    }
     if (d.type === 'place') {
       const node = placeCardView(d.place, { url });
       node.classList.add('cx-detail__panel');

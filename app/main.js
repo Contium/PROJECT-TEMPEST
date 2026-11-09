@@ -9,7 +9,7 @@
 // project picker (#/projects), which the project button at the top left also opens.
 
 import { ThemeEngine } from '/src/theme-engine/theme-engine.js';
-import { el, store, toastError } from './ui.js';
+import { el, store, toastError, menuButton } from './ui.js';
 import { visibleSections, PLAYER_PATH, PROJECTS_PATH, SETTINGS_PATH, HOME, resolve, pathOf } from './sections.js';
 import { projects as projectsApi, setProject } from './api.js';
 import * as presetDesigner from './forge/designer.js';
@@ -23,6 +23,8 @@ import * as galacticView from './maps/galactic.js';
 import * as screamsheetsView from './screamsheets/view.js';
 import * as netrunView from './netrun/view.js';
 import * as initiativeView from './combat/initiative.js';
+import * as timelineView from './world/timeline.js';
+import * as sessionsView from './sessions/view.js';
 import * as playerScreen from './push/screen.js';
 import { messageDialog, clear as clearScreen, watchDisplay, targetPicker } from './push/push.js';
 import { displayLabel } from './push/push-model.js';
@@ -47,11 +49,16 @@ const VIEWS = {
   'world/stories': entitiesView,
   'world/rumors': entitiesView,
   'world/screamsheets': screamsheetsView,
+  'world/factions': entitiesView,
+  'world/timeline': timelineView,
   'combat/initiative': initiativeView,
   'combat/netrunning': netrunView,
+  'sessions/log': sessionsView,
+  'sessions/handouts': sessionsView,
   'forge/characters': presetDesigner,
   'forge/stories': presetDesigner,
   'forge/items': presetDesigner,
+  'forge/factions': presetDesigner,
   items: entitiesView, // a section without tabs: keyed by the section alone
   worldview: worldView, // only while the project's map system is Planetary
   planes: planarView, // …Planar
@@ -120,7 +127,11 @@ function chooser(section) {
 /** Mount a view module into `host`, unless the route changes while it loads. */
 function mountView(view, host, ctx, label) {
   const token = (mounting = Symbol(label));
+  // Something to look at while a slow view loads (it fades in only if loading takes a moment).
+  const loading = el('p', { class: 'tp-muted app-loading', role: 'status' }, 'Loading…');
+  host.append(loading);
   Promise.resolve(view.mount(host, { engine, ...ctx }))
+    .finally(() => loading.remove())
     .then((handle) => {
       // Navigated away while it was loading: release it straight away.
       if (mounting !== token) return handle?.unmount?.();
@@ -139,9 +150,9 @@ function renderSection(section, tab, item) {
   document.title = `TEMPEST · ${section.label}`; // the tray finds GM windows by "TEMPEST" / "TEMPEST · …"
   $('main').replaceChildren(
     el('div', { class: 'app-page' },
+      // The open tab is already marked in the tab row below: the head names only the section.
       el('div', { class: 'app-page__head' },
-        el('h1', { class: 'tp-h1' }, section.label),
-        tab ? el('span', { class: 'tp-deco' }, tab.label) : null),
+        el('h1', { class: 'tp-h1' }, section.label)),
       section.tabs.length
         // Tabs that navigate: role="tab" + aria-selected is also what the themes style.
         ? el('nav', { class: 'tp-tabs app-tabs', role: 'tablist', 'aria-label': `${section.label} tabs` },
@@ -211,6 +222,10 @@ function route() {
 function wireControls() {
   const themeSelect = $('theme-select');
   const effectsSelect = $('effects-select');
+  // Theme and Effects: one menu in the top bar (the selects move into it; their listeners stay).
+  const fields = [...$('look-fields').children];
+  const look = menuButton('◐ Theme', () => fields, { cls: 'tp-btn--sm app-look', title: 'Theme and effects for this project' });
+  $('look-fields').replaceWith(look.node);
   engine.addEventListener('registry', (e) => themeSelect.replaceChildren(...e.detail.map((t) => el('option', { value: t.id }, t.name))));
   engine.addEventListener('change', (e) => (themeSelect.value = e.detail.theme.id));
   engine.addEventListener('effects', (e) => (effectsSelect.value = e.detail.level));

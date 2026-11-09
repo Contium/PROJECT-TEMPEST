@@ -7,7 +7,7 @@ import { projects as api } from '../api.js';
 import { MONEY_MODES, MAP_MODES, DND_COINS, MAX_CURRENCIES, UNIQUE_POI_MODES, normalizeSettings, currencies, formatAmount, rate, SettingsError } from './settings-model.js';
 import { UNIQUE_POIS } from '../maps/poi-model.js';
 import { formatLonLat } from '../maps/globe-math.js';
-import { networkCard } from './network.js';
+import { networkCards } from './network.js';
 
 const SAMPLE = 12345; // the example amount, in base units
 
@@ -32,7 +32,8 @@ export async function mount(root, { project, saved: onSaved }) {
       options.map((o) =>
         el('label', { class: `st-card ${value === o.id ? 'is-on' : ''}` },
           el('input', { type: 'radio', name, value: o.id ?? '', checked: value === o.id, onChange: () => (pick(o.id), render()) }),
-          el('span', { class: 'st-card__label' }, o.label, soon && o.id && !o.ready ? el('span', { class: 'tp-badge st-soon' }, 'Coming later') : null, soon && o.ready ? el('span', { class: 'tp-badge tp-badge--interactive st-soon' }, 'Available') : null),
+          // Only what isn't ready yet gets a badge.
+          el('span', { class: 'st-card__label' }, o.label, soon && o.id && !o.ready ? el('span', { class: 'tp-badge st-soon' }, 'Coming later') : null),
           el('span', { class: 'tp-dim st-card__hint' }, o.hint))));
   }
 
@@ -128,7 +129,7 @@ export async function mount(root, { project, saved: onSaved }) {
 
   const foot = el('div', { class: 'st-foot' });
   // Applies at once and to every project, so it sits apart from the drafted settings.
-  const network = networkCard();
+  const network = networkCards();
   function renderFoot() {
     const { problems } = check();
     foot.replaceChildren(

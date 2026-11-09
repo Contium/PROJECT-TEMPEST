@@ -3,9 +3,9 @@
 //   World › Events / Stories / Rumors                     (stories, by Type)
 //   Items                                                 (items: one list, filtered by rarity)
 //
-//   #/<section>/<tab>        cards for every entry in that category (Items: #/items). Characters and
-//                            Items tabs also have Hide all / Reveal all: every field of every entry
-//                            listed, after a confirm, with Undo.
+//   #/<section>/<tab>        cards for every entry in that category (Items: #/items), with "+ New NPC"
+//                            (The Forge's Create New, Category already set) and Hide all / Reveal all:
+//                            every field of every entry listed, after a confirm, with Undo.
 //   #/<section>/<tab>/<id>   one entry: its sheet (GM or player view), Edit, Delete (Items: #/items/<id>).
 //                            On the GM view each field has a control to Reveal, Obscure (redacted,
 //                            static, encrypted, custom text), give Shown text or Hide it, for this entry.
@@ -23,9 +23,10 @@ import { kindOf, formatDate } from '../forge/preset-model.js';
 import { push, pushButton } from '../push/push.js';
 import { openImage } from '../image-viewer.js';
 import { visibilityControl } from '../forge/visibility-menu.js';
+import * as designer from '../forge/designer.js';
 
 // Kinds the players' Codex can hold (net cards reach players through their networks).
-const CODEX_KINDS = ['characters', 'stories', 'items'];
+const CODEX_KINDS = ['characters', 'stories', 'items', 'factions'];
 const initials = (name) => name.split(/\s+/).filter((w) => /\w/.test(w)).slice(0, 2).map((w) => w.replace(/\W/g, '')[0]).join('').toUpperCase() || '·';
 
 /** The line under a card's name: Species · Size, or Start – End. */
@@ -35,18 +36,23 @@ function meta(e) {
     return `${formatDate(e.start)} – ${e.end ? formatDate(e.end) : 'ongoing'}`;
   }
   if (e.kind === 'items') return [e.itemtype || 'Item', e.rarity ? rarityBadge(e.rarity) : null];
+  if (e.kind === 'factions') return [categoryOf('factions', e.category)?.label ?? 'Faction', e.leader ? `led by ${e.leader}` : null].filter(Boolean).join(' · ');
   return [e.species, e.size].filter(Boolean).join(' · ') || '—';
 }
 
 export async function mount(root, { section, tab, item }) {
   // Items have no tabs: the section itself is the list.
-  const { kind, category } = tab ? categoryForTab(tab.id) : { kind: section.id, category: null };
+  let { kind, category } = tab ? categoryForTab(tab.id) : { kind: section.id, category: null };
+  // Kinds whose every type lives on one tab (factions): the tab lists them all, with type chips.
+  const types = kindOf(kind).categories;
+  if (tab && types.length && types.every((c) => c.tab === tab.id)) category = null;
+  const home = tab ? `#/${section.id}/${tab.id}` : `#/${section.id}`;
   const everyone = await allEntities().catch((err) => (toastError(err), []));
   const lookup = (id) => {
     const e = everyone.find((x) => x.id === id);
     return e ? { name: e.name, href: hrefOf(e), image: e.image } : null;
   };
-  const ctx = { kind, category, everyone, lookup, api: entitiesApi(kind) };
+  const ctx = { kind, category, home, everyone, lookup, api: entitiesApi(kind) };
   if (item) return detail(root, item, ctx);
   list(root, ctx, everyone.filter((e) => e.kind === kind && (!category || e.category === category.id)));
   return {};
@@ -63,29 +69,42 @@ function list(root, ctx, all) {
   const filterKey = `tempest.${currentProjectId()}.items.rarity`;
   const rarities = kind === 'items' ? [...new Map(all.filter((e) => e.rarity).map((e) => [e.rarity.id, e.rarity])).values()] : [];
   let only = rarities.some((r) => r.id === store.get(filterKey)) ? store.get(filterKey) : '';
-  const entries = only ? all.filter((e) => e.rarity?.id === only) : all;
+  // Kinds whose types share one tab (factions): chips for the types in use, remembered per project.
+  const typeKey = `tempest.${currentProjectId()}.${kind}.type`;
+  const types = !category && kindOf(kind).categories.length ? kindOf(kind).categories.filter((t) => all.some((e) => e.category === t.id)) : [];
+  const onlyType = types.some((t) => t.id === store.get(typeKey)) ? store.get(typeKey) : '';
+  const entries = all.filter((e) => (!only || e.rarity?.id === only) && (!onlyType || e.category === onlyType));
+  const noun = kindOf(kind).entity;
   // Stories read best in time order; characters by name (the server's order).
   if (kind === 'stories') {
     entries.sort((a, b) => (a.start ? (b.start ? a.start.y - b.start.y || (a.start.m ?? 0) - (b.start.m ?? 0) || (a.start.d ?? 0) - (b.start.d ?? 0) : -1) : b.start ? 1 : 0));
   }
-  const forgeLink = el('a', { class: 'tp-frame tp-btn tp-btn--primary tp-btn--sm', href: `#/forge/${kind}` }, 'Create in The Forge');
-  const field = kindOf(kind).defaults.find((d) => d.id === 'category')?.label; // Category / Type (items: none)
+  // "+ New NPC": The Forge's Create New, with this tab's Category (or the picked faction Type) already set.
+  const making = category ?? types.find((t) => t.id === onlyType) ?? null;
+  const newLabel = `+ New ${making ? making.label : noun[0].toUpperCase() + noun.slice(1)}`;
+  const newHere = () => designer.startNew(kind, making?.id ?? null);
+  const forgeLink = el('a', { class: 'tp-frame tp-btn tp-btn--primary tp-btn--sm', href: `#/forge/${kind}`, title: `Fill one in from a preset in The Forge`, onClick: newHere }, newLabel);
   root.replaceChildren(
     el('div', { class: 'cv' },
       el('div', { class: 'cv-bar' },
-        el('span', { class: 'tp-deco' }, `${entries.length} ${category ? (entries.length === 1 ? category.label : plural(category.label)) : entries.length === 1 ? 'item' : 'items'}`),
+        el('span', { class: 'tp-deco' }, `${entries.length} ${category ? (entries.length === 1 ? category.label : plural(category.label)) : entries.length === 1 ? noun : `${noun}s`}`),
         el('span', { class: 'app-actions' },
           ALL_FIELDS_KINDS.includes(kind) && entries.length
-            ? el('span', { class: 'cv-allvis', role: 'group', 'aria-label': `What players get of every ${category ? category.label : 'item'} listed` },
-                el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', title: `Hide every field of every ${category ? category.label : 'item'} listed here from the players (asks first, and you can undo it)`, onClick: (ev) => setAll(ev.currentTarget, ctx, entries, 'hidden') }, '⊘ Hide all'),
-                el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', title: `Reveal every field of every ${category ? category.label : 'item'} listed here to the players (asks first, and you can undo it)`, onClick: (ev) => setAll(ev.currentTarget, ctx, entries, 'revealed') }, '◉ Reveal all'))
+            ? el('span', { class: 'cv-allvis', role: 'group', 'aria-label': `What players get of every ${category ? category.label : noun} listed` },
+                el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', title: `Hide every field of every ${category ? category.label : noun} listed here from the players (asks first, and you can undo it)`, onClick: (ev) => setAll(ev.currentTarget, ctx, entries, 'hidden') }, '⊘ Hide all'),
+                el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', title: `Reveal every field of every ${category ? category.label : noun} listed here to the players (asks first, and you can undo it)`, onClick: (ev) => setAll(ev.currentTarget, ctx, entries, 'revealed') }, '◉ Reveal all'))
             : null,
-          all.length ? pushButton('Push list', () => push({ mode: 'roster', kind, category: category?.id ?? null }), { title: `Show every ${category ? category.label : 'item'} on the player screen (names, pictures and summaries, as each sheet allows)` }) : null,
+          all.length ? pushButton('Push list', () => push({ mode: 'roster', kind, category: category?.id ?? null }), { title: `Show every ${category ? category.label : noun} on the player screen (names, pictures and summaries, as each sheet allows)` }) : null,
           forgeLink)),
       rarities.length > 1
         ? el('div', { class: 'cv-filters', role: 'group', 'aria-label': 'Filter by rarity' },
             el('button', { type: 'button', class: `fd-seg__btn ${only ? '' : 'is-on'}`, 'aria-pressed': String(!only), onClick: () => (store.set(filterKey, ''), list(root, ctx, all)) }, 'All'),
             rarities.map((r) => el('button', { type: 'button', class: `cv-filter ${only === r.id ? 'is-on' : ''}`, 'aria-pressed': String(only === r.id), onClick: () => (store.set(filterKey, only === r.id ? '' : r.id), list(root, ctx, all)) }, rarityBadge(r))))
+        : null,
+      types.length > 1
+        ? el('div', { class: 'cv-filters', role: 'group', 'aria-label': 'Filter by type' },
+            el('button', { type: 'button', class: `fd-seg__btn ${onlyType ? '' : 'is-on'}`, 'aria-pressed': String(!onlyType), onClick: () => (store.set(typeKey, ''), list(root, ctx, all)) }, 'All'),
+            types.map((t) => el('button', { type: 'button', class: `fd-seg__btn ${onlyType === t.id ? 'is-on' : ''}`, 'aria-pressed': String(onlyType === t.id), onClick: () => (store.set(typeKey, onlyType === t.id ? '' : t.id), list(root, ctx, all)) }, plural(t.label))))
         : null,
       entries.length
         ? el('ul', { class: 'cv-grid' },
@@ -102,17 +121,15 @@ function list(root, ctx, all) {
         : el('article', { class: 'tp-frame tp-panel app-placeholder' },
             el('div', { class: 'tp-panel__body' },
               el('p', { class: 'tp-h3' }, `No ${titleOf(kind, category)} yet`),
-              el('p', { class: 'tp-muted' }, category
-                ? `Build a ${kindOf(kind).label} preset in The Forge, set its ${field} to ${category.label}, and use Create New at the bottom.`
-                : `Build an Items preset in The Forge and use Create New at the bottom.`),
-              forgeLink.cloneNode(true)))),
+              el('p', { class: 'tp-muted' }, `${newLabel} fills one in from a preset in The Forge.`),
+              el('a', { class: 'tp-frame tp-btn tp-btn--primary tp-btn--sm', href: `#/forge/${kind}`, onClick: newHere }, newLabel)))),
   );
 }
 
 // --- Hide all / Reveal all ------------------------------------------------------------------
 
-// Tabs that offer them: Characters (Players, NPCs, Monsters, Creatures) and Items.
-const ALL_FIELDS_KINDS = ['characters', 'items'];
+// Every list offers them: Characters, World › Events/Stories/Rumors/Factions, and Items.
+const ALL_FIELDS_KINDS = ['characters', 'stories', 'items', 'factions'];
 
 /**
  * Set every field of every entry listed to Hidden or Revealed, after asking.
@@ -122,8 +139,10 @@ const ALL_FIELDS_KINDS = ['characters', 'items'];
 async function setAll(button, { kind, category, api }, entries, visibility) {
   const hide = visibility === 'hidden';
   const n = entries.length;
-  const one = category ? category.label : 'item';
-  const many = category ? plural(category.label) : 'items';
+  // A tab that shows one category says "NPC"/"NPCs"; Items and Factions (every type on one tab) use the kind's own word.
+  const noun = kindOf(kind).entity;
+  const one = category ? category.label : noun;
+  const many = category ? plural(category.label) : `${noun}s`;
   const these = n === 1 ? `this ${one}` : `these ${n} ${many}`;
   const ok = await confirmDialog(hide
     ? {
@@ -202,8 +221,8 @@ export async function entryPage(root, id, { kind, back, backLabel }) {
   return detail(root, id, { kind, category: null, everyone, lookup, api: entitiesApi(kind), back, backLabel });
 }
 
-async function detail(root, id, { kind, category, everyone, lookup, api, back: backHref = null, backLabel = null }) {
-  const back = backHref ?? (category ? `#/${kindOf(kind).section}/${category.tab}` : `#/${kindOf(kind).section}`);
+async function detail(root, id, { kind, category, home = null, everyone, lookup, api, back: backHref = null, backLabel = null }) {
+  const back = backHref ?? (category ? `#/${kindOf(kind).section}/${category.tab}` : home ?? `#/${kindOf(kind).section}`);
   const allLabel = backLabel ?? `All ${titleOf(kind, category)}`;
   let e;
   try {
@@ -267,6 +286,7 @@ async function detail(root, id, { kind, category, everyone, lookup, api, back: b
               if (shown?.madeKnown) ((e = { ...e, known: true }), render());
             }, { title: 'Show this entry on the player screen, as the Player view shows it (it joins the players\' Codex)' }),
             editing ? null : el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--interactive', onClick: startEdit }, 'Edit'),
+            editing ? null : el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm', onClick: editFields, title: `Add, remove, rename or rearrange this ${kindOf(kind).entity}'s fields (its preset stays as it is)` }, '⚙ Edit fields'),
             editing ? null : el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', onClick: remove }, 'Delete'))),
         editing
           ? el('section', { class: 'tp-frame tp-panel fd-create' },
@@ -309,6 +329,58 @@ async function detail(root, id, { kind, category, everyone, lookup, api, back: b
     }
   }
 
+  // --- its own fields: the Forge's designer on this entry's sheet ---------------------------------
+  let fieldsEditor = null; // the designer while "Edit fields" is open
+
+  async function editFields() {
+    const host = el('div', { class: 'cv-fields' });
+    root.replaceChildren(el('div', { class: 'cv' },
+      el('div', { class: 'cv-bar' }, el('a', { class: 'app-link', href: hrefOf(e), onClick: (ev) => (ev.preventDefault(), leaveFields()) }, `← Back to ${e.name}`)),
+      host));
+    fieldsEditor = await designer.mount(host, {
+      kind,
+      entry: { name: e.name, presetName: e.presetName, sheet: e.sheet, values: e.values, shown: e.shown, refs: e.refs, onSave: saveFields, onCancel: leaveFields },
+    });
+  }
+
+  function leaveFields() {
+    fieldsEditor?.unmount?.();
+    fieldsEditor = null;
+    render();
+    document.title = `TEMPEST · ${e.name}`;
+  }
+
+  /** Save the entry with its new sheet; asks first if filled-in values would be lost. Resolves to whether it saved. */
+  async function saveFields(sheet) {
+    let next;
+    try {
+      next = normalizeEntity({ ...e, sheet }, { kind });
+    } catch (err) {
+      toastError(err);
+      return false;
+    }
+    const filled = (v) => v != null && v !== '' && !(Array.isArray(v) && !v.length) && !(typeof v === 'object' && !Array.isArray(v) && !Object.keys(v).length);
+    const lost = Object.keys(e.values).filter((id) => filled(e.values[id]) && JSON.stringify(next.values[id]) !== JSON.stringify(e.values[id]));
+    if (lost.length) {
+      const names = lost.map((id) => `"${e.sheet.fields[id]?.label ?? id}"`).join(', ');
+      const ok = await confirmDialog({
+        title: 'Lose what\'s filled in?',
+        body: `${names} ${lost.length === 1 ? 'has a value that' : 'have values that'} won't survive this change (the field is gone, or its new type can't hold the old value). Save anyway?`,
+        confirmLabel: 'Save anyway', danger: true,
+      });
+      if (!ok) return false;
+    }
+    try {
+      e = await api.save(next);
+      toast(`Saved ${e.name}'s fields`, { tone: 'success' });
+      leaveFields();
+      return true;
+    } catch (err) {
+      toastError(err);
+      return false;
+    }
+  }
+
   async function toggleKnown() {
     try {
       e = await api.save({ ...e, known: !e.known });
@@ -332,5 +404,5 @@ async function detail(root, id, { kind, category, everyone, lookup, api, back: b
 
   render();
   document.title = `TEMPEST · ${e.name}`;
-  return {};
+  return { unmount: () => fieldsEditor?.unmount?.() };
 }

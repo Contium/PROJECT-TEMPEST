@@ -1,0 +1,91 @@
+/* World › Timeline (app/world/timeline-render.js), and the bits of factions that need styling.
+   Colours come from the theme's tokens, one per track. */
+
+.tl, .tl-chips { --c-event: var(--tp-warning); --c-story: var(--tp-interactive); --c-rumor: #b38cff; --c-faction: var(--tp-success); }
+
+/* Legend / filter chips */
+.tl-chips { display: flex; flex-wrap: wrap; gap: var(--tp-space-2); margin: 0 0 var(--tp-space-3); }
+.tl-chip { --c: var(--tp-text-muted); display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.2rem 0.65rem; font: inherit; font-size: var(--tp-text-sm); color: var(--tp-text-muted); background: transparent; border: var(--tp-border-w) solid var(--tp-border); cursor: pointer; }
+.tl-chip i { width: 0.65rem; height: 0.65rem; border-radius: 50%; background: var(--c); opacity: 0.35; }
+.tl-chip.is-on { color: var(--tp-text); border-color: color-mix(in srgb, var(--c) 60%, var(--tp-border)); }
+.tl-chip.is-on i { opacity: 1; box-shadow: 0 0 8px var(--c); }
+.tl-chip:disabled { cursor: default; }
+.tl-chip--event { --c: var(--c-event); } .tl-chip--story { --c: var(--c-story); } .tl-chip--rumor { --c: var(--c-rumor); } .tl-chip--faction { --c: var(--c-faction); }
+.tl-note { margin: 0 0 var(--tp-space-3); font-size: var(--tp-text-sm); }
+
+/* The timeline */
+.tl { --lane: 0.9rem; display: flex; flex-direction: column; gap: var(--tp-space-4); }
+.tl--empty { padding: var(--tp-space-5); text-align: center; border: var(--tp-border-w) dashed var(--tp-border); }
+.tl__year-label { position: sticky; top: 0; z-index: 1; margin: 0 0 var(--tp-space-2); padding: var(--tp-space-1) 0; font-size: clamp(1.4rem, 3vw, 2rem); color: var(--tp-text-heading); background: linear-gradient(var(--tp-bg) 70%, transparent); }
+.tl__rows { list-style: none; margin: 0; padding: 0; }
+.tl__row {
+  --c: var(--tp-text-muted);
+  display: grid;
+  grid-template-columns: calc(var(--lanes) * var(--lane)) 6.5rem 1.4rem minmax(0, 1fr);
+  align-items: stretch;
+  column-gap: var(--tp-space-2);
+}
+.tl__row--event { --c: var(--c-event); } .tl__row--story { --c: var(--c-story); } .tl__row--rumor { --c: var(--c-rumor); } .tl__row--faction { --c: var(--c-faction); }
+
+/* Lanes: the rails of what's still going on */
+.tl__lanes { display: flex; }
+.tl__lane { position: relative; width: var(--lane); flex: none; }
+.tl__lane::before { content: ""; position: absolute; left: calc(50% - 2px); width: 4px; top: 0; bottom: 0; background: var(--lc); border-radius: 2px; box-shadow: 0 0 6px color-mix(in srgb, var(--lc) 50%, transparent); }
+.tl__lane.is-free::before { display: none; }
+.tl__lane.is-start::before { top: 50%; }
+.tl__lane.is-start::after { content: ""; position: absolute; left: calc(50% - 5px); top: calc(50% - 5px); width: 10px; height: 10px; border-radius: 50%; background: var(--lc); }
+.tl__lane.is-end::before { bottom: 50%; }
+.tl__lane.is-end::after { content: ""; position: absolute; left: calc(50% - 4px); top: calc(50% - 1px); width: 8px; height: 2px; background: var(--lc); }
+/* Over before the next row: a short bar on its own row. */
+.tl__lane.is-only::before { top: 30%; bottom: 30%; }
+.tl__lane--event { --lc: var(--c-event); } .tl__lane--story { --lc: var(--c-story); } .tl__lane--rumor { --lc: var(--c-rumor); } .tl__lane--faction { --lc: var(--c-faction); }
+
+.tl__when { align-self: center; text-align: right; font-size: var(--tp-text-sm); color: var(--tp-text-muted); white-space: nowrap; }
+
+/* The spine and each entry's marker on it */
+.tl__dot { position: relative; }
+.tl__dot::before { content: ""; position: absolute; left: calc(50% - 1px); top: 0; bottom: 0; width: 2px; background: var(--tp-border-strong); }
+.tl__dot::after { content: ""; position: absolute; left: calc(50% - 7px); top: calc(50% - 7px); width: 14px; height: 14px; transform: rotate(45deg); background: var(--tp-bg); border: 2px solid var(--c); box-shadow: 0 0 10px color-mix(in srgb, var(--c) 55%, transparent); }
+.tl__row:first-child .tl__dot::before { top: 50%; }
+.tl__row:last-child .tl__dot::before { bottom: 50%; }
+
+.tl__card {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: var(--tp-space-3);
+  align-items: start;
+  margin: var(--tp-space-1) 0;
+  padding: var(--tp-space-2) var(--tp-space-3);
+  color: inherit;
+  text-decoration: none;
+  background: var(--tp-surface);
+  border: var(--tp-border-w) solid var(--tp-border);
+  border-left: 3px solid var(--c);
+  transition: transform 150ms var(--tp-ease, ease), border-color 150ms, box-shadow 150ms;
+}
+a.tl__card:hover, a.tl__card:focus-visible { transform: translateX(3px); border-color: var(--c); box-shadow: 0 0 0 1px var(--c); outline: none; }
+.tl__thumb { width: 3rem; aspect-ratio: 1; object-fit: cover; display: block; border: var(--tp-border-w) solid var(--tp-border-strong); background: var(--tp-surface-2); }
+.tl__thumb--sigil { display: grid; place-items: center; font-family: var(--tp-font-display); font-weight: 700; color: var(--c); }
+.tl__text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.tl__meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.6rem; font-size: var(--tp-text-xs); }
+.tl__type { font-family: var(--tp-font-display); letter-spacing: 0.1em; text-transform: uppercase; color: var(--c); }
+.tl__name { font-family: var(--tp-font-display); font-weight: var(--tp-weight-display); text-transform: var(--tp-display-case); letter-spacing: var(--tp-tracking-display); color: var(--tp-text-heading); overflow-wrap: anywhere; }
+.tl__name.is-unknown { color: var(--tp-text-dim); font-style: italic; }
+.tl__summary { font-size: var(--tp-text-sm); color: var(--tp-text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Player screen */
+.scr__view[data-push-kind="roster"] > .scr-timeline { width: min(60rem, 100%); }
+
+@media (max-width: 600px) {
+  .tl { --lane: 0.6rem; }
+  .tl__row { grid-template-columns: calc(var(--lanes) * var(--lane)) 1rem minmax(0, 1fr); }
+  .tl__when { display: none; }
+  .tl__card { grid-template-columns: 2.4rem minmax(0, 1fr); }
+  .tl__thumb { width: 2.4rem; }
+}
+
+/* Factions in the players' Codex */
+.cx-card--factions { --_tone: var(--tp-success); }
+.sheet__relations .sheet__relation { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.5rem; }
+.sheet__stance { flex: none; }
+.vf-relations__stance { width: auto; }

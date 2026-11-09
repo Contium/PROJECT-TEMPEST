@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="/themes/_base/tokens.css">
   <link rel="stylesheet" href="/themes/_base/components.css">
   <link rel="stylesheet" href="/app/app.css">
+  <link rel="stylesheet" href="/app/screamsheets/screamsheets.css">
+  <link rel="stylesheet" href="/app/world/world.css">
+  <link rel="stylesheet" href="/app/sessions/sessions.css">
   <script>
     // Boot guard (plain old JavaScript, so it runs in any browser): if the app's scripts
     // fail, say so on screen instead of leaving it blank, e.g. a player's older phone.
@@ -63,18 +66,21 @@
       <nav class="app-sections" id="sections" aria-label="Sections"></nav>
 
       <div class="app-top__controls">
-        <label class="tp-field">
-          <span class="tp-label">Theme</span>
-          <select class="tp-select" id="theme-select" aria-label="Theme"></select>
-        </label>
-        <label class="tp-field">
-          <span class="tp-label">Effects</span>
-          <select class="tp-select" id="effects-select" aria-label="Effects intensity">
-            <option value="off">Off</option>
-            <option value="subtle">Subtle</option>
-            <option value="full">Full</option>
-          </select>
-        </label>
+        <!-- Theme and Effects live in the "◐ Theme" menu (main.js wireControls). -->
+        <div id="look-fields" hidden>
+          <label class="app-menu__field">
+            <span class="tp-label">Theme</span>
+            <select class="tp-select" id="theme-select" aria-label="Theme"></select>
+          </label>
+          <label class="app-menu__field">
+            <span class="tp-label">Effects</span>
+            <select class="tp-select" id="effects-select" aria-label="Effects intensity">
+              <option value="off">Off</option>
+              <option value="subtle">Subtle</option>
+              <option value="full">Full</option>
+            </select>
+          </label>
+        </div>
         <div class="app-screen">
           <span class="tp-label">Player screen <span class="app-screen__status" id="screen-status">Standing by</span></span>
           <span class="app-screen__buttons">

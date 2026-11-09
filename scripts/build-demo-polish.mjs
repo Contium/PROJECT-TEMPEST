@@ -126,6 +126,48 @@ entry('characters', 'char_5b413680', { vis: { f_a8e0a725: ['rumored', 'encrypted
   console.log(`screamsheet: ${next.headline}`);
 }
 
+// A full page of Night City Today, like the rulebook's news feed: the Tin Man story leads, with
+// more of the week's news, Link lines to what the crew knows, a disclaimer and an ad.
+{
+  const file = path.join(PROJECT, 'screamsheets', 'ss_fb3fc835.json');
+  const s = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const next = normalizeScreamsheet({
+    ...s,
+    layout: 'feed', section: 'local', dateline: '8:14 PM',
+    links: [{ text: 'The Tin Man Walks Again', ref: 'story_8b6c2aaa' }, { text: 'NCPD Precinct 14' }],
+    items: [
+      {
+        id: 'it_5ee301', type: 'article', headline: 'Kabuki Grid Back Up, Mostly', byline: 'Lin \'Lights Out\' Varga',
+        body: 'Power returned to most of Kabuki at 23:00 after a ninety-minute blackout that turned the night market into a free-for-all. City engineers blame "a cascading substation fault." Stall owners blame everyone else.\n\nThree vendors report their stock walked off in the dark. One reports it walked back, minus the good stuff.',
+        links: [{ text: 'Kabuki Night Market Blackout', ref: 'story_a6fe0f1c' }],
+      },
+      {
+        id: 'it_5ee302', type: 'article', headline: 'Vultures: "We Just Fix Cars"', byline: 'Wakako Okada',
+        body: 'Asked about the roadblocks springing up across Santo Domingo, a Chrome Vultures spokesman insisted the gang is "a community salvage cooperative" and that any missing vehicles "were abandoned, probably." NCPD declined to comment.',
+        links: [{ text: 'Chrome Vultures Salvage Yard' }],
+      },
+      {
+        id: 'it_5ee303', type: 'ad',
+        image: 'img_02d856aeca8e5d83ae7ad128',
+        tagline: 'Arc-9 Heavy Pistol · Loud, cheap, yours.\nNo questions at the counter.',
+        links: [{ text: 'Arc-9 Heavy Pistol', ref: 'item_cf0f2ab4' }],
+      },
+      {
+        id: 'it_5ee304', type: 'article', headline: 'Best Noodles in Kabuki (Bring a Friend)', byline: 'Dash Okafor',
+        body: 'Mama Ndiaye\'s back booth has been serving the same broth since before the war, and the fixers who eat there swear it\'s the only safe table in the district. The noodles are perfect. The conversations at the next table are none of your business.',
+        links: [{ text: 'Mama Ndiaye\'s Noodle Bar' }],
+      },
+      {
+        id: 'it_5ee305', type: 'article', headline: 'Health Warning', byline: 'Night City Health Department',
+        body: 'A friendly reminder from the Night City Health Department: the Watson rooftops are closed until further notice. Residents are asked to stay off them after dark.',
+        notes: [{ label: 'Disclaimer', text: 'The Health Department does not comment on rumors, cyberpsychosis or the Tin Man, and is not responsible for anything you meet up there.' }],
+      },
+    ],
+  });
+  fs.writeFileSync(file, `${JSON.stringify(next, null, 2)}\n`);
+  console.log(`screamsheet: ${next.headline} (${next.items.length + 1} pieces)`);
+}
+
 // --- tidy up ------------------------------------------------------------------------------------
 
 const stray = path.join(PROJECT, 'citypois', 'cpoi_a9bd0b33.json');

@@ -1,0 +1,4 @@
+plugins {
+    // The Android Gradle plugin Android Studio ships with (Android Studio 2026.2, AGP 9.5).
+    id 'com.android.application' version '9.5.0' apply false
+}

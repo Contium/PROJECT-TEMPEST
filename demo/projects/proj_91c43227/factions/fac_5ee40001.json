@@ -1,0 +1,272 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "factions",
+  "id": "fac_5ee40001",
+  "name": "The Static Saints",
+  "category": "other",
+  "presetId": "preset-cpr-faction",
+  "presetName": "Cyberpunk Faction",
+  "sheet": {
+    "kind": "factions",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Type",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "gang"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Emblem",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Name",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "leader": {
+        "id": "leader",
+        "type": "text",
+        "label": "Leader",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "base": {
+        "id": "base",
+        "type": "text",
+        "label": "Headquarters",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "founded": {
+        "id": "founded",
+        "type": "date",
+        "label": "Founded",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "fx_goals": {
+        "id": "fx_goals",
+        "type": "longtext",
+        "label": "What they want",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "fx_assets": {
+        "id": "fx_assets",
+        "type": "longtext",
+        "label": "Resources & Turf",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "fx_relations": {
+        "id": "fx_relations",
+        "type": "relations",
+        "label": "Relations",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "fx_members": {
+        "id": "fx_members",
+        "type": "cast",
+        "label": "Known Members",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "mode": "involved",
+        "sides": [
+          "Side A",
+          "Side B"
+        ]
+      },
+      "fx_secret": {
+        "id": "fx_secret",
+        "type": "longtext",
+        "label": "What's Really Going On",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "encrypted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [],
+      "sections": [
+        {
+          "id": "fs_who",
+          "title": "Who They Are",
+          "layout": "columns",
+          "columns": [
+            [
+              "fx_goals"
+            ],
+            [
+              "fx_assets"
+            ]
+          ]
+        },
+        {
+          "id": "fs_ties",
+          "title": "Ties",
+          "layout": "columns",
+          "columns": [
+            [
+              "fx_relations"
+            ],
+            [
+              "fx_members"
+            ]
+          ]
+        },
+        {
+          "id": "fs_gm",
+          "title": "GM Notes",
+          "layout": "columns",
+          "columns": [
+            [
+              "fx_secret"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "values": {
+    "category": "other",
+    "name": "The Static Saints",
+    "leader": "No one, officially",
+    "base": "A safehouse in Kabuki",
+    "founded": {
+      "y": 2043,
+      "m": 9
+    },
+    "summary": "Five edgerunners who keep saving each other's lives and calling it business.",
+    "fx_goals": "Get paid, stay alive, and get Brick's family out of the Rancho Coronado camp.",
+    "fx_assets": "A van registered to a dead man, a netrunner who never sleeps, and favours owed by Mama Ndiaye.",
+    "fx_relations": {
+      "links": [
+        {
+          "id": "fac_5ee40002",
+          "stance": "enemy",
+          "note": "Ever since Vulture Season"
+        },
+        {
+          "id": "fac_5ee40003",
+          "stance": "wary",
+          "note": "Their money is good. Their jobs go wrong."
+        },
+        {
+          "id": "fac_5ee40004",
+          "stance": "rival",
+          "note": "Hammerhead wants Brick back in a cell"
+        }
+      ]
+    },
+    "fx_members": {
+      "people": [
+        {
+          "id": "char_c2806906",
+          "note": "Solo"
+        },
+        {
+          "id": "char_3a87e3ae",
+          "note": "Solo"
+        },
+        {
+          "id": "char_3de62be7",
+          "note": "Netrunner"
+        },
+        {
+          "id": "char_52757f33",
+          "note": "Nomad"
+        },
+        {
+          "id": "char_ce151765",
+          "note": "Medtech"
+        }
+      ]
+    },
+    "fx_secret": ""
+  },
+  "shown": {},
+  "refs": {},
+  "known": true,
+  "createdAt": "2026-11-06T12:00:00.000Z",
+  "updatedAt": "2026-11-06T12:00:00.000Z"
+}

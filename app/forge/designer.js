@@ -19,7 +19,7 @@
 // imported from files. Work in progress is kept in this browser as a draft, so
 // leaving the page or closing the window loses nothing.
 
-import { el, store, toast, toastError, confirmDialog, download } from '../ui.js';
+import { el, store, toast, toastError, confirmDialog, download, menuButton } from '../ui.js';
 import { presetsApi, entitiesApi, allEntities, imageUrl, currentProjectId } from '../api.js';
 import * as M from './preset-model.js';
 import { renderSheet, rarityBadge } from './sheet.js';
@@ -32,6 +32,15 @@ const DRAFT_KEY = () => `tempest.${currentProjectId()}.forge.${KIND}.draft`;
 const LAST_KEY = () => `tempest.${currentProjectId()}.forge.${KIND}.last`;
 let KIND = 'characters'; // the kind being designed (set by mount)
 const MODE_KEY = () => `tempest.forge.${KIND}.mode`;
+/**
+ * "+ New NPC" on a list (app/entities/view.js): open The Forge on Create New, with the
+ * Category (or Type) already set. Read once by the next mount of that kind.
+ */
+let pending = null;
+export function startNew(kind, category = null) {
+  pending = { kind, category };
+}
+
 const MODES = [
   { id: 'create', label: 'Create New', hint: 'Fill in a new entry from this preset, with the sheet beside the form' },
   { id: 'design', label: 'Design', hint: 'Add, arrange and set up the preset\'s fields' },
@@ -39,11 +48,18 @@ const MODES = [
 ];
 /** Presets with more sections than this open with their sections folded. */
 const FOLD_OVER = 5;
-const TYPE_ICON = { rarity: '✦', category: '◈', image: '▣', text: 'T', size: '⇕', shorttext: '¶', date: '◷', parent: '↑', longtext: '≡', gallery: '▦', stat: '◧', statblock: '▤', cast: '⚔', location: '⌖' };
+const TYPE_ICON = { rarity: '✦', category: '◈', image: '▣', text: 'T', size: '⇕', shorttext: '¶', date: '◷', parent: '↑', longtext: '≡', gallery: '▦', stat: '◧', statblock: '▤', cast: '⚔', location: '⌖', relations: '⇄' };
 
-export async function mount(root, { tab, kind, onCreated = null } = {}) {
+/**
+ * mount(root, { tab, kind, onCreated, entry })
+ *   entry   edit one entry's own sheet instead of a preset (the entry's page, "Edit fields"):
+ *           { name, presetName, sheet: { fields, layout }, values, shown, refs, onSave(sheet), onCancel() }.
+ *           The same builder and field settings, a preview with the entry's own values, and
+ *           Save fields / Cancel instead of the preset library. Presets and drafts are untouched.
+ */
+export async function mount(root, { tab, kind, onCreated = null, entry = null } = {}) {
   // The Forge's tabs name their kind; Combat › Netrunning › Card Forge passes kind: 'netcards'.
-  KIND = M.PRESET_KINDS.includes(kind) ? kind : ['stories', 'items'].includes(tab?.id) ? tab.id : 'characters';
+  KIND = M.PRESET_KINDS.includes(kind) ? kind : ['stories', 'items', 'factions'].includes(tab?.id) ? tab.id : 'characters';
   const api = presetsApi(KIND);
   const entities = entitiesApi(KIND);
   const NEW_NAME = `New ${M.kindOf(KIND).entity} preset`;
@@ -65,10 +81,27 @@ export async function mount(root, { tab, kind, onCreated = null } = {}) {
     mode: MODES.some((m) => m.id === store.get(MODE_KEY())) ? store.get(MODE_KEY()) : 'create',
     collapsed: new Set(), // builder sections folded away (ids)
   };
-  const freshForging = (preset) => ({ values: defaultValues(preset), shown: {}, refs: {}, touched: new Set() });
+  // Arrived from "+ New NPC" (startNew): every fresh form starts with that Category, until the page is left.
+  const asked = pending?.kind === KIND && !entry ? pending.category : null;
+  if (pending?.kind === KIND) {
+    pending = null;
+    if (!entry) s.mode = 'create';
+  }
+  const freshForging = (preset) => {
+    const values = defaultValues(preset);
+    const touched = new Set();
+    if (asked && preset.fields.category) {
+      values.category = asked;
+      touched.add('category');
+    }
+    return { values, shown: {}, refs: {}, touched };
+  };
+  // Editing an entry's sheet: the preview shows the entry's own values.
+  const entryForging = () => ({ values: structuredClone(entry.values ?? {}), shown: structuredClone(entry.shown ?? {}), refs: structuredClone(entry.refs ?? {}), touched: new Set() });
 
   const dirty = () => JSON.stringify(s.preset) !== s.saved;
-  const persistDraft = () => store.set(DRAFT_KEY(), JSON.stringify({ preset: s.preset, saved: s.saved, isNew: s.isNew }));
+  // An entry's sheet is never a preset draft: editing it leaves the Forge's own work alone.
+  const persistDraft = () => (entry ? null : store.set(DRAFT_KEY(), JSON.stringify({ preset: s.preset, saved: s.saved, isNew: s.isNew })));
 
   // --- state changes ----------------------------------------------------------------------
 
@@ -100,10 +133,10 @@ export async function mount(root, { tab, kind, onCreated = null } = {}) {
     s.isNew = isNew;
     s.selected = 'name';
     s.target = { area: 'main' };
-    s.forging = freshForging(preset);
+    s.forging = entry ? entryForging() : freshForging(preset);
     s.collapsed = foldedFor(preset);
     form = null;
-    if (!isNew) store.set(LAST_KEY(), preset.id);
+    if (!isNew && !entry) store.set(LAST_KEY(), preset.id);
     persistDraft();
     renderAll();
   }
@@ -129,6 +162,13 @@ export async function mount(root, { tab, kind, onCreated = null } = {}) {
       clean = M.normalizePreset(s.preset);
     } catch (err) {
       return toastError(err);
+    }
+    if (entry) {
+      // The entry's page saves it (and asks first if any filled-in values would be lost).
+      const done = await entry.onSave({ fields: clean.fields, layout: clean.layout });
+      if (done) s.saved = JSON.stringify(s.preset);
+      renderToolbar();
+      return;
     }
     try {
       const out = s.isNew ? await api.create(clean) : await api.save(clean);
@@ -265,10 +305,20 @@ export async function mount(root, { tab, kind, onCreated = null } = {}) {
     s.mode = mode;
     store.set(MODE_KEY(), mode);
     renderModes();
+    renderToolbar(); // the preset name box comes and goes with Design
     page.scrollIntoView({ block: 'start' });
   }
 
   function renderModes() {
+    if (entry) {
+      // One page: the builder and field settings, with the entry's sheet below them.
+      modeBar.hidden = true;
+      work.hidden = false;
+      make.hidden = false;
+      creator.hidden = true;
+      make.classList.add('fd-make--preview');
+      return;
+    }
     modeBar.replaceChildren(...MODES.map((m) =>
       el('button', {
         type: 'button', role: 'tab', class: 'tp-tab fd-modes__tab', title: m.hint,
@@ -291,36 +341,74 @@ export async function mount(root, { tab, kind, onCreated = null } = {}) {
   // --- toolbar: library and file actions -----------------------------------------------------
 
   function renderToolbar() {
+    if (entry) {
+      toolbar.replaceChildren(
+        el('div', { class: 'tp-panel__body fd-toolbar__body' },
+          el('div', { class: 'fd-toolbar__pick' },
+            el('span', { class: 'tp-label' }, 'Fields of'),
+            el('strong', { class: 'tp-h3' }, entry.name)),
+          el('span', { class: 'tp-dim fd-toolbar__note' }, `Changes apply to this ${ENTITY} only${entry.presetName ? `, not to the "${entry.presetName}" preset or anything else made from it` : ''}.`),
+          el('span', { class: `fd-status ${dirty() ? 'is-dirty' : ''}`, role: 'status' }, dirty() ? 'Unsaved changes' : 'Saved'),
+          el('div', { class: 'app-actions fd-toolbar__actions' },
+            el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--primary', onClick: save, disabled: !dirty(), title: 'Save (Ctrl+S)' }, 'Save fields'),
+            el('button', {
+              type: 'button', class: 'tp-frame tp-btn tp-btn--ghost',
+              onClick: async () => {
+                if (dirty() && !(await confirmDialog({ title: 'Discard these changes?', body: `The changes to ${entry.name}'s fields aren't saved.`, confirmLabel: 'Discard', danger: true }))) return;
+                entry.onCancel();
+              },
+            }, dirty() ? 'Cancel' : 'Done'))));
+      return;
+    }
     const options = s.library.map((p) => el('option', { value: p.id, selected: p.id === s.preset.id }, p.name));
     if (s.isNew) options.unshift(el('option', { value: s.preset.id, selected: true }, `${s.preset.name} (not saved yet)`));
+    // Renaming is part of designing: the name box shows in Design, or while a new preset is unnamed work.
+    const naming = s.mode === 'design' || s.isNew;
     toolbar.replaceChildren(
       el('div', { class: 'tp-panel__body fd-toolbar__body' },
         el('label', { class: 'tp-field fd-toolbar__pick' },
-          el('span', { class: 'tp-label' }, `Presets (${s.library.length})`),
+          el('span', { class: 'tp-label' }, `Preset (${s.library.length} saved)`),
           el('select', { class: 'tp-select', 'aria-label': 'Open a preset', onChange: (e) => openPreset(e.target.value) }, options)),
-        el('label', { class: 'tp-field fd-toolbar__name' },
-          el('span', { class: 'tp-label' }, 'Preset name'),
-          el('input', {
-            class: 'tp-input', value: s.preset.name, maxlength: 80, 'data-key': 'preset-name',
-            onInput: (e) => change({ ...s.preset, name: e.target.value }, { inspector: false }),
-          })),
+        naming
+          ? el('label', { class: 'tp-field fd-toolbar__name' },
+              el('span', { class: 'tp-label' }, 'Preset name'),
+              el('input', {
+                class: 'tp-input', value: s.preset.name, maxlength: 80, 'data-key': 'preset-name',
+                onInput: (e) => change({ ...s.preset, name: e.target.value }, { inspector: false }),
+              }))
+          : null,
         el('span', { class: `fd-status ${dirty() ? 'is-dirty' : ''}`, role: 'status' }, s.isNew ? 'Not saved yet' : dirty() ? 'Unsaved changes' : 'Saved'),
         el('div', { class: 'app-actions fd-toolbar__actions' },
-          el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--primary', onClick: save, disabled: !dirty() && !s.isNew, title: 'Save (Ctrl+S)' }, 'Save'),
-          el('button', { type: 'button', class: 'tp-frame tp-btn', onClick: newPreset }, 'New'),
-          templatesFor(KIND).length
-            ? el('select', {
-              class: 'tp-select fd-toolbar__template', 'aria-label': 'Start a new preset from a template', title: 'Start a new preset from a ready-made template',
-              onChange: (e) => fromTemplate(e.target.value),
-            },
-            el('option', { value: '', selected: true }, 'New from template…'),
-            templatesFor(KIND).map((t) => el('option', { value: t.id, title: t.description }, t.name)))
-            : null,
-          el('button', { type: 'button', class: 'tp-frame tp-btn', onClick: duplicate }, 'Duplicate'),
-          el('button', { type: 'button', class: 'tp-frame tp-btn', onClick: importPreset, title: 'Load a preset from a .json file' }, 'Import'),
-          el('button', { type: 'button', class: 'tp-frame tp-btn', onClick: exportPreset, title: 'Save this preset as a .json file to share or back up' }, 'Export'),
-          el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--ghost', onClick: remove }, s.isNew ? 'Discard' : 'Delete'))));
+          el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--primary', onClick: save, disabled: !dirty() && !s.isNew, title: 'Save the preset (Ctrl+S)' }, 'Save'),
+          presetMenu())));
     restoreFocus(toolbar); // keep typing in the name box after the redraw
+  }
+
+  /** New, templates, Duplicate, Import, Export and Delete: one menu beside Save. */
+  function presetMenu() {
+    const item = (label, run, { hint = null, title = null, danger = false } = {}) =>
+      el('button', { type: 'button', class: `app-menu__item ${danger ? 'app-menu__item--danger' : ''}`, title, onClick: run }, label, hint ? el('span', { class: 'tp-dim' }, hint) : null);
+    const templates = templatesFor(KIND);
+    const menu = menuButton('Preset ⋯', () => [
+      item('New blank preset', newPreset),
+      templates.length
+        ? el('label', { class: 'app-menu__field' },
+            el('span', { class: 'tp-label' }, 'New from a template'),
+            el('select', {
+              class: 'tp-select', 'aria-label': 'Start a new preset from a template',
+              onChange: (e) => (menu.close(), fromTemplate(e.target.value)),
+            },
+            el('option', { value: '', selected: true }, 'Choose one…'),
+            templates.map((t) => el('option', { value: t.id, title: t.description }, t.name))))
+        : null,
+      item('Duplicate', duplicate, { title: 'A copy of this preset to change' }),
+      el('div', { class: 'app-menu__sep', role: 'separator' }),
+      item('Import…', importPreset, { hint: '.json', title: 'Load a preset from a .json file' }),
+      item('Export', exportPreset, { hint: '.json', title: 'Save this preset as a .json file to share or back up' }),
+      el('div', { class: 'app-menu__sep', role: 'separator' }),
+      item(s.isNew ? 'Discard this preset' : 'Delete this preset…', remove, { danger: true }),
+    ], { title: 'New, template, duplicate, import, export or delete presets' });
+    return menu.node;
   }
 
   // --- builder: main section, lower sections, add palette ---------------------------------------
@@ -778,8 +866,11 @@ export async function mount(root, { tab, kind, onCreated = null } = {}) {
   }
 
   function renderCreator() {
-    form = valuesForm({ sheet: s.preset, state: s.forging, candidates: s.people, onChange: renderPreview });
-    const button = el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--primary fd-create__go', onClick: createNew }, 'Create New');
+    if (entry) return; // nothing is created from an entry's sheet
+    // The button names what it makes: "Create NPC", "Create Rumor", "Create item".
+    const what = () => categoryOf(KIND, s.forging.values.category)?.label ?? ENTITY;
+    const button = el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--primary fd-create__go', onClick: createNew }, `Create ${what()}`);
+    form = valuesForm({ sheet: s.preset, state: s.forging, candidates: s.people, onChange: () => ((button.textContent = `Create ${what()}`), renderPreview()) });
     creator.replaceChildren(
       el('header', { class: 'tp-panel__head' },
         el('h2', { class: 'tp-panel__title' }, 'Create New'),
@@ -868,6 +959,22 @@ export async function mount(root, { tab, kind, onCreated = null } = {}) {
   window.addEventListener('beforeunload', onUnload);
 
   // --- start: restore the draft, else the last preset, else a new one ---------------------------------
+  // (An entry's sheet: just that.)
+
+  const handle = {
+    relabel: renderAll,
+    unmount() {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('focusin', trackFocus);
+      document.removeEventListener('selectionchange', trackFocus);
+      window.removeEventListener('beforeunload', onUnload);
+    },
+  };
+  if (entry) {
+    await refreshPeople();
+    load({ name: entry.presetName || 'Sheet', kind: KIND, fields: entry.sheet.fields, layout: entry.sheet.layout });
+    return handle;
+  }
 
   await refreshLibrary();
   let draft = null;
@@ -894,13 +1001,5 @@ export async function mount(root, { tab, kind, onCreated = null } = {}) {
     await openFirst(true);
   }
 
-  return {
-    relabel: renderAll,
-    unmount() {
-      document.removeEventListener('keydown', onKey);
-      document.removeEventListener('focusin', trackFocus);
-      document.removeEventListener('selectionchange', trackFocus);
-      window.removeEventListener('beforeunload', onUnload);
-    },
-  };
+  return handle;
 }

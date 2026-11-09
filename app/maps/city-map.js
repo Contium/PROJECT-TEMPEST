@@ -110,7 +110,7 @@ export async function mount(root, { slug, project, back: from = { href: '#/world
       el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--interactive', onClick: () => fit() }, 'Fit')),
     el('div', { class: 'wv-controls' }, placeBtn, pushButton('Push map', () => pushCity(s.selected), { title: 'Show the city map on the player screen (the selected district lit), with the revealed points' })),
     el('div', { class: 'wv-controls' }, el('span', { class: 'tp-label wv-viewas' }, 'Layer'), layerSeg),
-    el('div', { class: 'wv-controls' }, el('span', { class: 'tp-label wv-viewas' }, 'View as'), viewSeg));
+    el('div', { class: 'wv-controls' }, viewSeg));
   const side = el('aside', { class: 'wv-side cm-side', 'aria-label': 'Districts and points of interest' });
   const help = el('p', { class: 'wv-help tp-dim' }, 'Hover a district to highlight it · click to select · Shift+click to place a POI · drag to pan · scroll to zoom');
   const frame = el('div', { class: 'cm-frame' }, stage, hud, side, help);
@@ -279,7 +279,7 @@ export async function mount(root, { slug, project, back: from = { href: '#/world
     placeBtn.classList.toggle('tp-btn--interactive', s.placing);
     placeBtn.setAttribute('aria-pressed', String(s.placing));
     stage.classList.toggle('is-placing', s.placing || s.moving);
-    viewSeg.replaceChildren(...[['gm', 'GM'], ['players', 'Players']].map(([v, label]) =>
+    viewSeg.replaceChildren(...[['gm', 'GM view'], ['players', 'Player view']].map(([v, label]) =>
       el('button', {
         type: 'button', class: `fd-seg__btn ${s.viewAs === v ? 'is-on' : ''}`, 'aria-pressed': String(s.viewAs === v),
         onClick: () => {

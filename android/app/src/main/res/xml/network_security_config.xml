@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TEMPEST shares the player screen on the local network over plain http (the GM's PC has no
+     certificate). The link's key, kept in a cookie, is what lets a device in. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

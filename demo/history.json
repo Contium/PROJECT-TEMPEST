@@ -117,6 +117,36 @@
   "encounter.json": [
    "c6f2e811c04861b5e5bcd112"
   ],
+  "factions/fac_5ee40001.json": [
+   "25ad3ce35b409998ba123a3d"
+  ],
+  "factions/fac_5ee40002.json": [
+   "685ab9edb0581e90d3323fa0"
+  ],
+  "factions/fac_5ee40003.json": [
+   "cf7f4b6377c22297ab80863f"
+  ],
+  "factions/fac_5ee40004.json": [
+   "fdb083da3819b36ae576b454"
+  ],
+  "factions/fac_5ee40005.json": [
+   "23e2ec22ffcd8c95a1282486"
+  ],
+  "handouts/hand_5e550001.json": [
+   "cb7b4a02be2408fa47261c8a"
+  ],
+  "handouts/hand_5e550002.json": [
+   "71b9d5d8205da2d8920c0b6c"
+  ],
+  "handouts/hand_5e550003.json": [
+   "81a540166e10b4bfdd7ca8b3"
+  ],
+  "handouts/hand_5e550004.json": [
+   "660a03e7b143d26df1c66f8a"
+  ],
+  "handouts/hand_5e550005.json": [
+   "88e68df33e5f241562615eda"
+  ],
   "items/item_092caff7.json": [
    "d7b939e5f17925a0c0221299"
   ],
@@ -206,6 +236,9 @@
   "presets/characters/preset_9c17111f.json": [
    "ed640971ceffd232d00d077e"
   ],
+  "presets/factions/preset-cpr-faction.json": [
+   "4cc0b846e8a350dd1e99eefd"
+  ],
   "presets/items/preset_5da2c279.json": [
    "5afc6f56e6dfaca6928037f8"
   ],
@@ -229,10 +262,21 @@
   ],
   "screamsheets/ss_d4dfb2d3.json": [
    "1d5960c43ab20f5098d91945",
-   "ba7a7ba493e4006f71da8112"
+   "ba7a7ba493e4006f71da8112",
+   "130619a80af29ca4e5d40764"
   ],
   "screamsheets/ss_fb3fc835.json": [
-   "b26ce968eb4de70ec2ed31c0"
+   "b26ce968eb4de70ec2ed31c0",
+   "e2a33da7ad4d9c5d78181b7d"
+  ],
+  "sessions/sess_5e550001.json": [
+   "8c1918f6cfcf46a2f3d77532"
+  ],
+  "sessions/sess_5e550002.json": [
+   "fc5e378179140d8c29961cde"
+  ],
+  "sessions/sess_5e550003.json": [
+   "4cbcd4a33400675f4d94f6d8"
   ],
   "stories/story_0ea5e98f.json": [
    "7cf848e6937069ecc58c2b48",

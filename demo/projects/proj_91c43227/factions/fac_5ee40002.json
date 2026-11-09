@@ -1,0 +1,253 @@
+{
+  "format": "tempest.entity",
+  "version": 1,
+  "kind": "factions",
+  "id": "fac_5ee40002",
+  "name": "Chrome Vultures",
+  "category": "gang",
+  "presetId": "preset-cpr-faction",
+  "presetName": "Cyberpunk Faction",
+  "sheet": {
+    "kind": "factions",
+    "fields": {
+      "category": {
+        "id": "category",
+        "type": "category",
+        "label": "Type",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": "gang"
+      },
+      "image": {
+        "id": "image",
+        "type": "image",
+        "label": "Emblem",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "primary": true
+      },
+      "name": {
+        "id": "name",
+        "type": "text",
+        "label": "Name",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "leader": {
+        "id": "leader",
+        "type": "text",
+        "label": "Leader",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "base": {
+        "id": "base",
+        "type": "text",
+        "label": "Headquarters",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "founded": {
+        "id": "founded",
+        "type": "date",
+        "label": "Founded",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "summary": {
+        "id": "summary",
+        "type": "shorttext",
+        "label": "Short Description",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "fx_goals": {
+        "id": "fx_goals",
+        "type": "longtext",
+        "label": "What they want",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "fx_assets": {
+        "id": "fx_assets",
+        "type": "longtext",
+        "label": "Resources & Turf",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      },
+      "fx_relations": {
+        "id": "fx_relations",
+        "type": "relations",
+        "label": "Relations",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false
+      },
+      "fx_members": {
+        "id": "fx_members",
+        "type": "cast",
+        "label": "Known Members",
+        "visibility": "revealed",
+        "shown": "",
+        "rumor": {
+          "style": "redacted",
+          "text": ""
+        },
+        "references": false,
+        "mode": "involved",
+        "sides": [
+          "Side A",
+          "Side B"
+        ]
+      },
+      "fx_secret": {
+        "id": "fx_secret",
+        "type": "longtext",
+        "label": "What's Really Going On",
+        "visibility": "rumored",
+        "shown": "",
+        "rumor": {
+          "style": "encrypted",
+          "text": ""
+        },
+        "references": false,
+        "default": ""
+      }
+    },
+    "layout": {
+      "main": [],
+      "sections": [
+        {
+          "id": "fs_who",
+          "title": "Who They Are",
+          "layout": "columns",
+          "columns": [
+            [
+              "fx_goals"
+            ],
+            [
+              "fx_assets"
+            ]
+          ]
+        },
+        {
+          "id": "fs_ties",
+          "title": "Ties",
+          "layout": "columns",
+          "columns": [
+            [
+              "fx_relations"
+            ],
+            [
+              "fx_members"
+            ]
+          ]
+        },
+        {
+          "id": "fs_gm",
+          "title": "GM Notes",
+          "layout": "columns",
+          "columns": [
+            [
+              "fx_secret"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "values": {
+    "category": "gang",
+    "name": "Chrome Vultures",
+    "leader": "Rafael \"Razor\" Sosa",
+    "base": "Chrome Vultures Salvage Yard, Santo Domingo",
+    "founded": {
+      "y": 2039
+    },
+    "summary": "A boostergang that strips cars, and the people in them, for parts.",
+    "fx_goals": "Own every salvage yard in Santo Domingo, and the roads between them.",
+    "fx_assets": "Three yards, a chop shop, roadblocks on demand, and a payment net that keeps going dark.",
+    "fx_relations": {
+      "links": [
+        {
+          "id": "fac_5ee40001",
+          "stance": "enemy"
+        },
+        {
+          "id": "fac_5ee40003",
+          "stance": "friendly",
+          "note": "Paid through Doc Haas"
+        },
+        {
+          "id": "fac_5ee40004",
+          "stance": "enemy"
+        }
+      ]
+    },
+    "fx_members": {
+      "people": [
+        {
+          "id": "char_5a7754ea",
+          "note": "Leader"
+        }
+      ]
+    },
+    "fx_secret": "Halcyon pays them, through Doc Haas, to keep \"salvage\" flowing to Site 9."
+  },
+  "shown": {},
+  "refs": {},
+  "known": true,
+  "createdAt": "2026-11-06T12:00:00.000Z",
+  "updatedAt": "2026-11-06T12:00:00.000Z"
+}

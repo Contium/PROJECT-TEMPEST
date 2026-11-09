@@ -74,7 +74,8 @@ export function row({ item, g, sub, onPick, toggle, gm, hover }) {
 }
 
 /** The HUD's "View as" switch. */
-export const viewAsField = (value, pick) => el('div', { class: 'wv-controls' }, el('span', { class: 'tp-label wv-viewas' }, 'View as'), seg('View as', [['gm', 'GM'], ['players', 'Players']], value, pick));
+// Worded like every other page's switch: "GM view | Player view".
+export const viewAsField = (value, pick) => el('div', { class: 'wv-controls' }, seg('View as', [['gm', 'GM view'], ['players', 'Player view']], value, pick));
 
 /** List tabs: [[id, label]…]. */
 export const listTabs = (tabs, value, pick) => {

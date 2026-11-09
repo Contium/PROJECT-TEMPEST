@@ -14,7 +14,8 @@
 // The server builds every display itself from the project's data, so a push can
 // never carry GM-only contents: entries go through playerEntity(), lists through
 // rosterEntry(), POIs come from the players' lists (hidden ones are refused),
-// networks through playerNetwork() (revealed nodes only, never the GM's notes), and the
+// networks through playerNetwork() (revealed nodes only, never the GM's notes), handouts and
+// session recaps through playerHandout() / playerRecap() (never obscured text or GM notes), and the
 // Planar, Cartographer and Galactic maps through server/atlas.js (revealed places only; a
 // chart under fog only as its baked players' copy).
 // The displays are kept in <data>/v1/display.json, so a restart keeps them.
@@ -122,7 +123,7 @@ function createDisplay(file, library) {
       if (!kind || !stores[kind]) throw new StoreError(404, 'No such entry');
       let entity = await stores[kind].get(req.id);
       // What the players have been shown, they know of: it joins their Codex (server/codex.js).
-      if (!entity.known && ['characters', 'stories', 'items'].includes(kind)) {
+      if (!entity.known && ['characters', 'stories', 'items', 'factions'].includes(kind)) {
         entity = await stores[kind].save(entity.id, { ...entity, known: true });
         req.madeKnown = true;
       }
@@ -144,15 +145,42 @@ function createDisplay(file, library) {
       const title = category ? plural(category.label) : KINDS[req.kind].label;
       return { project, kind: req.kind, category: req.category, title, entries: full.map(M.rosterEntry) };
     }
+    if (req.mode === 'handout' && req.id) {
+      // A handout (Sessions › Handouts): what's been handed to the players joins their Codex.
+      const { playerHandout } = await appModule('sessions/session-model.js');
+      let h = await stores.handouts.get(req.id);
+      if (!h.revealed) {
+        h = await stores.handouts.save(h.id, { ...h, revealed: true });
+        req.madeKnown = true;
+      }
+      return { project, handout: playerHandout(h), title: h.title };
+    }
     if (req.mode === 'handout') {
       await stores.assets.get(req.image); // 404s if it's not this project's
       return { project, image: req.image, caption: req.caption, title: req.caption || 'Handout' };
+    }
+    if (req.mode === 'recap') {
+      // A session's recap: shown, it's shared (in the players' Codex) from then on.
+      const { playerRecap, sessionTitle } = await appModule('sessions/session-model.js');
+      let s = await stores.sessions.get(req.id);
+      if (!s.recap) throw new StoreError(409, 'That session has no recap yet: write one first');
+      if (!s.recapShared) {
+        s = await stores.sessions.save(s.id, { ...s, recapShared: true });
+        req.madeKnown = true;
+      }
+      return { project, recap: playerRecap(s), title: sessionTitle(s) };
+    }
+    if (req.mode === 'timeline') {
+      // What's in the players' Codex, dated, each only as its sheet allows (projects.js › timeline).
+      return { project, timeline: await library.timeline(req.project), title: 'Timeline' };
     }
     if (req.mode === 'article') {
       const { playerCopy, playerTitle } = await appModule('screamsheets/screamsheet-model.js');
       const sheet = await stores.screamsheets.get(req.id);
       if (!sheet.revealed) throw new StoreError(409, 'That screamsheet is hidden from players: reveal it first');
-      return { project, article: playerCopy(sheet), title: playerTitle(sheet) };
+      // Link lines keep the entry they point at only when it's in the players' Codex.
+      const known = new Set((await Promise.all(['characters', 'stories', 'items', 'factions'].map((k) => stores[k].list()))).flat().filter((s) => s.known).map((s) => s.id));
+      return { project, article: playerCopy(sheet, { known }), title: playerTitle(sheet) };
     }
     if (req.mode === 'network') {
       const { playerNetwork } = await appModule('netrun/network-model.js');

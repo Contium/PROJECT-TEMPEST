@@ -1,0 +1,14 @@
+{
+  "id": "hand_5e550004",
+  "title": "Intercepted message",
+  "style": "datapad",
+  "image": null,
+  "caption": "",
+  "text": "Second team green-lit for the Port. Arrive after the first crew, let them do the cutting. Take Sato and whatever she's carrying. Leave nobody who saw the container.",
+  "from": "UNKNOWN SENDER",
+  "obscure": "encrypted",
+  "revealed": false,
+  "session": "sess_5e550003",
+  "createdAt": "2026-11-07T12:00:00.000Z",
+  "updatedAt": "2026-11-07T12:00:00.000Z"
+}

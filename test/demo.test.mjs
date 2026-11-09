@@ -28,7 +28,7 @@ test('every file in the shipped demo passes the app\'s own checks', () => {
     assert.equal(json(path.join(dir, 'project.json')).id, id);
     assert.ok(!fs.readdirSync(dir).some((f) => f.endsWith('.tmp')), 'no leftover temp files');
     for (const f of files(path.join(dir, 'presets'))) assert.doesNotThrow(() => normalizePreset(json(f)), f);
-    const entities = ['characters', 'stories', 'items', 'netcards'].flatMap((k) => files(path.join(dir, k)));
+    const entities = ['characters', 'stories', 'items', 'factions', 'netcards'].flatMap((k) => files(path.join(dir, k)));
     for (const f of entities) assert.doesNotThrow(() => normalizeEntity(json(f)), f);
     for (const f of files(path.join(dir, 'pois'))) assert.doesNotThrow(() => normalizePoi(json(f)), f);
     for (const f of files(path.join(dir, 'citypois'))) assert.doesNotThrow(() => normalizeCityPoi(json(f)), f);

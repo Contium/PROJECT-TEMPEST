@@ -52,7 +52,7 @@
   /* Text: pale steel for reading, silver headings, cyan field labels */
   --tp-text: #c4d6e4;
   --tp-text-muted: #7f9bb2;
-  --tp-text-dim: #4e657a;
+  --tp-text-dim: #7a8fa1;
   --tp-text-heading: var(--ls-silver);
   --tp-text-label: #5ab4e6;
 
@@ -64,7 +64,7 @@
   --tp-accent: var(--ls-gold);
   --tp-success: var(--ls-green);
   --tp-warning: #f0a02c;
-  --tp-danger: var(--ls-red);
+  --tp-danger: #e66354; /* --ls-red, lifted to read as text on the dark panels */
   --tp-info: var(--ls-blue);
 
   --tp-tier-1: #a9b8c4;

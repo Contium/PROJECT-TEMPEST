@@ -201,7 +201,7 @@ export async function mount(root) {
           })),
         el('span', { class: 'app-actions nr-toolbar__actions' },
           status,
-          saved ? null : el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', onClick: newNetwork, title: 'Start over with an empty network' }, 'New'),
+          el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm', onClick: newNetwork, title: saved ? 'Start a new, empty network' : 'Start over with an empty network' }, '+ New'),
           el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm', onClick: duplicate, disabled: !s.net.nodes.length }, 'Duplicate'),
           el('button', { type: 'button', class: 'tp-frame tp-btn tp-btn--sm tp-btn--ghost', onClick: remove }, saved ? 'Delete' : 'Discard'),
           saved ? el('a', { class: 'tp-frame tp-btn tp-btn--sm tp-btn--interactive', href: `${BASE}/${s.net.id}`, title: 'Open it under Networks, to reveal it to the players' }, 'Run ▸') : null,

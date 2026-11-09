@@ -16,7 +16,7 @@ import { push } from '../push/push.js';
 
 /** Open uploaded pictures full size, with Push to players (the GM's forms). */
 const view = (items, index) => openImage(items.map((x) => ({ ...x, src: imageUrl(x.image) })), index, { push: (x) => push({ mode: 'handout', image: x.image, caption: x.caption }) });
-import { SIZES, PARENT_TYPES, fieldsInOrder, defaultIdsOf, categoriesOf } from './preset-model.js';
+import { SIZES, PARENT_TYPES, RELATION_STANCES, fieldsInOrder, defaultIdsOf, categoriesOf } from './preset-model.js';
 import { rarityBadge } from './sheet.js';
 
 // What a Parent field can point at, by its parent type (null: nothing of that kind exists yet).
@@ -27,10 +27,11 @@ const PARENT_FILTERS = {
   creature: (c) => c.kind === 'characters' && c.category === 'creature',
   story: (c) => c.kind === 'stories',
   item: (c) => c.kind === 'items',
+  faction: (c) => c.kind === 'factions',
 };
 const isCharacter = (c) => c.kind === 'characters';
-// Pickers mark entries that aren't characters: "(story)", "(item)".
-const kindTag = (c) => ({ stories: ' (story)', items: ' (item)', netcards: ' (net card)' })[c.kind] ?? '';
+// Pickers mark entries that aren't characters: "(story)", "(item)", "(faction)".
+const kindTag = (c) => ({ stories: ' (story)', items: ' (item)', netcards: ' (net card)', factions: ' (faction)' })[c.kind] ?? '';
 
 export function valuesForm({ sheet, state, candidates = [], selfId = null, onChange = () => {} }) {
   const node = el('div', { class: 'vf' });
@@ -89,6 +90,8 @@ export function valuesForm({ sheet, state, candidates = [], selfId = null, onCha
         return f.mode === 'combat' ? sidesEditor(f) : involvedEditor(f);
       case 'location':
         return locationEditor(f);
+      case 'relations':
+        return relationsEditor(f);
       default:
         return null;
     }
@@ -173,6 +176,34 @@ export function valuesForm({ sheet, state, candidates = [], selfId = null, onCha
             el('button', { type: 'button', class: 'fd-icon-btn fd-icon-btn--danger', 'aria-label': `Remove ${nameOf(p.id)}`, onClick: () => { save(people().filter((_, j) => j !== i)); draw(); } }, '×'))),
         picker(others.filter((c) => isCharacter(c) && !list.some((p) => p.id === c.id)), '+ Add a character…',
           (id) => { save([...people(), { id }]); draw(); }, 'Create characters to add them here.'));
+    };
+    draw();
+    return wrap;
+  }
+
+  /** Relations: ties to other entries (factions first), each with a stance and an optional note. */
+  function relationsEditor(f) {
+    const wrap = el('div', { class: 'vf-involved vf-relations' });
+    const links = () => (state.values[f.id]?.links ?? []).map((l) => ({ ...l }));
+    const save = (list) => setValue(f.id, list.length ? { links: list } : undefined);
+    const draw = () => {
+      const list = links();
+      // Factions first, then people, then anything else.
+      const order = { factions: 0, characters: 1 };
+      const pickable = others.filter((c) => c.kind !== 'netcards' && !list.some((l) => l.id === c.id))
+        .sort((a, b) => (order[a.kind] ?? 2) - (order[b.kind] ?? 2) || a.name.localeCompare(b.name));
+      wrap.replaceChildren(
+        ...list.map((l, i) =>
+          el('div', { class: 'vf-involved__row vf-relations__row' },
+            el('select', {
+              class: 'tp-select vf-relations__stance', 'aria-label': `How this stands toward ${nameOf(l.id)}`,
+              onChange: (e) => { const next = links(); next[i].stance = e.target.value; save(next); },
+            }, RELATION_STANCES.map((s) => el('option', { value: s.id, selected: s.id === l.stance }, s.label))),
+            el('span', { class: 'tp-badge vf-ref' }, nameOf(l.id)),
+            el('input', { class: 'tp-input', value: l.note ?? '', maxlength: 400, placeholder: 'A note (optional)', 'aria-label': `Note on ${nameOf(l.id)}`, 'data-key': `v:${f.id}:note${l.id}`,
+              onInput: (e) => { const next = links(); next[i].note = e.target.value; save(next); } }),
+            el('button', { type: 'button', class: 'fd-icon-btn fd-icon-btn--danger', 'aria-label': `Remove ${nameOf(l.id)}`, onClick: () => { save(links().filter((_, j) => j !== i)); draw(); } }, '×'))),
+        picker(pickable, '+ Add a faction, person or anything…', (id) => { save([...links(), { id, stance: 'neutral' }]); draw(); }, 'Create factions or characters to link them here.'));
     };
     draw();
     return wrap;

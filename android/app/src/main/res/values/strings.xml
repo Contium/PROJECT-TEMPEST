@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TEMPEST</string>
+    <string name="title">GM &amp; player screen</string>
+    <string name="lead">Scan a QR code from TEMPEST on the PC, under Project settings:\n\n• GM on your network: run the whole GM window from this device.\n• Player screen on your network: join as a player screen.\n\nOr paste the link it shows.</string>
+    <string name="scan">Scan a TEMPEST QR code</string>
+    <string name="paste_hint">http://192.168.1.20:4079/gm?k=…</string>
+    <string name="as_gm">GM window</string>
+    <string name="as_player">Player screen</string>
+    <string name="upload_failed">Couldn\'t open the picture picker</string>
+    <string name="connect">Join</string>
+    <string name="reconnect">Back to the %1$s on %2$s</string>
+    <string name="forget">Forget this table</string>
+    <string name="bad_link">That isn\'t a TEMPEST link. It looks like http://…/gm?k=… or http://…/join?k=…</string>
+    <string name="no_scanner">Scanning needs Google Play services. Paste the link instead.</string>
+    <string name="lost_title">Can\'t reach the GM\'s screen</string>
+    <string name="lost_text">Check that this device is on the same Wi-Fi as the GM\'s PC, and that TEMPEST is running with sharing turned on in Project settings.</string>
+    <string name="retry">Try again</string>
+    <string name="lan_title">Allow devices on your network</string>
+    <string name="lan_text">TEMPEST runs on the GM\'s PC, on your Wi-Fi. Android needs your permission before this app can reach it.\n\nAllow \"devices on your local network\" for TEMPEST, then try again.</string>
+    <string name="lan_settings">Open app settings</string>
+    <string name="change">Join another table</string>
+    <string name="leave_hint">Press back again to leave the player screen</string>
+</resources>

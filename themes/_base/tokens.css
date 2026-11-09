@@ -33,7 +33,7 @@
   /* --- Text -------------------------------------------------------------- */
   --tp-text: #e6e8eb;            /* body copy */
   --tp-text-muted: #a2a8b1;      /* secondary copy */
-  --tp-text-dim: #6b727c;        /* metadata, disabled */
+  --tp-text-dim: #868c94;        /* metadata, hints, disabled: keep ≥ 4.5:1 on every surface */
   --tp-text-heading: var(--tp-text);
   --tp-text-label: var(--tp-text-muted);
 
@@ -46,7 +46,7 @@
 
   --tp-success: #3fbf7f;
   --tp-warning: #f0a030;
-  --tp-danger: #e5484d;
+  --tp-danger: #e85c61;
   --tp-info: #4f8cff;
 
   /* Rarity / tier ladder (1 = common … 5 = legendary). Used for threat

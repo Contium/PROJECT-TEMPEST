@@ -42,8 +42,8 @@
   /* Text — long-form copy is a pale red tint: reads as HUD-red at a glance
      but stays legible for long notes. Headings/labels are full red. */
   --tp-text: #f3b3ae;
-  --tp-text-muted: #a8716d;
-  --tp-text-dim: #6e4a48;
+  --tp-text-muted: #c28783;
+  --tp-text-dim: #a67673;
   --tp-text-heading: var(--cp-red);
   --tp-text-label: var(--cp-red);
 
@@ -56,7 +56,7 @@
   --tp-success: var(--cp-mint);
   --tp-warning: var(--cp-orange);
   --tp-danger: var(--cp-red-hot);
-  --tp-info: var(--cp-steel);
+  --tp-info: #4183da; /* Pale Steel, lifted to read as text on the dark panels */
 
   --tp-tier-1: var(--cp-grey);
   --tp-tier-2: var(--cp-mint);

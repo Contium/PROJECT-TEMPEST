@@ -1,0 +1,128 @@
+/* Screamsheets as issues (app/screamsheets/article.js): the News feed layout, and the
+   pieces every layout shares (more articles in columns, Link lines, notes, ads). Like the
+   other paper layouts it is a prop with a look of its own, not the theme's. */
+
+/* --- Shared by every layout ------------------------------------------------------------ */
+
+.paper__columns { columns: 2 18rem; column-gap: 1.6rem; column-rule: 1px solid color-mix(in srgb, currentColor 14%, transparent); }
+.paper__columns--more { margin-top: 0.4rem; padding-top: 0.8rem; border-top: 2px solid color-mix(in srgb, currentColor 35%, transparent); }
+.paper__item { position: relative; break-inside: avoid; display: flex; flex-direction: column; gap: 0.35rem; padding: 0 0 0.9rem; margin: 0 0 0.9rem; border-bottom: 1px dashed color-mix(in srgb, currentColor 40%, transparent); }
+.paper__item:last-child { border-bottom: 0; margin-bottom: 0; }
+.paper__item--lead:not(.paper__columns .paper__item) { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
+.paper__columns--more .paper__headline { font-size: clamp(1.1rem, 3cqi, 1.45rem) !important; line-height: 1.15; }
+/* A piece in a column reads straight down (a lone lead article keeps its own two columns). */
+.paper__columns .paper__body, .paper--feed .paper__body { columns: auto; }
+.paper__links, .paper__notes { display: flex; flex-direction: column; gap: 0.2rem; }
+
+/* An article's picture, before or after its text */
+.paper__figure { margin: 0.25rem 0; display: flex; flex-direction: column; gap: 0.25rem; break-inside: avoid; }
+.paper__image { display: block; width: 100%; max-height: 26rem; object-fit: cover; border: 1px solid color-mix(in srgb, currentColor 25%, transparent); }
+.paper__item--lead:not(.paper__columns .paper__item) .paper__image { max-height: 32rem; }
+.paper__caption { font-size: 0.78em; font-style: italic; opacity: 0.8; text-align: center; }
+.paper__figure-veil { aspect-ratio: 16 / 9; display: flex; flex-direction: column; justify-content: center; padding: 0.6rem; background: color-mix(in srgb, currentColor 8%, transparent); overflow: hidden; }
+.paper__figure-veil .sheet__static { width: 100%; height: 100%; }
+.paper--crt .paper__image { filter: grayscale(1) sepia(1) hue-rotate(70deg) saturate(3) brightness(0.9); border-color: #2f9a55; }
+.paper__links p, .paper__notes p { margin: 0; }
+.paper__link-to { text-decoration: none; }
+a.paper__link-to:hover { text-decoration: underline; }
+.paper__ad { display: flex; align-items: center; gap: 0.9rem; padding: 0.6rem; background: #111; color: #fff; }
+.paper__ad-image { width: 34%; max-width: 9rem; aspect-ratio: 1; object-fit: cover; flex: none; }
+.paper__ad-tagline { margin: 0; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1.35; white-space: pre-line; }
+
+.paper--broadsheet .paper__link-to { color: #3f4791; }
+.paper--crt .paper__link-to { color: #b6ffcb; text-decoration: underline; }
+.paper--crt .paper__ad { background: transparent; border: 1px dashed #2f9a55; color: #b6ffcb; }
+.paper--plain .paper__link-to { color: var(--tp-interactive); }
+
+/* --- News feed: a news site on a screen, like Night City Today ------------------------- */
+
+.paper--feed {
+  gap: 0;
+  padding: 0;
+  background: #fff;
+  color: #1b1b1f;
+  font-family: "Rajdhani", "Jost", "Futura", "Century Gothic", system-ui, sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.42;
+  border: 10px solid #0d0d10;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px #2c2c33, 0 18px 40px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+.nct__status { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0.3rem 0.9rem; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em; color: #111; }
+.nct__clock { min-width: 4rem; text-align: center; }
+.nct__clock .paper__date { font-size: inherit; }
+.nct__signal { display: inline-flex; align-items: flex-end; gap: 2px; height: 0.9rem; }
+.nct__signal i { width: 3px; background: #111; }
+.nct__signal i:nth-child(1) { height: 30%; } .nct__signal i:nth-child(2) { height: 55%; } .nct__signal i:nth-child(3) { height: 80%; } .nct__signal i:nth-child(4) { height: 100%; }
+.nct__battery { justify-self: end; position: relative; width: 1.6rem; height: 0.75rem; border: 2px solid #111; border-radius: 2px; }
+.nct__battery::after { content: ""; position: absolute; right: -5px; top: 2px; width: 3px; height: 4px; background: #111; }
+.nct__battery i { position: absolute; inset: 1px 5px 1px 1px; background: #111; }
+
+.nct__masthead { display: flex; align-items: center; gap: 1.2rem; padding: 0.7rem 1.2rem 0.9rem; border-bottom: 3px solid #1b1b1f; }
+.nct__logo { display: grid; grid-template-columns: auto; justify-items: start; line-height: 1; flex: none; max-width: 40%; }
+.nct__mono {
+  font: italic 900 clamp(2.4rem, 9cqi, 3.6rem) / 0.9 "Rajdhani", "Jost", system-ui, sans-serif;
+  letter-spacing: -0.04em;
+  background: linear-gradient(100deg, #e4448f 0%, #8a5cff 45%, #35b7ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.15em;
+}
+.nct__name { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #6b4bd8; }
+.nct__news { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #3f4791; }
+.nct__tabs { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.35rem 0.5rem; }
+.nct__tab {
+  padding: 0.35rem 0.4rem;
+  text-align: center;
+  font-weight: 800;
+  font-size: clamp(0.62rem, 1.9cqi, 0.86rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #121216;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nct__tab.is-on { background: #e2272b; }
+
+.paper--feed .paper__columns { padding: 1rem 1.2rem 1.3rem; column-rule-color: #d9d9de; }
+.paper--feed .paper__item { border-bottom-color: #8a8a93; }
+.paper--feed .paper__headline { margin: 0; text-align: center; font-weight: 800; font-size: clamp(1.15rem, 3.4cqi, 1.5rem); line-height: 1.15; color: #111; }
+.paper--feed .paper__byline { margin: 0 auto; padding: 0 1.2rem 0.15rem; text-align: center; font-size: 0.78rem; font-style: italic; color: #555; border-bottom: 1px solid #c9c9cf; }
+.paper--feed .paper__body p { margin: 0 0 0.55em; text-align: justify; hyphens: auto; }
+.paper--feed .paper__link b, .paper--feed .paper__note b { color: #111; }
+.paper--feed .paper__link-to { color: #2b63d9; }
+.paper--feed .paper__obscured .sheet__redacted i { background: #1b1b1f; }
+.paper--feed .paper__obscured.paper__headline { display: flex; justify-content: center; }
+
+/* GM dialogs: an article, an ad, a picture, the issue */
+.ss-dialog { display: flex; flex-direction: column; gap: var(--tp-space-3); max-height: 70vh; overflow: auto; }
+.ss-dialog--wide { width: min(46rem, 94vw); }
+.ss-dialog--wide > form { width: 100%; }
+.ss-ad-pick { display: grid; place-items: center; min-height: 5rem; padding: var(--tp-space-2); border: 1px dashed var(--tp-border); background: var(--tp-surface-2); }
+.ss-ad-pick img { display: block; max-width: 100%; max-height: 12rem; object-fit: contain; }
+.ss-issue-bar { margin-top: calc(-1 * var(--tp-space-2)); }
+.ssl__more { color: var(--tp-text-muted); }
+
+/* GM page: a piece's tools, and pieces kept from players */
+.paper__tools { position: absolute; top: -0.2rem; right: 0; z-index: 1; display: flex; gap: 0.25rem; opacity: 0; transition: opacity 150ms; }
+.paper__item:hover > .paper__tools, .paper__item:focus-within > .paper__tools { opacity: 1; }
+.paper__tools .tp-btn { padding: 0.05rem 0.4rem; font-size: 0.7rem; }
+.paper__item.is-off > :not(.paper__tools) { opacity: 0.35; }
+.paper--gm .paper__columns .paper__ctl { position: static; display: inline-block; margin: 0 0 0.2rem; }
+.paper--gm.paper--feed { margin-left: 0; }
+.paper--gm.paper--feed .paper__ctl { position: static; display: inline-block; margin: 0 0.3rem 0.2rem 0; }
+.paper--gm.paper--feed .nct__masthead .paper__ctl-wrap, .paper--gm.paper--feed .nct__clock .paper__ctl-wrap { display: inline-flex; align-items: center; }
+
+@container (max-width: 34rem) {
+  .nct__masthead { flex-direction: column; align-items: stretch; gap: 0.6rem; }
+  .nct__logo { max-width: none; }
+}
+@media (max-width: 600px) {
+  .paper--feed { border-width: 6px; border-radius: 12px; }
+  .paper__columns { columns: 1; }
+}

@@ -26,6 +26,7 @@ const summary = (e) => ({
   species: e.values?.species ?? '', size: e.values?.size ?? '',
   start: e.values?.start ?? null, end: e.values?.end ?? null,
   itemtype: e.values?.itemtype ?? '', rarity: rarityOf(e), dv: e.values?.dv ?? '',
+  leader: e.values?.leader ?? '', founded: e.values?.founded ?? null,
   presetName: e.presetName ?? '', known: e.known === true, updatedAt: e.updatedAt,
 });
 
@@ -38,7 +39,7 @@ function rarityOf(e) {
 
 function createEntityStore(dir, kind) {
   const ready = fsp.mkdir(dir, { recursive: true });
-  const noun = { stories: 'entry', items: 'item' }[kind] ?? 'character';
+  const noun = { stories: 'entry', items: 'item', factions: 'faction', netcards: 'net card' }[kind] ?? 'character';
   const fileOf = async (id) => {
     const { idPattern } = await loadEntityModel();
     if (!idPattern(kind).test(id)) throw new StoreError(404, `No such ${noun}`);

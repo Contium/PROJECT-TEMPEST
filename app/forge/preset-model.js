@@ -63,6 +63,33 @@ export const NET_CARD_TYPES = [
   { id: 'other', label: 'Other', tab: 'netrunning' },
 ];
 
+/** What a faction is. They all live on one tab, World › Factions (filtered by type there). */
+export const FACTION_TYPES = [
+  { id: 'corporation', label: 'Corporation', tab: 'factions' },
+  { id: 'gang', label: 'Gang', tab: 'factions' },
+  { id: 'syndicate', label: 'Syndicate', tab: 'factions' },
+  { id: 'government', label: 'Government', tab: 'factions' },
+  { id: 'military', label: 'Military', tab: 'factions' },
+  { id: 'guild', label: 'Guild', tab: 'factions' },
+  { id: 'religion', label: 'Religion', tab: 'factions' },
+  { id: 'movement', label: 'Movement', tab: 'factions' },
+  { id: 'other', label: 'Other', tab: 'factions' },
+];
+
+/** How one entry stands toward another, in a Relations field. */
+export const RELATION_STANCES = [
+  { id: 'ally', label: 'Ally', tone: 'success' },
+  { id: 'friendly', label: 'Friendly', tone: 'success' },
+  { id: 'neutral', label: 'Neutral', tone: 'muted' },
+  { id: 'wary', label: 'Wary', tone: 'warning' },
+  { id: 'rival', label: 'Rival', tone: 'warning' },
+  { id: 'enemy', label: 'Enemy', tone: 'danger' },
+  { id: 'member', label: 'Member of', tone: 'info' },
+  { id: 'leads', label: 'Leads', tone: 'info' },
+  { id: 'part', label: 'Part of', tone: 'info' },
+  { id: 'controls', label: 'Controls', tone: 'info' },
+];
+
 export const SIZES = ['Miniscule', 'Nano', 'Tiny', 'Small', 'Medium', 'Large', 'Giant', 'Gargantuan', 'Colossal'];
 
 /** What a Parent field may point at. */
@@ -73,6 +100,7 @@ export const PARENT_TYPES = [
   { id: 'creature', label: 'Creature' },
   { id: 'story', label: 'Story/Rumor/Event' },
   { id: 'item', label: 'Item' },
+  { id: 'faction', label: 'Faction' },
 ];
 
 export const VISIBILITY = [
@@ -171,6 +199,7 @@ export const ADDABLE = [
   { type: 'statblock', label: 'Stat Block', hint: 'A row of named numbers read together, like PER · SPD · ATK · DEF · REZ' },
   { type: 'cast', label: 'Characters', hint: 'Who takes part: the sides of a fight, or everyone involved' },
   { type: 'location', label: 'Location', hint: 'Where it happens: a location, any entry, or an obscure description' },
+  { type: 'relations', label: 'Relations', hint: 'Ties to factions, people or anything else: allies, rivals, enemies, who\'s a member of what' },
 ];
 
 /**
@@ -192,7 +221,7 @@ export const KINDS = {
       { id: 'summary', type: 'shorttext', label: 'Short Description' },
     ],
     facts: ['species', 'size'],
-    addable: ['parent', 'longtext', 'image', 'gallery', 'stat', 'statblock'],
+    addable: ['parent', 'longtext', 'image', 'gallery', 'stat', 'statblock', 'relations'],
   },
   stories: {
     label: 'Stories/Rumors/Events', entity: 'story', entities: 'stories', idPrefix: 'story', section: 'world',
@@ -221,6 +250,23 @@ export const KINDS = {
     ],
     facts: ['itemtype', 'rarity'],
     addable: ['parent', 'longtext', 'image', 'gallery', 'stat', 'statblock'],
+  },
+  factions: {
+    // Factions and organizations (World › Factions): corporations, gangs, governments, guilds…
+    // Every type lives on the one Factions tab, filtered by type there.
+    label: 'Factions/Organizations', entity: 'faction', entities: 'factions', idPrefix: 'fac', section: 'world',
+    categories: FACTION_TYPES,
+    defaults: [
+      { id: 'category', type: 'category', label: 'Type', default: 'gang' },
+      { id: 'image', type: 'image', label: 'Emblem', primary: true },
+      { id: 'name', type: 'text', label: 'Name' },
+      { id: 'leader', type: 'text', label: 'Leader' },
+      { id: 'base', type: 'text', label: 'Headquarters' },
+      { id: 'founded', type: 'date', label: 'Founded' },
+      { id: 'summary', type: 'shorttext', label: 'Short Description' },
+    ],
+    facts: ['leader', 'base', 'founded'],
+    addable: ['parent', 'longtext', 'image', 'gallery', 'stat', 'statblock', 'cast', 'location', 'relations'],
   },
   netcards: {
     // The pieces of a NET architecture (Combat › Netrunning › Card Forge), put together
@@ -255,6 +301,7 @@ export const DEFAULT_IDS = defaultIdsOf('characters');
 export const TYPE_LABELS = {
   category: 'Category', image: 'Image', text: 'Text', size: 'Size', shorttext: 'Short Description', date: 'Date', rarity: 'Rarity',
   parent: 'Parent', longtext: 'Long Description', gallery: 'Gallery', stat: 'Stat', statblock: 'Stat Block', cast: 'Characters', location: 'Location',
+  relations: 'Relations',
 };
 
 /** A Stat Block holds 1–12 stats; each value is a short text, so "4", "3d6" and "—" all fit. */
@@ -308,6 +355,7 @@ export function newField(type, kind = 'characters') {
   if (type === 'stat') Object.assign(field, { label: 'Stat', stat: 'pool', default: { value: 10, max: 10 }, rarities: structuredClone(DEFAULT_RARITIES) });
   if (type === 'cast') Object.assign(field, { label: 'Characters', mode: 'involved', sides: ['Side A', 'Side B'] });
   if (type === 'location') Object.assign(field, { label: 'Location', mode: 'direct' });
+  if (type === 'relations') Object.assign(field, { label: kind === 'characters' ? 'Affiliations' : 'Relations' });
   if (type === 'statblock') {
     Object.assign(field, { label: 'Stats', stats: ['STAT 1', 'STAT 2', 'STAT 3'].map((label, i) => ({ id: `s${i + 1}`, label })), default: {} });
   }
@@ -590,6 +638,21 @@ function cleanCast(field, value) {
   return people.length ? { people } : undefined;
 }
 
+/** A Relations field's value: { links: [{ id, stance, note? }] }, each entry once. */
+function cleanRelations(value) {
+  if (!isObj(value)) return undefined;
+  const seen = new Set();
+  const links = (Array.isArray(value.links) ? value.links : [])
+    .filter((l) => l && ENTITY_ID.test(l.id ?? '') && !seen.has(l.id) && seen.add(l.id))
+    .slice(0, MAX_LINKS)
+    .map((l) => ({
+      id: l.id,
+      stance: RELATION_STANCES.some((s) => s.id === l.stance) ? l.stance : 'neutral',
+      ...(str(l.note, 400).trim() ? { note: str(l.note, 400).trim() } : {}),
+    }));
+  return links.length ? { links } : undefined;
+}
+
 function cleanLocation(field, value) {
   if (field.mode === 'obscure') {
     const text = str(value?.text, 400).trim();
@@ -642,6 +705,8 @@ export function cleanValue(field, value, kind = 'characters') {
       return cleanCast(field, value);
     case 'location':
       return cleanLocation(field, value);
+    case 'relations':
+      return cleanRelations(value);
     default:
       return cleanDefault(field, value, k);
   }

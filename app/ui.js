@@ -111,3 +111,59 @@ export const store = {
     }
   },
 };
+
+/**
+ * A button that opens a small menu below it: less-used actions kept one click away.
+ * menuButton(label, items, { title, cls, align })
+ *   items  () => nodes (rebuilt each time it opens). Buttons inside close the menu when clicked,
+ *          unless they carry data-keep-open.
+ * Closes on Esc, on a click elsewhere, and after an action; focus goes back to the button.
+ */
+export function menuButton(label, items, { title = null, cls = '', align = 'right' } = {}) {
+  const button = el('button', { type: 'button', class: `tp-frame tp-btn ${cls}`, 'aria-haspopup': 'true', 'aria-expanded': 'false', title }, label);
+  // The open menu sits on the page itself (themes clip framed panels), fixed under the button.
+  const menu = el('div', { class: 'tp-frame tp-panel app-menu', role: 'group', 'aria-label': typeof label === 'string' ? label.replace(/[^\w\s]/g, '').trim() : null, hidden: true });
+  const wrap = el('span', { class: 'app-menu__wrap' }, button);
+  // Listens on the page only while open, so menus redrawn often leave nothing behind.
+  const outside = (e) => !wrap.contains(e.target) && !menu.contains(e.target) && close();
+  const place = () => {
+    if (!button.isConnected) return close();
+    const r = button.getBoundingClientRect();
+    menu.style.top = `${Math.round(r.bottom + 6)}px`;
+    const left = align === 'left' ? r.left : r.right - menu.offsetWidth;
+    menu.style.left = `${Math.round(Math.max(8, Math.min(left, innerWidth - menu.offsetWidth - 8)))}px`;
+  };
+  const leave = () => close();
+  const close = (focus = false) => {
+    if (menu.hidden) return;
+    menu.hidden = true;
+    menu.remove();
+    button.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('pointerdown', outside);
+    removeEventListener('resize', place);
+    removeEventListener('scroll', place, true);
+    removeEventListener('hashchange', leave);
+    if (focus && button.isConnected) button.focus();
+  };
+  button.addEventListener('click', () => {
+    if (!menu.hidden) return close();
+    menu.replaceChildren(...[items()].flat().filter(Boolean));
+    menu.hidden = false;
+    document.body.append(menu);
+    place();
+    button.setAttribute('aria-expanded', 'true');
+    document.addEventListener('pointerdown', outside);
+    addEventListener('resize', place);
+    addEventListener('scroll', place, true);
+    addEventListener('hashchange', leave); // another page: the menu belongs to the last one
+    menu.querySelector('button, select, input')?.focus();
+  });
+  menu.addEventListener('click', (e) => {
+    const hit = e.target.closest('button');
+    if (hit && !hit.hasAttribute('data-keep-open')) close();
+  });
+  const onEsc = (e) => e.key === 'Escape' && !menu.hidden && (e.stopPropagation(), close(true));
+  wrap.addEventListener('keydown', onEsc);
+  menu.addEventListener('keydown', onEsc);
+  return { node: wrap, button, close };
+}

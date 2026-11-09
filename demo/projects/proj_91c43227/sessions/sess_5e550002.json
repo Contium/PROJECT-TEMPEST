@@ -1,0 +1,41 @@
+{
+  "id": "sess_5e550002",
+  "number": 2,
+  "title": "Patient Zero",
+  "date": "2026-10-31",
+  "status": "played",
+  "plan": [
+    {
+      "id": "b5e5500",
+      "text": "Three days to keep Dr. Hale alive",
+      "done": true
+    },
+    {
+      "id": "b5e5501",
+      "text": "Hale's shunt starts failing: the broadcast",
+      "done": true
+    },
+    {
+      "id": "b5e5502",
+      "text": "Leak the Halcyon memo through Ledger",
+      "done": true
+    },
+    {
+      "id": "b5e5503",
+      "text": "The Tin Man on the rooftops",
+      "done": true
+    }
+  ],
+  "cast": [
+    "story_0ea5e98f",
+    "char_d692932b",
+    "item_092caff7",
+    "char_a14f1dad",
+    "fac_5ee40004"
+  ],
+  "notes": "The party now knows the shunt is a beacon, not a medical implant. Dez wants to crack it; Patchwork wants it out of Hale's head.\n\nThe Tin Man got close enough to see. He didn't attack. Leave that hanging.\n\nLedger owes the crew a favour for the memo. He will pay it with the Cold Storage job.",
+  "recap": "Keeping Dr. Hale alive for three days turned out to be the hard part. Her neural shunt began to fail, and as it failed it started to broadcast: Halcyon could hear it, and so could something else.\n\nLedger dug up a Halcyon memo that called Hale \"Patient Zero\" and her shunt \"the asset\". The crew read it twice.\n\nOn the third night the Tin Man came across the Watson rooftops, close enough to touch. He looked at Dr. Hale, and walked away.",
+  "recapShared": true,
+  "createdAt": "2026-11-07T12:00:00.000Z",
+  "updatedAt": "2026-11-07T12:00:00.000Z"
+}

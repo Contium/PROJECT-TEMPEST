@@ -46,7 +46,7 @@
   /* Text */
   --tp-text: var(--mt-ink);
   --tp-text-muted: var(--mt-ink-soft);
-  --tp-text-dim: var(--mt-ink-faint);
+  --tp-text-dim: #756150; /* darker than --mt-ink-faint, so hints read on parchment */
   --tp-text-heading: var(--mt-rust);
   --tp-text-label: var(--mt-rust-deep);
 
@@ -55,9 +55,10 @@
   --tp-primary-contrast: #f8efdc;
   --tp-interactive: var(--mt-blue);
   --tp-interactive-contrast: #f8efdc;
-  --tp-accent: var(--mt-ochre);
-  --tp-success: var(--mt-sage);
-  --tp-warning: #b4741f;
+  /* Deeper than the palette's ochre and sage, so they read as text on parchment. */
+  --tp-accent: #815e10;
+  --tp-success: #536b3d;
+  --tp-warning: #8b5918;
   --tp-danger: #a3362a;
   --tp-info: var(--mt-blue);
 
@@ -142,7 +143,7 @@
 }
 
 :root[data-theme="moontown"] .tp-deco {
-  color: var(--mt-ink-faint);
+  color: var(--tp-text-dim);
   letter-spacing: 0.24em;
 }
 

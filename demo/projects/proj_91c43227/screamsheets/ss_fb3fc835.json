@@ -4,15 +4,120 @@
   "body": "Three residents of Watson Development were found dead on the rooftops of Block 12 this morning, the third such discovery this month.\n\nWitnesses describe a tall figure \"more metal than man\" moving between buildings faster than the eye could follow. MAX-TAC declined to comment, but sources inside the NCPD confirm a 5,000eb bounty has been posted.\n\nHalcyon Biotics, whose former employee was linked to similar killings last year, issued a statement calling the reports \"irresponsible speculation.\"",
   "outlet": "Night City Today",
   "byline": "Wakako Okada",
-  "dateline": "Night City, March 6, 2045",
-  "layout": "broadsheet",
+  "dateline": "8:14 PM",
+  "section": "local",
+  "layout": "feed",
   "revealed": true,
+  "links": [
+    {
+      "text": "The Tin Man Walks Again",
+      "ref": "story_8b6c2aaa"
+    },
+    {
+      "text": "NCPD Precinct 14"
+    }
+  ],
+  "notes": [],
+  "parts": {},
   "selection": null,
   "values": {},
   "edited": true,
   "mentions": [
     "char_d692932b",
     "char_d1853482"
+  ],
+  "items": [
+    {
+      "id": "it_5ee301",
+      "type": "article",
+      "headline": "Kabuki Grid Back Up, Mostly",
+      "body": "Power returned to most of Kabuki at 23:00 after a ninety-minute blackout that turned the night market into a free-for-all. City engineers blame \"a cascading substation fault.\" Stall owners blame everyone else.\n\nThree vendors report their stock walked off in the dark. One reports it walked back, minus the good stuff.",
+      "byline": "Lin 'Lights Out' Varga",
+      "links": [
+        {
+          "text": "Kabuki Night Market Blackout",
+          "ref": "story_a6fe0f1c"
+        }
+      ],
+      "notes": [],
+      "parts": {},
+      "selection": null,
+      "values": {},
+      "edited": false,
+      "mentions": [],
+      "hidden": false
+    },
+    {
+      "id": "it_5ee302",
+      "type": "article",
+      "headline": "Vultures: \"We Just Fix Cars\"",
+      "body": "Asked about the roadblocks springing up across Santo Domingo, a Chrome Vultures spokesman insisted the gang is \"a community salvage cooperative\" and that any missing vehicles \"were abandoned, probably.\" NCPD declined to comment.",
+      "byline": "Wakako Okada",
+      "links": [
+        {
+          "text": "Chrome Vultures Salvage Yard"
+        }
+      ],
+      "notes": [],
+      "parts": {},
+      "selection": null,
+      "values": {},
+      "edited": false,
+      "mentions": [],
+      "hidden": false
+    },
+    {
+      "id": "it_5ee303",
+      "type": "ad",
+      "image": "img_02d856aeca8e5d83ae7ad128",
+      "tagline": "Arc-9 Heavy Pistol · Loud, cheap, yours.\nNo questions at the counter.",
+      "links": [
+        {
+          "text": "Arc-9 Heavy Pistol",
+          "ref": "item_cf0f2ab4"
+        }
+      ],
+      "hidden": false
+    },
+    {
+      "id": "it_5ee304",
+      "type": "article",
+      "headline": "Best Noodles in Kabuki (Bring a Friend)",
+      "body": "Mama Ndiaye's back booth has been serving the same broth since before the war, and the fixers who eat there swear it's the only safe table in the district. The noodles are perfect. The conversations at the next table are none of your business.",
+      "byline": "Dash Okafor",
+      "links": [
+        {
+          "text": "Mama Ndiaye's Noodle Bar"
+        }
+      ],
+      "notes": [],
+      "parts": {},
+      "selection": null,
+      "values": {},
+      "edited": false,
+      "mentions": [],
+      "hidden": false
+    },
+    {
+      "id": "it_5ee305",
+      "type": "article",
+      "headline": "Health Warning",
+      "body": "A friendly reminder from the Night City Health Department: the Watson rooftops are closed until further notice. Residents are asked to stay off them after dark.",
+      "byline": "Night City Health Department",
+      "links": [],
+      "notes": [
+        {
+          "label": "Disclaimer",
+          "text": "The Health Department does not comment on rumors, cyberpsychosis or the Tin Man, and is not responsible for anything you meet up there."
+        }
+      ],
+      "parts": {},
+      "selection": null,
+      "values": {},
+      "edited": false,
+      "mentions": [],
+      "hidden": false
+    }
   ],
   "createdAt": "2026-11-04T21:37:38.655Z",
   "updatedAt": "2026-11-04T21:37:38.655Z"

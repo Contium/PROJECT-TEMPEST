@@ -38,7 +38,7 @@
 
   --tp-text: var(--sv-ink);
   --tp-text-muted: #b3a693;
-  --tp-text-dim: #7d7266;
+  --tp-text-dim: #9b9082;
   --tp-text-heading: #d7b6cf;
   --tp-text-label: var(--sv-mauve);
 
@@ -49,7 +49,7 @@
   --tp-accent: #d9b45a;
   --tp-success: #8fb07a;
   --tp-warning: #d49a4a;
-  --tp-danger: #d0675a;
+  --tp-danger: #d5786c;
   --tp-info: #7fa3d1;
 
   --tp-tier-1: #a39a8e;

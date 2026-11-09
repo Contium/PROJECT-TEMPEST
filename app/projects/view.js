@@ -101,11 +101,12 @@ export async function mount(root, { engine, current, open }) {
             },
           }, 'Settings'),
           el('button', {
-            type: 'button', class: 'tp-frame tp-btn tp-btn--ghost',
+            // Kept apart at the far end of the row, away from Open.
+            type: 'button', class: 'tp-frame tp-btn tp-btn--ghost pj-card__delete',
             onClick: async () => {
               const ok = await confirmDialog({
                 title: `Delete "${p.name}"?`,
-                body: `Its ${plural(p.counts?.characters ?? 0, 'character')}, ${plural(p.counts?.presets ?? 0, 'preset')} and images go with it. The folder is moved to TEMPEST's trash (%LOCALAPPDATA%\\TEMPEST\\v1\\trash), not erased.`,
+                body: `Its ${plural(p.counts?.characters ?? 0, 'character')}, ${plural(p.counts?.presets ?? 0, 'preset')} and images go with it. It goes to TEMPEST's trash folder rather than being erased, so it can still be recovered.`,
                 confirmLabel: 'Delete project', danger: true,
               });
               if (!ok) return;

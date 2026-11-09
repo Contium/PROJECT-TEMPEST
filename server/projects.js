@@ -5,6 +5,7 @@
 //   <data>/v1/projects/<id>/characters/…     its characters   (server/entities.js)
 //   <data>/v1/projects/<id>/stories/…        its stories, rumors and events
 //   <data>/v1/projects/<id>/items/…          its items
+//   <data>/v1/projects/<id>/factions/…       its factions and organizations (World › Factions)
 //   <data>/v1/projects/<id>/netcards/…       its net cards (Combat › Netrunning › Card Forge)
 //   <data>/v1/projects/<id>/networks/…       its NET architectures (Combat › Netrunning)
 //   <data>/v1/projects/<id>/encounter.json   its Initiative Tracker (Combat › Initiative; server/encounter.js)
@@ -12,6 +13,7 @@
 //   <data>/v1/projects/<id>/planes/… ways/…  its Planar board (app/maps/planar-model.js)
 //   <data>/v1/projects/<id>/charts/… pins/… regions/…   its Cartographer charts (app/maps/chart-model.js)
 //   <data>/v1/projects/<id>/stars/… lanes/… sectors/…   its Galactic star map (app/maps/galactic-model.js)
+//   <data>/v1/projects/<id>/sessions/… handouts/…   its game nights and handouts (app/sessions/session-model.js)
 //   <data>/v1/projects/<id>/assets/…         its images       (server/assets.js)
 //
 // so copying, backing up or sharing a project is copying one folder. Deleting a
@@ -33,13 +35,13 @@ const { StoreError, createPresetStore, handlePresets } = require('./presets');
 const { createEntityStore, handleEntities } = require('./entities');
 
 // The entity kinds a project stores (folder = route = kind).
-const ENTITY_KINDS = ['characters', 'stories', 'items', 'netcards'];
+const ENTITY_KINDS = ['characters', 'stories', 'items', 'factions', 'netcards'];
 const { createAssetStore, handleAssets } = require('./assets');
-const { createPoiStore, handlePois, CITY, SCREAMSHEETS, NETWORKS, PLACES } = require('./pois');
+const { createPoiStore, handlePois, CITY, SCREAMSHEETS, NETWORKS, PLACES, SESSIONS, HANDOUTS } = require('./pois');
 const { createEncounterStore, handleEncounter } = require('./encounter');
 // The Planar, Cartographer and Galactic places: planes, ways, charts, pins, regions, stars, lanes, sectors.
 const PLACE_KINDS = Object.keys(PLACES);
-const SUBS = `presets|characters|stories|items|netcards|networks|encounter|entities|pois|citypois|screamsheets|${PLACE_KINDS.join('|')}|assets`;
+const SUBS = `presets|characters|stories|items|factions|netcards|networks|encounter|timeline|entities|pois|citypois|screamsheets|sessions|handouts|${PLACE_KINDS.join('|')}|assets`;
 
 // Deleting a place takes what hangs off it along: a plane's ways, a system's lanes, a chart's pins
 // and regions (and pins elsewhere stop leading to it).
@@ -128,6 +130,8 @@ function createProjectLibrary(v1Dir) {
           citypois: createPoiStore(path.join(dir, 'citypois'), CITY),
           screamsheets: createPoiStore(path.join(dir, 'screamsheets'), SCREAMSHEETS),
           networks: createPoiStore(path.join(dir, 'networks'), NETWORKS),
+          sessions: createPoiStore(path.join(dir, 'sessions'), SESSIONS),
+          handouts: createPoiStore(path.join(dir, 'handouts'), HANDOUTS),
           ...Object.fromEntries(PLACE_KINDS.map((k) => [k, createPoiStore(path.join(dir, k), PLACES[k])])),
           // Cyberpunk RED rolls initiative on a d10 (1d10 + REF); everything else starts on a d20.
           encounter: createEncounterStore(path.join(dir, 'encounter.json'), {
@@ -193,6 +197,24 @@ function createProjectLibrary(v1Dir) {
       return writeMeta(next);
     },
     /** Every POI on the project's globe: its unique ones (from settings) first, then those placed. */
+    /**
+     * The players' timeline (World › Timeline): the stories, rumors, events and factions in their
+     * Codex, each dated, named and pictured only as its own sheet allows (app/world/timeline-model.js).
+     */
+    async timeline(id) {
+      const stores = await library.open(id);
+      const full = [];
+      for (const kind of ['stories', 'factions']) {
+        for (const s of await stores[kind].list()) {
+          if (!s.known) continue;
+          const e = await stores[kind].get(s.id).catch(() => null);
+          if (e) full.push(e);
+        }
+      }
+      const { playerTimeline } = await import(require('node:url').pathToFileURL(path.join(__dirname, '..', 'app', 'world', 'timeline-model.js')).href);
+      const { rosterEntry } = await import(require('node:url').pathToFileURL(path.join(__dirname, '..', 'app', 'push', 'push-model.js')).href);
+      return playerTimeline(full, rosterEntry);
+    },
     async listPois(id, { view = 'gm' } = {}) {
       const stores = await library.open(id);
       const meta = await readMeta(id);
@@ -320,6 +342,12 @@ async function handleProjects(library, req, res, rest, params, helpers) {
       }
       if (kind === 'screamsheets') return handlePois(stores.screamsheets, req, res, inner, params, helpers);
       if (kind === 'networks') return handlePois(stores.networks, req, res, inner, params, helpers);
+      if (kind === 'sessions') return handlePois(stores.sessions, req, res, inner, params, helpers);
+      if (kind === 'handouts') return handlePois(stores.handouts, req, res, inner, params, helpers);
+      if (kind === 'timeline') {
+        if (req.method !== 'GET' || inner) return false;
+        return helpers.sendJson(res, 200, await library.timeline(id)), true;
+      }
       if (kind === 'encounter') {
         return await handleEncounter(stores.encounter, req, res, inner, helpers, {
           lookup: (entityId) => stores.characters.get(entityId),

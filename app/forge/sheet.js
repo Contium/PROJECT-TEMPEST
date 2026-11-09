@@ -13,7 +13,7 @@
 // With fieldControl (an entry's page), each field carries the GM's Reveal/Obscure/Hide control instead of its mark.
 
 import { el } from '../ui.js';
-import { PARENT_TYPES, STAT_KINDS, BODY_ZONES, categoriesOf, kindOf, formatDate } from './preset-model.js';
+import { PARENT_TYPES, STAT_KINDS, BODY_ZONES, RELATION_STANCES, categoriesOf, kindOf, formatDate } from './preset-model.js';
 import { obscured as obscuredNode } from './obscure.js';
 
 /**
@@ -140,6 +140,8 @@ function contents(field, value, ctx, as) {
       return value ? el('p', { class: 'sheet__text sheet__date tp-mono' }, formatDate(value)) : empty(field.id === 'end' ? 'Ongoing' : ctx.preview ? 'Not set' : '—');
     case 'cast':
       return cast(field, value, ctx);
+    case 'relations':
+      return relations(value, ctx);
     case 'location':
       return location(field, value, ctx);
     case 'image':
@@ -226,6 +228,20 @@ function cast(field, v, ctx) {
   if (!people.length) return el('p', { class: 'sheet__empty' }, ctx.preview ? 'Characters go here' : '—');
   return el('ul', { class: 'sheet__list sheet__involved' },
     people.map((p) => el('li', {}, entityLink(p.id, ctx), p.note ? el('span', { class: 'sheet__note' }, p.note) : null)));
+}
+
+/** Relations field: each tie's stance (coloured by how friendly it is), whom it's with, and a note. */
+function relations(v, ctx) {
+  const links = v?.links ?? [];
+  if (!links.length) return el('p', { class: 'sheet__empty' }, ctx.preview ? 'Allies, rivals and enemies go here' : '—');
+  return el('ul', { class: 'sheet__list sheet__relations' },
+    links.map((l) => {
+      const s = RELATION_STANCES.find((x) => x.id === l.stance) ?? RELATION_STANCES.find((x) => x.id === 'neutral');
+      return el('li', { class: 'sheet__relation' },
+        el('span', { class: `tp-badge tp-badge--${s.tone === 'muted' ? 'primary' : s.tone} sheet__stance` }, s.label),
+        entityLink(l.id, ctx),
+        l.note ? el('span', { class: 'sheet__note' }, l.note) : null);
+    }));
 }
 
 /**

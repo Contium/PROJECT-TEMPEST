@@ -55,6 +55,18 @@ const NETWORKS = {
   },
 };
 
+// Sessions and handouts (the Sessions section; app/sessions/session-model.js).
+const sessionKind = (prefix, noun, idName, fn, forPlayers) => ({
+  prefix,
+  noun,
+  load: async () => {
+    const m = await modelOf('sessions/session-model.js')();
+    return { ID: m[idName], normalize: m[fn], Error: m.SessionError, forPlayers: m[forPlayers] };
+  },
+});
+const SESSIONS = sessionKind('sess', 'session', 'SESSION_ID', 'normalizeSession', 'sessionsForPlayers');
+const HANDOUTS = sessionKind('hand', 'handout', 'HANDOUT_ID', 'normalizeHandout', 'handoutsForPlayers');
+
 // The Planar, Cartographer and Galactic map systems' places (app/maps/*-model.js): one
 // store each, the folder and route named after the key (planes, ways, charts…).
 // The players' copies are built elsewhere (server/atlas.js); their "player" list is just the revealed ones.
@@ -169,4 +181,4 @@ async function handlePois(store, req, res, rest, params, { readJson, sendJson })
   }
 }
 
-module.exports = { createPoiStore, handlePois, GLOBE, CITY, SCREAMSHEETS, NETWORKS, PLACES };
+module.exports = { createPoiStore, handlePois, GLOBE, CITY, SCREAMSHEETS, NETWORKS, PLACES, SESSIONS, HANDOUTS };

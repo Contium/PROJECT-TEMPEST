@@ -114,6 +114,9 @@ export const networks = {
   remove: (id) => api(scoped(`/networks/${encodeURIComponent(id)}`), { method: 'DELETE' }),
 };
 
+/** World › Timeline as the players get it: what's in their Codex, dated, as each sheet allows. */
+export const playerTimeline = () => api(scoped('/timeline'));
+
 /** The Initiative Tracker's encounter (Combat › Initiative): get it, or apply an action ({ action, … }). */
 export const encounter = {
   get: () => api(scoped('/encounter')),
@@ -129,6 +132,18 @@ export const screamsheets = {
   remove: (id) => api(scoped(`/screamsheets/${encodeURIComponent(id)}`), { method: 'DELETE' }),
 };
 
+/** A project's simple collection (/sessions, /handouts): list, get, create, save, remove. */
+const collection = (route) => ({
+  list: () => api(scoped(route)),
+  get: (id) => api(scoped(`${route}/${encodeURIComponent(id)}`)),
+  create: (x) => api(scoped(route), { method: 'POST', body: x }),
+  save: (x) => api(scoped(`${route}/${encodeURIComponent(x.id)}`), { method: 'PUT', body: x }),
+  remove: (id) => api(scoped(`${route}/${encodeURIComponent(id)}`), { method: 'DELETE' }),
+});
+/** Sessions › Session log and Handouts (app/sessions/session-model.js). */
+export const sessions = collection('/sessions');
+export const handouts = collection('/handouts');
+
 /** Screamsheet Generator table packs, imported from the GM's own PDF (shared by every project). */
 export const packs = {
   list: () => api('/packs/screamsheet'),
@@ -142,6 +157,16 @@ export const lan = {
   setEnabled: (enabled) => api('/lan', { method: 'PUT', body: { enabled } }),
   newLink: () => api('/lan/new-link', { method: 'POST' }),
 };
+
+/** The GM window on the local network (server/gm-lan.js): this PC's own window only. */
+export const gmLan = {
+  status: () => api('/gm-lan'),
+  setEnabled: (enabled) => api('/gm-lan', { method: 'PUT', body: { enabled } }),
+  newKey: () => api('/gm-lan/new-key', { method: 'POST' }),
+};
+
+/** Who's asking: { role: 'gm' | 'player', remote } (remote: a device paired through GM on your network). */
+export const role = () => api('/role');
 
 export const imageUrl = (id) => `/api${scoped(`/assets/${encodeURIComponent(id)}`)}`;
 

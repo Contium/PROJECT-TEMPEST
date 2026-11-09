@@ -139,7 +139,7 @@ export async function mount(root, { engine }) {
         },
       },
         el('input', { class: 'tp-input', name: 'cond', list: 'it-conditions', placeholder: 'Add…', autocomplete: 'off', 'aria-label': `Add a condition to ${nameOf(c)}`, 'data-key': `${c.id}:cond` }),
-        el('input', { class: 'tp-input it-num', name: 'rounds', type: 'number', min: 1, placeholder: 'rds', title: 'Lasts this many rounds (empty: until removed)', 'aria-label': 'Rounds' }),
+        el('input', { class: 'tp-input it-num', name: 'rounds', type: 'number', min: 1, placeholder: 'Rounds', title: 'Lasts this many rounds (empty: until removed)', 'aria-label': 'Rounds' }),
         el('button', { class: 'tp-frame tp-btn tp-btn--sm', title: 'Add condition', 'aria-label': 'Add condition' }, '+')));
   }
 
@@ -228,7 +228,7 @@ export async function mount(root, { engine }) {
         },
           el('input', { class: 'tp-input', name: 'name', placeholder: 'Or a one-off: name', autocomplete: 'off', maxlength: 60, 'aria-label': 'Name of a one-off combatant' }),
           el('input', { class: 'tp-input it-num', name: 'hp', type: 'number', min: 1, placeholder: 'HP', 'aria-label': 'Hit points' }),
-          el('input', { class: 'tp-input it-num', name: 'armor', type: 'number', min: 0, placeholder: 'AR', title: t('armor', 'Armor'), 'aria-label': t('armor', 'Armor') }),
+          el('input', { class: 'tp-input it-num', name: 'armor', type: 'number', min: 0, placeholder: 'Armor', title: t('armor', 'Armor'), 'aria-label': t('armor', 'Armor') }),
           el('input', { class: 'tp-input it-num', name: 'bonus', type: 'number', placeholder: '+Init', title: 'Initiative bonus', 'aria-label': 'Initiative bonus' }),
           el('label', { class: 'it-add__count' }, '×', el('input', { class: 'tp-input it-num', name: 'count', type: 'number', min: 1, max: 20, value: 1, 'aria-label': 'How many' })),
           el('button', { class: 'tp-frame tp-btn' }, 'Add one-off')),
@@ -284,7 +284,9 @@ export async function mount(root, { engine }) {
               ]
             : [
                 roll,
-                btn('Full rest', () => act({ action: 'rest' }), { cls: 'tp-btn--ghost', title: 'Player characters: full hit points and slots, conditions cleared' }),
+                btn('Full rest', async () => {
+                  if (await confirmDialog({ title: 'Give everyone a full rest?', body: 'Every player character in the tracker gets full hit points and slots back, and loses their conditions and temporary hit points; anyone who was down is back up. Everyone else stays as they are.', confirmLabel: 'Full rest' })) act({ action: 'rest' });
+                }, { cls: 'tp-btn--ghost', title: 'Player characters: full hit points and slots, conditions cleared (asks first)' }),
                 s.combatants.length ? btn('Clear', async () => {
                   if (await confirmDialog({ title: 'Clear the tracker?', body: 'Everyone leaves the tracker, player characters included.', confirmLabel: 'Clear', danger: true })) act({ action: 'clear' });
                 }, { cls: 'tp-btn--ghost' }) : null,

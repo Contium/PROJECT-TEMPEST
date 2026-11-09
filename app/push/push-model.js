@@ -15,6 +15,8 @@
 //   entity    { project, id }                              an entry's sheet, as players see it
 //   roster    { project, kind, category }                  every entry on a tab (names, pictures, summaries)
 //   handout   { project, image, caption }                  one picture, full screen
+//             { project, id }                              or a handout (Sessions › Handouts), as players see it
+//   recap     { project, id }                              a session's recap ("Previously…")
 //   globe     { project, view: { lon, lat }, zoom, focus }  the World View globe with the revealed POIs
 //   poi       { project, id }                              one World View POI (revealed only)
 //   citymap   { project, city, layer, district }           a City Map with its revealed POIs, a district lit
@@ -25,13 +27,14 @@
 //   starmap   { project, box, focus }                      the star map: revealed systems, lanes, sectors
 //   chart     { project, id, box, focus }                  a Cartographer chart (revealed), fog baked in
 //   place     { project, id }                              one place of those three systems (revealed only)
+//   timeline  { project }                                  World › Timeline: what's in the players' Codex, dated, in order
 // box is the part of the map to show ({ x0, y0, x1, y1 }: board units, or 0..1 of a chart), or
 // null for all of it; focus lights one thing on it.
 
 import { ENTITY_ID, ASSET_ID, KINDS, fieldsInOrder } from '../forge/preset-model.js';
 import { cleanBox } from '../maps/place-model.js';
 
-export const PUSH_MODES = ['ambient', 'message', 'entity', 'roster', 'handout', 'globe', 'poi', 'citymap', 'citypoi', 'article', 'network', 'planes', 'starmap', 'chart', 'place'];
+export const PUSH_MODES = ['ambient', 'message', 'entity', 'roster', 'handout', 'globe', 'poi', 'citymap', 'citypoi', 'article', 'network', 'planes', 'starmap', 'chart', 'place', 'timeline', 'recap'];
 export const TONES = [
   { id: 'info', label: 'Info' },
   { id: 'success', label: 'Good news' },
@@ -51,9 +54,11 @@ const STAR = /^(star_[0-9a-f]{8}|sector_[0-9a-f]{8}|unique_[a-z0-9_]+)$/;
 const CHART = /^chart_[0-9a-f]{8}$/;
 const CHART_PART = /^(pin|region)_[0-9a-f]{8}$/;
 const PLACE = /^((plane|way|chart|pin|region|star|lane|sector)_[0-9a-f]{8}|unique_[a-z0-9_]+)$/;
+const HANDOUT = /^hand_[0-9a-f]{8}$/;
+const SESSION = /^sess_[0-9a-f]{8}$/;
 
 /** The animation family the themes key on (data-push-kind on the player screen). */
-export const pushKind = (mode) => ({ entity: 'entity', poi: 'entity', citypoi: 'entity', place: 'entity', roster: 'roster', handout: 'handout', message: 'message', globe: 'map', citymap: 'map', network: 'map', planes: 'map', starmap: 'map', chart: 'map', article: 'article' })[mode] ?? 'ambient';
+export const pushKind = (mode) => ({ entity: 'entity', poi: 'entity', citypoi: 'entity', place: 'entity', roster: 'roster', handout: 'handout', message: 'message', globe: 'map', citymap: 'map', network: 'map', planes: 'map', starmap: 'map', chart: 'map', article: 'article', timeline: 'roster', recap: 'handout' })[mode] ?? 'ambient';
 
 export class PushError extends Error {
   constructor(message, status = 400) {
@@ -89,8 +94,12 @@ export function normalizePushRequest(input) {
       if (input.category != null && !KINDS[input.kind].categories.some((c) => c.id === input.category)) throw new PushError('No such list', 404);
       return { ...out, kind: input.kind, category: input.category ?? null };
     case 'handout':
+      if (HANDOUT.test(input.id ?? '')) return { ...out, id: input.id };
       if (!ASSET_ID.test(input.image ?? '')) throw new PushError('No such image', 404);
       return { ...out, image: input.image, caption: text(input.caption, 120) };
+    case 'recap':
+      if (!SESSION.test(input.id ?? '')) throw new PushError('No such session', 404);
+      return { ...out, id: input.id };
     case 'globe':
       return {
         ...out,
@@ -101,6 +110,8 @@ export function normalizePushRequest(input) {
     case 'article':
       if (!SCREAMSHEET.test(input.id ?? '')) throw new PushError('No such screamsheet', 404);
       return { ...out, id: input.id };
+    case 'timeline':
+      return out;
     case 'network':
       if (!NETWORK.test(input.id ?? '')) throw new PushError('No such network', 404);
       return { ...out, id: input.id, focus: NET_NODE.test(input.focus ?? '') ? input.focus : null };

@@ -10,15 +10,23 @@ const at = (path, opts) => {
 test('the sections and their tabs', () => {
   assert.deepEqual(SECTIONS.map((s) => [s.label, s.tabs.map((t) => t.label)]), [
     ['Characters', ['Players', 'NPCs', 'Monsters', 'Creatures']],
-    ['World', ['Events', 'Stories', 'Rumors', 'Screamsheets', 'Timeline']],
+    ['World', ['Events', 'Stories', 'Rumors', 'Screamsheets', 'Factions', 'Timeline']],
     ['World View', []],
     ['Planes', []],
     ['Atlas', []],
     ['Star Map', []],
     ['Combat', ['Initiative', 'Netrunning']],
     ['Items', []],
-    ['The Forge', ['Characters/Creatures', 'Stories/Rumors/Events', 'Items']],
+    ['Sessions', ['Session log', 'Handouts']],
+    ['The Forge', ['Characters/Creatures', 'Stories/Rumors/Events', 'Items', 'Factions/Organizations']],
   ]);
+});
+
+test('Sessions: the log and handouts, each entry at its own address', () => {
+  assert.equal(at('/sessions'), '→ /sessions/log');
+  assert.equal(at('/sessions', { lastTab: () => 'handouts' }), '→ /sessions/handouts');
+  assert.equal(at('/sessions/log/sess_5e550001'), 'sessions/log');
+  assert.equal(resolve('/sessions/handouts/hand_5e550001').item, 'hand_5e550001');
 });
 
 test('The Forge opens on its preset chooser, and each preset type has its own address', () => {

@@ -1,0 +1,46 @@
+{
+  "id": "sess_5e550001",
+  "number": 1,
+  "title": "The Halcyon Extraction",
+  "date": "2026-10-17",
+  "status": "played",
+  "plan": [
+    {
+      "id": "b5e5500",
+      "text": "Cold open: Mama Ndiaye's note under the door",
+      "done": true
+    },
+    {
+      "id": "b5e5501",
+      "text": "Meet at Mama Ndiaye's: the job, the pay, \"no bodies\"",
+      "done": true
+    },
+    {
+      "id": "b5e5502",
+      "text": "Hand out the clinic floor plan",
+      "done": true
+    },
+    {
+      "id": "b5e5503",
+      "text": "Tunnels under the Exec Zone; Chrome Vultures on guard",
+      "done": true
+    },
+    {
+      "id": "b5e5504",
+      "text": "Shift change: get Dr. Hale out of the lab",
+      "done": true
+    }
+  ],
+  "cast": [
+    "char_652e9dae",
+    "char_08fc73a4",
+    "story_c18274f7",
+    "fac_5ee40003",
+    "fac_5ee40002"
+  ],
+  "notes": "Jinx sweet-talked the Vulture on the tunnel door instead of fighting: the Vultures remember her now.\n\nBrick took a round in the shoulder in the lab. Doc Haas patched him for free, and says he'll collect later.\n\nDr. Hale never let go of her briefcase. Nobody asked about it. Yet.",
+  "recap": "Mama Ndiaye had a job: a Halcyon Biotics researcher, Dr. Imani Hale, wanted out, and Halcyon pays the NCPD too well for anyone to leave bodies.\n\nThe Static Saints went in under the Exec Zone through the old tunnels, talked their way past a Chrome Vulture on the door, and walked Dr. Hale out of her lab in the middle of a shift change. Brick caught a bullet on the way out; Doc Haas sewed him up next door.\n\nDr. Hale is safe at Mama Ndiaye's. She hasn't let go of her briefcase once.",
+  "recapShared": true,
+  "createdAt": "2026-11-07T12:00:00.000Z",
+  "updatedAt": "2026-11-07T12:00:00.000Z"
+}

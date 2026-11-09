@@ -40,7 +40,7 @@ test('the Codex holds known entries, revealed news and places, and nothing else'
     const all = await codex.list();
     assert.equal(all.project.name, 'Night Shift');
     assert.deepEqual(all.entries.map((x) => x.title).sort(), ['Afterlife', 'Gang war in Heywood', 'Padre']);
-    assert.deepEqual(all.groups.map((g) => g.id), ['players', 'npcs', 'monsters', 'creatures', 'world', 'items', 'news', 'places'], 'every tab, People only when needed');
+    assert.deepEqual(all.groups.map((g) => g.id), ['players', 'npcs', 'monsters', 'creatures', 'world', 'factions', 'items', 'news', 'places', 'handouts', 'sessions'], 'every tab, People only when needed');
     const padre = all.entries.find((x) => x.title === 'Padre');
     assert.deepEqual([padre.group, padre.sub], ['npcs', 'NPC'], 'characters get their category\'s tab');
     assert.equal(all.entries.find((x) => x.id === news.id).summary, 'First paragraph.');

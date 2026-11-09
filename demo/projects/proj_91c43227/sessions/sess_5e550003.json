@@ -1,0 +1,46 @@
+{
+  "id": "sess_5e550003",
+  "number": 3,
+  "title": "Cold Storage",
+  "date": "2026-11-14",
+  "status": "planned",
+  "plan": [
+    {
+      "id": "b5e5500",
+      "text": "Ledger's contract: Dr. Imani Sato at the Port",
+      "done": false
+    },
+    {
+      "id": "b5e5501",
+      "text": "Rumor at the docks: the ghosts of Yard 9",
+      "done": false
+    },
+    {
+      "id": "b5e5502",
+      "text": "Intercepted message: decrypt it if Dez rolls well",
+      "done": false
+    },
+    {
+      "id": "b5e5503",
+      "text": "A second crew arrives 20 minutes after the players",
+      "done": false
+    },
+    {
+      "id": "b5e5504",
+      "text": "Who's in the reefer container? (don't say yet)",
+      "done": false
+    }
+  ],
+  "cast": [
+    "char_a14f1dad",
+    "story_dfc2b605",
+    "story_48d99f92",
+    "fac_5ee40005",
+    "char_b91339e6"
+  ],
+  "notes": "Prep: print the Yard 9 map, stat the second crew (use Hammerhead's block, minus the armor).\n\nIf they ask Ledger who the client is: he doesn't know, and that worries him.",
+  "recap": "",
+  "recapShared": false,
+  "createdAt": "2026-11-07T12:00:00.000Z",
+  "updatedAt": "2026-11-07T12:00:00.000Z"
+}

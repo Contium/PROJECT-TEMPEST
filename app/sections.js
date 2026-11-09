@@ -22,6 +22,9 @@ export const SECTIONS = [
       { id: 'rumors', label: 'Rumors', detail: true },
       // In-world news, made with the Screamsheet Generator (/world/screamsheets/new).
       { id: 'screamsheets', label: 'Screamsheets', detail: true },
+      // Factions and organizations: every type on this one tab (app/entities/view.js), filtered by type.
+      { id: 'factions', label: 'Factions', detail: true },
+      // Everything dated, in order (app/world/timeline.js).
       { id: 'timeline', label: 'Timeline' },
     ],
   },
@@ -46,6 +49,12 @@ export const SECTIONS = [
   },
   // No tabs, but entries: /items lists them, /items/<id> opens one.
   { id: 'items', label: 'Items', tabs: [], detail: true },
+  // Game nights and the handouts given out at them (app/sessions/view.js).
+  {
+    id: 'sessions',
+    label: 'Sessions',
+    tabs: [{ id: 'log', label: 'Session log', detail: true }, { id: 'handouts', label: 'Handouts', detail: true }],
+  },
   {
     // Where new things are made from presets. Opens on a chooser (landing) rather
     // than a tab; each preset type is a tab of its own.
@@ -56,6 +65,7 @@ export const SECTIONS = [
       { id: 'characters', label: 'Characters/Creatures', blurb: 'Players, NPCs, monsters and creatures.' },
       { id: 'stories', label: 'Stories/Rumors/Events', blurb: 'Plot threads, whispers and happenings in the world.' },
       { id: 'items', label: 'Items', blurb: 'Weapons, gear, loot and curiosities.' },
+      { id: 'factions', label: 'Factions/Organizations', blurb: 'Corporations, gangs, governments, guilds and cults.' },
     ],
   },
 ];
