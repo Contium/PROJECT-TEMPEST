@@ -831,7 +831,7 @@ This makes `dist/tempest-<version>-win-x64.zip`, `dist/TEMPEST-Setup-<version>.e
 
 ## Project status
 
-TEMPEST is in **alpha** (`1.1.0-alpha`). This is the **v1 rebuild**; version zero is kept, untouched, in `Archived/v0`.
+TEMPEST is in **alpha** (`1.2.0-alpha`). This is the **v1 rebuild**; version zero is kept, untouched, in `Archived/v0`.
 
 | Built | Still to come |
 |---|---|

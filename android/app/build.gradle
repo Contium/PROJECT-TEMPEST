@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
 }
 
-// The app's version follows TEMPEST's (package.json), e.g. 1.1.0-alpha.
+// The app's version follows TEMPEST's (package.json), e.g. 1.2.0-alpha.
 def tempestVersion = new groovy.json.JsonSlurper().parse(rootProject.file('../package.json')).version
 
 android {
@@ -13,7 +13,7 @@ android {
         applicationId = 'app.tempest.companion'
         minSdk = 24
         targetSdk = 37
-        versionCode = 1
+        versionCode = 2
         versionName = tempestVersion
     }
 
